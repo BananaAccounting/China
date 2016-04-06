@@ -469,13 +469,13 @@ function loadBalances() {
 				
 				//The "bClass" decides which value to use
 				if (bClass === "0") {
-					form[i]["amount"] = currentBal.amount;
+					form[i]["amount"] = currentBal.balance;
 				}
 				else if (bClass === "1") {
-					form[i]["amount"]  = currentBal.amount;
+					form[i]["amount"]  = currentBal.balance;
 				}
 				else if (bClass === "2") {
-					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.amount);
+					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.balance);
 				}
 				else if (bClass === "3") {
 					form[i]["amount"]  = currentBal.total;

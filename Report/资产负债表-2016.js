@@ -134,11 +134,8 @@ function exec(string) {
 		return;
 	}
 
-
 	//Open a dialog window asking to select an item from the list
 	//var itemSelected = Banana.Ui.getItem('Input', 'Choose a value', ["1. 资产负债表","2. 损益表"], 0, false);
-
-
 
 	//Function call to manage and save user settings about the period date
 	var dateform = getPeriodSettings();
@@ -646,14 +643,14 @@ function loadBalances() {
 
 				//The "bClass" decides which value to use
 				if (bClass === "0") {
-					form[i]["amount"] = currentBal.amount;
+					form[i]["amount"] = currentBal.balance;
 				}
 				else if (bClass === "1") {
-					form[i]["amount"]  = currentBal.amount;
+					form[i]["amount"]  = currentBal.balance;
 					form[i]["opening"]  = currentBal.opening;
 				}
 				else if (bClass === "2") {
-					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.amount);
+					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.balance);
 					form[i]["opening"]  = Banana.SDecimal.invert(currentBal.opening);
 				}
 				else if (bClass === "3") {
