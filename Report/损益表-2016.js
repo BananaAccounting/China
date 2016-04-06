@@ -16,7 +16,7 @@
 // @api = 1.0
 // @pubdate = 2016-04-04
 // @publisher = Banana.ch SA
-// @description = China - Profit/Loss Report 2016
+// @description = 损益表 2016
 // @task = app.command
 // @doctype = 100.110
 // @docproperties = china
