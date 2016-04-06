@@ -41,8 +41,7 @@ function loadParam(banDoc, startDate, endDate) {
 		//"fiscalNumber":banDoc.info("AccountingDataBase","FiscalNumber"),	//Save the fiscal number
 		"startDate":startDate,												//Save the startDate that will be used to specify the accounting period starting date
 		"endDate":endDate, 													//Save the endDate that will be used to specify the accounting period ending date		
-		"taxpayerNumber":"123456789",
-		"payerName":"Aaa Bbb",
+		"taxpayerNumber":banDoc.info("AccountingDataBase","FiscalNumber"),
 		"company":banDoc.info("AccountingDataBase","Company"), 				//Save the company name
 		"address":banDoc.info("AccountingDataBase","Address1"), 			//Save the address																	//Save details
 		"nation":banDoc.info("AccountingDataBase","Country"), 				//Save the country
@@ -65,58 +64,58 @@ function loadForm() {
 
 	//Assets
 	form.push({"id":"B1", "gr":"1113", "bClass":"1", "description":"货币资金"});
-	form.push({"id":"B2", "gr":"111", "bClass":"1", "description":"短期投资"});
-	form.push({"id":"B3", "gr":"", "bClass":"1", "description":"应收票据"});
-	form.push({"id":"B4", "gr":"", "bClass":"1", "description":"应收账款"});
-	form.push({"id":"B5", "gr":"", "bClass":"1", "description":"预付账款"});
-	form.push({"id":"B6", "gr":"", "bClass":"1", "description":"应收股利"});
-	form.push({"id":"B7", "gr":"", "bClass":"1", "description":"应收利息"});
-	form.push({"id":"B8", "gr":"", "bClass":"1", "description":"其他应收款"});
-	form.push({"id":"B9", "gr":"", "bClass":"1", "description":"存货"});
-	form.push({"id":"B10", "gr":"", "bClass":"1", "description":"其中:原材料"});
-	form.push({"id":"B11", "gr":"", "bClass":"1", "description":"在产品"});
-	form.push({"id":"B12", "gr":"", "bClass":"1", "description":"库存商品"});
-	form.push({"id":"B13", "gr":"", "bClass":"1", "description":"周转材料"});
-	form.push({"id":"B14", "gr":"", "bClass":"1", "description":"其他流动资产"});
+	form.push({"id":"B2", "gr":"712", "bClass":"1", "description":"短期投资"});
+	form.push({"id":"B3", "gr":"113", "bClass":"1", "description":"应收票据"});
+	form.push({"id":"B4", "gr":"114", "bClass":"1", "description":"应收账款"});
+	form.push({"id":"B5", "gr":"126", "bClass":"1", "description":"预付账款"});
+	form.push({"id":"B6", "gr":"712", "bClass":"1", "description":"应收股利"});
+	form.push({"id":"B7", "gr":"711", "bClass":"1", "description":"应收利息"});
+	form.push({"id":"B8", "gr":"118", "bClass":"1", "description":"其他应收款"});
+	form.push({"id":"B9", "gr":"121~122", "bClass":"1", "description":"存货"});
+	form.push({"id":"B10", "gr":"121~122", "bClass":"1", "description":"其中:原材料"});
+	form.push({"id":"B11", "gr":"121~122", "bClass":"1", "description":"在产品"});
+	form.push({"id":"B12", "gr":"121~122", "bClass":"1", "description":"库存商品"});
+	form.push({"id":"B13", "gr":"515~518", "bClass":"1", "description":"周转材料"});
+	form.push({"id":"B14", "gr":"128~129", "bClass":"1", "description":"其他流动资产"});
 	form.push({"id":"B15", "description":"流动资产合计", "sum":"B1;B2;B3;B4;B5;B6;B7;B8;B9;B10;B11;B12;B13;B14"});
-	form.push({"id":"B16", "gr":"", "bClass":"1", "description":"长期债券投资"});
-	form.push({"id":"B17", "gr":"", "bClass":"1", "description":"长期股权投资"});
-	form.push({"id":"B18", "gr":"", "bClass":"1", "description":"固定资产原价"});
-	form.push({"id":"B19", "gr":"", "bClass":"1", "description":"减:累计折旧"});
+	form.push({"id":"B16", "gr":"132", "bClass":"1", "description":"长期债券投资"});
+	form.push({"id":"B17", "gr":"132", "bClass":"1", "description":"长期股权投资"});
+	form.push({"id":"B18", "gr":"158", "bClass":"1", "description":"固定资产原价"});
+	form.push({"id":"B19", "gr":"515~518", "bClass":"1", "description":"减:累计折旧"});
 	form.push({"id":"B20", "description":"固定资产账面价值", "sum":"B16;B17;B18;B19"});
-	form.push({"id":"B21", "gr":"", "bClass":"1", "description":"在建工程"});
-	form.push({"id":"B22", "gr":"", "bClass":"1", "description":"工程物资"});
-	form.push({"id":"B23", "gr":"", "bClass":"1", "description":"固定资产清理"});
-	form.push({"id":"B24", "gr":"", "bClass":"1", "description":"生物性生物资产"});
-	form.push({"id":"B25", "gr":"", "bClass":"1", "description":"无形资产"});
-	form.push({"id":"B26", "gr":"", "bClass":"1", "description":"开发支出"});
-	form.push({"id":"B27", "gr":"", "bClass":"1", "description":"长期待摊费用"});
-	form.push({"id":"B28", "gr":"", "bClass":"1", "description":"其他非流动资产"});
+	form.push({"id":"B21", "gr":"156", "bClass":"1", "description":"在建工程"});
+	form.push({"id":"B22", "gr":"156", "bClass":"1", "description":"工程物资"});
+	form.push({"id":"B23", "gr":"158", "bClass":"1", "description":"固定资产清理"});
+	form.push({"id":"B24", "gr":"161", "bClass":"1", "description":"生物性生物资产"});
+	form.push({"id":"B25", "gr":"17", "bClass":"1", "description":"无形资产"});
+	form.push({"id":"B26", "gr":"635~638", "bClass":"1", "description":"开发支出"});
+	form.push({"id":"B27", "gr":"515~518", "bClass":"1", "description":"长期待摊费用"});
+	form.push({"id":"B28", "gr":"159", "bClass":"1", "description":"其他非流动资产"});
 	form.push({"id":"B29", "description":"非流动资产合计", "sum":"B21;B22;B23;B24;B25;B26;B27;B28"});
 	form.push({"id":"B30", "description":"资产合计", "sum":"B15;B20;B29"});
 
 	// Liabilities
 	form.push({"id":"B31", "gr":"211", "bClass":"2", "description":"短期借款"});
-	form.push({"id":"B32", "gr":"B32", "bClass":"2", "description":"应付票据"});
-	form.push({"id":"B33", "gr":"B33", "bClass":"2", "description":"应付账款"});
-	form.push({"id":"B34", "gr":"B34", "bClass":"2", "description":"预收账款"});
-	form.push({"id":"B35", "gr":"B35", "bClass":"2", "description":"应付职工薪酬"});
-	form.push({"id":"B36", "gr":"B36", "bClass":"2", "description":"应交税费"});
-	form.push({"id":"B37", "gr":"B37", "bClass":"2", "description":"应付利息"});
-	form.push({"id":"B38", "gr":"B38", "bClass":"2", "description":"应付利润"});
-	form.push({"id":"B39", "gr":"B39", "bClass":"2", "description":"其他应付款"});
-	form.push({"id":"B40", "gr":"B40", "bClass":"2", "description":"其他流动负债"});
+	form.push({"id":"B32", "gr":"213", "bClass":"2", "description":"应付票据"});
+	form.push({"id":"B33", "gr":"214", "bClass":"2", "description":"应付账款"});
+	form.push({"id":"B34", "gr":"226", "bClass":"2", "description":"预收账款"});
+	form.push({"id":"B35", "gr":"217", "bClass":"2", "description":"应付职工薪酬"});
+	form.push({"id":"B36", "gr":"217", "bClass":"2", "description":"应交税费"});
+	form.push({"id":"B37", "gr":"217", "bClass":"2", "description":"应付利息"});
+	form.push({"id":"B38", "gr":"2192", "bClass":"2", "description":"应付利润"});
+	form.push({"id":"B39", "gr":"2198", "bClass":"2", "description":"其他应付款"});
+	form.push({"id":"B40", "gr":"2194", "bClass":"2", "description":"其他流动负债"});
 	form.push({"id":"B41", "description":"流动负债合计", "sum":"B31;B32;B33;B34;B35;B36;B37;B38;B39;B40"});
-	form.push({"id":"B42", "gr":"B42", "bClass":"2", "description":"长期借款"});
-	form.push({"id":"B43", "gr":"B43", "bClass":"2", "description":"长期应付款"});
-	form.push({"id":"B44", "gr":"B44", "bClass":"2", "description":"递延收益"});
-	form.push({"id":"B45", "gr":"B45", "bClass":"2", "description":"其他非流动负债"});
+	form.push({"id":"B42", "gr":"232", "bClass":"2", "description":"长期借款"});
+	form.push({"id":"B43", "gr":"2332", "bClass":"2", "description":"长期应付款"});
+	form.push({"id":"B44", "gr":"2811", "bClass":"2", "description":"递延收益"});
+	form.push({"id":"B45", "gr":"2886", "bClass":"2", "description":"其他非流动负债"});
 	form.push({"id":"B46", "description":"非流动负债合计", "sum":"B42;B43;B44;B45"});
 	form.push({"id":"B47", "description":"负债合计", "sum":"B41;B46"});
-	form.push({"id":"B48", "gr":"B48", "bClass":"2", "description":"实收资本(或股本)"});
-	form.push({"id":"B49", "gr":"B49", "bClass":"2", "description":"资本公积"});
-	form.push({"id":"B50", "gr":"B50", "bClass":"2", "description":"盈余公积"});
-	form.push({"id":"B51", "gr":"B51", "bClass":"2", "description":"未分配利润"});
+	form.push({"id":"B48", "gr":"3116", "bClass":"2", "description":"实收资本(或股本)"});
+	form.push({"id":"B49", "gr":"32", "bClass":"2", "description":"资本公积"});
+	form.push({"id":"B50", "gr":"331", "bClass":"2", "description":"盈余公积"});
+	form.push({"id":"B51", "gr":"335", "bClass":"2", "description":"未分配利润"});
 	form.push({"id":"B52", "description":"所有者权益(或股东权益)合计", "sum":"B48;B49;B50;B51"});
 	form.push({"id":"B53", "description":"负债和所有者权益(或股东权益)总计", "sum":"B47;B52"});
 
@@ -194,8 +193,7 @@ function createBalanceReport(banDoc, startDate, endDate, report) {
 	//Table with basic informations
 	var table = report.addTable("table");
 
-	report.addParagraph("资产负债表(适用执行小企业会计准则的企业)", "bold"); //Balance sheet (application of accounting standards for small business enterprise)
-	report.addParagraph(" ", "");
+	report.addParagraph("资产负债表(适用执行小企业会计准则的企业) - (ALFA VERSION)", "bold"); //Balance sheet (application of accounting standards for small business enterprise)
 
 	//Table with basic informations
 	var table = report.addTable("table");
@@ -218,7 +216,7 @@ function createBalanceReport(banDoc, startDate, endDate, report) {
 	
 	tableRow = table.addRow();
 	tableRow.addCell("纳税人识别号: " + param["taxpayerNumber"], "", 4); //Taxpayer identification number:
-	tableRow.addCell("纳税人名称: " + param["payerName"], "", 4); //Payer's name
+	tableRow.addCell("纳税人名称: " + param["company"], "", 4); //Payer's name
 
 	tableRow = table.addRow();
 	var d = new Date();
@@ -643,6 +641,9 @@ function loadBalances() {
 				// gr = "Gr=1113|111"
 				var currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], param["startDate"], param["endDate"]);
 				
+				form[i]["amount"] = "";
+				form[i]["opening"] = "";
+
 				//The "bClass" decides which value to use
 				if (bClass === "0") {
 					form[i]["amount"] = currentBal.amount;
@@ -816,7 +817,8 @@ function createStylesheet() {
 	var stylesheet = Banana.Report.newStyleSheet();
 
     var pageStyle = stylesheet.addStyle("@page");
-    pageStyle.setAttribute("margin", "10mm 10mm 10mm 20mm");
+    pageStyle.setAttribute("margin", "10mm 10mm 5mm 10mm");
+    pageStyle.setAttribute("size", "landscape");
 
     stylesheet.addStyle("body", "font-size: 10pt; font-family: Helvetica");
     stylesheet.addStyle(".bold", "font-weight:bold");
@@ -835,16 +837,16 @@ function createStylesheet() {
 
 	style = stylesheet.addStyle(".bordersTitle");
 	style.setAttribute("border-right", "thin solid #fff");
-	style.setAttribute("padding-bottom", "2px");
-	style.setAttribute("padding-top", "5px"); 
+	//style.setAttribute("padding-bottom", "2px");
+	//style.setAttribute("padding-top", "5px"); 
 
 	style = stylesheet.addStyle(".borders");
 	style.setAttribute("border-left", "thin solid black");
 	style.setAttribute("border-right", "thin solid black");
 	style.setAttribute("border-bottom", "thin solid black");
 	style.setAttribute("border-top", "thin solid black");
-	style.setAttribute("padding-bottom", "2px");
-	style.setAttribute("padding-top", "5px"); 
+	//style.setAttribute("padding-bottom", "2px");
+	//style.setAttribute("padding-top", "5px"); 
 
 	style = stylesheet.addStyle(".valueTotal");
 	style.setAttribute("font-weight", "bold");

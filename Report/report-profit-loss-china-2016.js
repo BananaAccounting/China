@@ -37,14 +37,13 @@ function loadParam(banDoc, startDate, endDate) {
 	var date = new Date();
 	param = {
 		"reportName":"China - Profit/Loss Report 2016",						//Save the report's name
-		//"bananaVersion":"Banana Accounting 8", 								//Save the version of Banana Accounting used
-		//"scriptVersion":"script v. 2016-04-04",				 				//Save the version of the script
+		//"bananaVersion":"Banana Accounting 8", 							//Save the version of Banana Accounting used
+		//"scriptVersion":"script v. 2016-04-04",				 			//Save the version of the script
 		//"fiscalNumber":banDoc.info("AccountingDataBase","FiscalNumber"),	//Save the fiscal number
 		"startDate":startDate,												//Save the startDate that will be used to specify the accounting period starting date
 		"endDate":endDate,													//Save the endDate that will be used to specify the accounting period ending date
 		"currentDate": date,												//Save the current Date
-		"taxpayerNumber":"123456789",
-		"payerName":"Aaa Bbb",
+		"taxpayerNumber":banDoc.info("AccountingDataBase","FiscalNumber"),
 		"company":banDoc.info("AccountingDataBase","Company"), 				//Save the company name
 		"address":banDoc.info("AccountingDataBase","Address1"), 			//Save the address																	//Save details
 		"nation":banDoc.info("AccountingDataBase","Country"), 				//Save the country
@@ -62,37 +61,37 @@ function loadForm() {
 	/*
 		PROFIT & LOSS
 	*/
-	form.push({"id":"P1", "gr":"411", "bClass":"4", "description":"一、营业收入"});
-	form.push({"id":"P2", "gr":"", "bClass":"", "description":"减:营业成本"});
-	form.push({"id":"P3", "gr":"", "bClass":"", "description":"营业税金及附加"});
-	form.push({"id":"P4", "gr":"", "bClass":"", "description":"其中:消费税"});
-	form.push({"id":"P5", "gr":"", "bClass":"", "description":"营业税"});
-	form.push({"id":"P6", "gr":"", "bClass":"", "description":"城市维护建设税"});
-	form.push({"id":"P7", "gr":"", "bClass":"", "description":"资源税"});
-	form.push({"id":"P8", "gr":"", "bClass":"", "description":"土地增值税"});
-	form.push({"id":"P9", "gr":"", "bClass":"", "description":"城镇土地使用税、房产税、车船税、印花税"});
-	form.push({"id":"P10", "gr":"", "bClass":"", "description":"教育费附加、矿产资源补偿费、排污费"});
-	form.push({"id":"P11", "gr":"", "bClass":"", "description":"销售费用"});
-	form.push({"id":"P12", "gr":"", "bClass":"", "description":"其中:商品维修费"});
-	form.push({"id":"P13", "gr":"", "bClass":"", "description":"广告费和业务宣传费"});
-	form.push({"id":"P14", "gr":"", "bClass":"", "description":"管理费用"});
-	form.push({"id":"P15", "gr":"", "bClass":"", "description":"其中:开办费"});
-	form.push({"id":"P16", "gr":"", "bClass":"", "description":"业务招待费"});
-	form.push({"id":"P17", "gr":"", "bClass":"", "description":"研究费用"});
-	form.push({"id":"P18", "gr":"", "bClass":"", "description":"财务费用"});
-	form.push({"id":"P19", "gr":"", "bClass":"", "description":"其中:利息费用(收入以&ndash;填列)"});
-	form.push({"id":"P20", "gr":"", "bClass":"", "description":"加：投资收益(亏损以-填列)"});
+	form.push({"id":"P1", "gr":"4", "bClass":"4", "description":"一、营业收入"});
+	form.push({"id":"P2", "gr":"5", "bClass":"3", "description":"减:营业成本"});
+	form.push({"id":"P3", "gr":"217", "bClass":"2", "description":"营业税金及附加"});
+	form.push({"id":"P4", "gr":"", "bClass":"2", "description":"其中:消费税"});
+	form.push({"id":"P5", "gr":"", "bClass":"2", "description":"营业税"});
+	form.push({"id":"P6", "gr":"", "bClass":"2", "description":"城市维护建设税"});
+	form.push({"id":"P7", "gr":"", "bClass":"2", "description":"资源税"});
+	form.push({"id":"P8", "gr":"234", "bClass":"2", "description":"土地增值税"});
+	form.push({"id":"P9", "gr":"236", "bClass":"2", "description":"城镇土地使用税、房产税、车船税、印花税"});
+	form.push({"id":"P10", "gr":"515~518", "bClass":"3", "description":"教育费附加、矿产资源补偿费、排污费"});
+	form.push({"id":"P11", "gr":"", "bClass":"3", "description":"销售费用"});
+	form.push({"id":"P12", "gr":"", "bClass":"3", "description":"其中:商品维修费"});
+	form.push({"id":"P13", "gr":"615~618", "bClass":"3", "description":"广告费和业务宣传费"});
+	form.push({"id":"P14", "gr":"62", "bClass":"3", "description":"管理费用"});
+	form.push({"id":"P15", "gr":"625~628", "bClass":"3", "description":"其中:开办费"});
+	form.push({"id":"P16", "gr":"", "bClass":"3", "description":"业务招待费"});
+	form.push({"id":"P17", "gr":"63", "bClass":"3", "description":"研究费用"});
+	form.push({"id":"P18", "gr":"", "bClass":"3", "description":"财务费用"});
+	form.push({"id":"P19", "gr":"751", "bClass":"3", "description":"其中:利息费用(收入以&ndash;填列)"});
+	form.push({"id":"P20", "gr":"712", "bClass":"3", "description":"加：投资收益(亏损以-填列)"});
 	form.push({"id":"P21", "description":"二、营业利润(亏损以-号填列)", "sum":"P1;P2;P3;P4;P5;P6;P7;P8;P9;P10;P11;P12;P13;P14;P15;P16;P17;P18;P19;P20"});
-	form.push({"id":"P22", "gr":"748", "bClass":"3", "description":"加:营业外收入"});
-	form.push({"id":"P23", "gr":"751", "bClass":"3", "description":"其中:政府补助"});
-	form.push({"id":"P24", "gr":"", "bClass":"", "description":"减:营业外支出"});
-	form.push({"id":"P25", "gr":"", "bClass":"", "description":"其中:坏账损失"});
-	form.push({"id":"P26", "gr":"", "bClass":"", "description":"无法收回的长期债券投资损失"});
-	form.push({"id":"P27", "gr":"", "bClass":"", "description":"无法收回的长期股权投资损失"});
-	form.push({"id":"P28", "gr":"", "bClass":"", "description":"自然灾害等不可抗力因素造成的损失"});
-	form.push({"id":"P29", "gr":"", "bClass":"", "description":"税收滞纳金"});
+	form.push({"id":"P22", "gr":"71~74", "bClass":"3", "description":"加:营业外收入"});
+	form.push({"id":"P23", "gr":"748", "bClass":"3", "description":"其中:政府补助"});
+	form.push({"id":"P24", "gr":"75~78", "bClass":"3", "description":"减:营业外支出"});
+	form.push({"id":"P25", "gr":"615~618", "bClass":"3", "description":"其中:坏账损失"});
+	form.push({"id":"P26", "gr":"752", "bClass":"3", "description":"无法收回的长期债券投资损失"});
+	form.push({"id":"P27", "gr":"", "bClass":"3", "description":"无法收回的长期股权投资损失"});
+	form.push({"id":"P28", "gr":"788", "bClass":"3", "description":"自然灾害等不可抗力因素造成的损失"});
+	form.push({"id":"P29", "gr":"", "bClass":"3", "description":"税收滞纳金"});
 	form.push({"id":"P30", "description":"三、利润总额(亏损总额以-号填列)", "sum":"P22;P23;P24;P25;P26;P27;P28;P29"});
-	form.push({"id":"P31", "gr":"", "bClass":"", "description":"减:所得税费用"});
+	form.push({"id":"P31", "gr":"811", "bClass":"3", "description":"减:所得税费用"});
 	form.push({"id":"P32", "description":"四、净利润(净亏损以-号填列)", "sum":"P21;P30"});
 
 }
@@ -172,7 +171,7 @@ function createProfitReport(banDoc, startDate, endDate) {
 	//Table with basic informations
 	var table = report.addTable("table");
 
-	report.addParagraph("利润表(适用执行小企业会计准则的企业)", "bold"); //Balance sheet (application of accounting standards for small business enterprise)
+	report.addParagraph("利润表(适用执行小企业会计准则的企业) - (ALFA VERSION)", "bold"); //Balance sheet (application of accounting standards for small business enterprise)
 	report.addParagraph(" ", "");
 
 	//Table with basic informations
@@ -196,7 +195,7 @@ function createProfitReport(banDoc, startDate, endDate) {
 	
 	tableRow = table.addRow();
 	tableRow.addCell("纳税人识别号: " + param["taxpayerNumber"], "", 2); //Taxpayer identification number:
-	tableRow.addCell("纳税人名称: " + param["payerName"], "", 2); //Payer's name
+	tableRow.addCell("纳税人名称: " + param["company"], "", 2); //Payer's name
 
 	tableRow = table.addRow();
 	var d = new Date();
@@ -454,41 +453,6 @@ function createProfitReport(banDoc, startDate, endDate) {
 
 
 function loadBalances() {
-/*
-	var date = new Date();
-	var yy = date.getFullYear();
-	var mm = date.getMonth() + 1;
-	var days = daysInMonth(mm,yy); //numero giorni mese corrente
-	
-	if (mm <= 9) {
-		mm = "0" + mm;
-	}
-	
-	var firstDay = days/days;
-	if (firstDay <= 9){
-		firstDay = "0" + firstDay;
-	}
-
-	var lastDay = days;
-	var currentMonthStartDate = yy+"-"+mm+"-"+firstDay;
-	var currentMonthEndDate = yy+"-"+mm+"-"+lastDay;
-*/
-
-	
-
-	var yyyy = param["currentDate"].getFullYear();
-	var mm = param["currentDate"].getMonth() + 1;
-	if (mm <= 9) {
-		mm = "0" + mm;
-	}
-	var dd = param["currentDate"].getDate();
-	if (dd <= 9) {
-		dd = "0" + dd;
-	}
-
-	var d = yyyy + "-" + mm + "-" + dd;
-	//Banana.console.log(d);
-
 
 	for (var i in form) {
 	
@@ -500,10 +464,8 @@ function loadBalances() {
 
 				//Sum the amounts of opening, debit, credit, total and balance for all transactions for this accounts
 				// gr = "Gr=1113|111"
-				var currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], yyyy+"-01-01", d);
+				var currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], Banana.document.info("AccountingDataBase","OpeningDate"), param["endDate"]);
 				var currentBal1 = Banana.document.currentBalance("Gr="+form[i]["gr"], param["startDate"], param["endDate"]);
-				//var currentBal1 = Banana.document.currentBalance("Gr="+form[i]["gr"], currentMonthStartDate, currentMonthEndDate);
-
 				
 				//The "bClass" decides which value to use
 				if (bClass === "0") {
