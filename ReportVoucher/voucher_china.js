@@ -16,10 +16,11 @@
 // @api = 1.0
 // @pubdate = 2016-04-022
 // @publisher = Banana.ch SA
-// @description = Report Voucher China 2016
+// @description = Report Voucher China
+// @description.cn = Report Voucher China
 // @task = app.command
-// @doctype = 100.110
-// @docproperties = china
+// @doctype = 100.*;110.*;130.*
+// @docproperties = 
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
@@ -31,7 +32,7 @@ param = {
         GREEN
     *********/
     //internal             //Chinese
-    "insertDocument"    : "Insert a document",
+    "insertDocument"    : "Insert a document number",
     "transferVoucher"   : "Transfer Voucher",
     "date"              : "Date",
     "voucherNumber"     : "Voucher Number",
