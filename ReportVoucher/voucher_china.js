@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.addon.reportvoucherchina2016
+// @id = ch.banana.addon.记账凭证
 // @api = 1.0
 // @pubdate = 2016-04-022
 // @publisher = Banana.ch SA
-// @description = Report Voucher China
-// @description.cn = Report Voucher China
+// @description = 记账凭证
+// @description.cn = 记账凭证
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
 // @docproperties = 
