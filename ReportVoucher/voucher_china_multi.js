@@ -84,33 +84,25 @@ function exec(string) {
     //Create the report
     var report = Banana.Report.newReport(param.transferVoucher);
     
-    try {
+    //Table Transactions
+    var transactions = Banana.document.table('Transactions');
+    var itemSelected = Banana.Ui.getItem('Input', 'Choose a report', [param.transferVoucher,'Debit Voucher','Credit Voucher'], 0, false);
+    var docNumber = Banana.Ui.getText(param.insertDocument, param.insertDocument,'');
 
-        //Table Transactions
-        var transactions = Banana.document.table('Transactions');
-        var itemSelected = Banana.Ui.getItem('Input', 'Choose a report', [param.transferVoucher,'Debit Voucher','Credit Voucher'], 0, false);
-        var docNumber = Banana.Ui.getText(param.insertDocument, param.insertDocument,'');
-
-        if (itemSelected === param.transferVoucher) {
-            colorParam.textColor = "green";
-            createTransferVoucherReport(report, docNumber);
-        }
-        else if (itemSelected === param.debitVoucher) {
-            colorParam.textColor = "red";
-            createDebitVoucherReport(report, docNumber);
-        }
-        else if (itemSelected === param.creditVoucher) {
-            colorParam.textColor = "blue";
-            createCreditVoucherReport(report, docNumber);
-        }
-
-
-
-    } catch (e) {
-        //If the selected row doesn't contains the Doc value it is displayed a dialog window  
-        Banana.Ui.showInformation('Doc not found', 'Doc not found. Please select a row with values from the Transactions table.');
-        return;
+    if (itemSelected === param.transferVoucher) {
+        colorParam.textColor = "green";
+        createTransferVoucherReport(report, docNumber);
     }
+    else if (itemSelected === param.debitVoucher) {
+        colorParam.textColor = "red";
+        createDebitVoucherReport(report, docNumber);
+    }
+    else if (itemSelected === param.creditVoucher) {
+        colorParam.textColor = "blue";
+        createCreditVoucherReport(report, docNumber);
+    }
+
+    //Banana.Ui.showInformation('Doc not found', 'Doc not found. Please select a row with values from the Transactions table.');
 
     //Add the styles
     var stylesheet = createStyleSheet();

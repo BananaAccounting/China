@@ -90,50 +90,42 @@ var generalParam = {
 */
 function exec(string) {
 
-    try {
+    //Create the report
+    var report = Banana.Report.newReport(param.transferVoucher);
+    
+    //Load all the parameters
+    loadParam();
+    
+    //Open dialog window asking to insert a voucher number (or * for all vouchers)
+    var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"),'');
 
-        //Create the report
-        var report = Banana.Report.newReport(param.transferVoucher);
-        
-        //Load all the parameters
-        loadParam();
-        
-        //Open dialog window asking to insert a voucher number (or * for all vouchers)
-        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"),'');
+    //Create the Journal table which contains all the data of the accounting
+    var journal = Banana.document.journal(Banana.document.ORIGINTYPEc2URRENT, Banana.document.ACCOUNTTYPE_NORMAL);
+    
+    //Create a list with all the doc numbers
+    var docList = getDocList();
 
-        //Create the Journal table which contains all the data of the accounting
-        var journal = Banana.document.journal(Banana.document.ORIGINTYPEc2URRENT, Banana.document.ACCOUNTTYPE_NORMAL);
-        
-        //Create a list with all the doc numbers
-        var docList = getDocList();
+    //The user insert a correct voucher value => prints single voucher
+    if (docNumber && docNumber !== "*") {
 
-        //The user insert a correct voucher value => prints single voucher
-        if (docNumber && docNumber !== "*") {
-
-            //Check if the docNumber exists in the docList array
-            if (docList.indexOf(docNumber) > -1) {
-                docList = [];
-                docList.push(docNumber);
-                printVoucher(report, docList, journal);
-            }
-            else { //docNumber doesn't exists
-                Banana.Ui.showInformation("", getValue(param, "showInformation", "chinese"));
-                return;
-            }
-        }
-        //The user insert the "*" => prints all the vouchers
-        else if (docNumber === "*") {
+        //Check if the docNumber exists in the docList array
+        if (docList.indexOf(docNumber) > -1) {
+            docList = [];
+            docList.push(docNumber);
             printVoucher(report, docList, journal);
-
         }
-        //User doesn't insert anything then clic "ok", or clic on "cancel" button
-        else {
+        else { //docNumber doesn't exists
+            Banana.Ui.showInformation("", getValue(param, "showInformation", "chinese"));
             return;
         }
+    }
+    //The user insert the "*" => prints all the vouchers
+    else if (docNumber === "*") {
+        printVoucher(report, docList, journal);
 
-    } catch (e) {
-        //User doesn't insert a correct Doc value: it is displayed an information dialog window  
-        Banana.Ui.showInformation("", e);
+    }
+    //User doesn't insert anything then clic "ok", or clic on "cancel" button
+    else {
         return;
     }
 
