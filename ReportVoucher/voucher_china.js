@@ -100,7 +100,7 @@ function exec(string) {
     var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"),'');
 
     //Create the Journal table which contains all the data of the accounting
-    var journal = Banana.document.journal(Banana.document.ORIGINTYPEc2URRENT, Banana.document.ACCOUNTTYPE_NORMAL);
+    var journal = Banana.document.journal(Banana.document.ORIGINTYPE_CURRENT, Banana.document.ACCOUNTTYPE_NORMAL);
     
     //Create a list with all the doc numbers
     var docList = getDocList();
