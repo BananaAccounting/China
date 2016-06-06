@@ -18,7 +18,7 @@
 // @publisher = Banana.ch SA
 // @description = 资产负债表 2016
 // @task = app.command
-// @doctype = 100.110
+// @doctype = 100.*
 // @docproperties = china
 // @outputformat = none
 // @inputdataform = none
