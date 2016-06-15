@@ -37,9 +37,6 @@ function loadParam(banDoc, startDate, endDate) {
 	var date = new Date();
 	param = {
 		"reportName":"China - Profit/Loss Report 2016",						//Save the report's name
-		//"bananaVersion":"Banana Accounting 8", 							//Save the version of Banana Accounting used
-		//"scriptVersion":"script v. 2016-04-04",				 			//Save the version of the script
-		//"fiscalNumber":banDoc.info("AccountingDataBase","FiscalNumber"),	//Save the fiscal number
 		"startDate":startDate,												//Save the startDate that will be used to specify the accounting period starting date
 		"endDate":endDate,													//Save the endDate that will be used to specify the accounting period ending date
 		"currentDate": date,												//Save the current Date
@@ -61,38 +58,38 @@ function loadForm() {
 	/*
 		PROFIT & LOSS
 	*/
-	form.push({"id":"P1", "gr":"4", "bClass":"4", "description":"一、营业收入"});
-	form.push({"id":"P2", "gr":"5", "bClass":"3", "description":"减:营业成本"});
-	form.push({"id":"P3", "gr":"217", "bClass":"2", "description":"营业税金及附加"});
-	form.push({"id":"P4", "gr":"", "bClass":"2", "description":"其中:消费税"});
-	form.push({"id":"P5", "gr":"", "bClass":"2", "description":"营业税"});
-	form.push({"id":"P6", "gr":"", "bClass":"2", "description":"城市维护建设税"});
-	form.push({"id":"P7", "gr":"", "bClass":"2", "description":"资源税"});
-	form.push({"id":"P8", "gr":"234", "bClass":"2", "description":"土地增值税"});
-	form.push({"id":"P9", "gr":"236", "bClass":"2", "description":"城镇土地使用税、房产税、车船税、印花税"});
-	form.push({"id":"P10", "gr":"515~518", "bClass":"3", "description":"教育费附加、矿产资源补偿费、排污费"});
-	form.push({"id":"P11", "gr":"", "bClass":"3", "description":"销售费用"});
+	form.push({"id":"P1", "gr":"500", "bClass":"4", "description":"一、营业收入"});
+	form.push({"id":"P2", "gr":"530", "bClass":"3", "description":"减:营业成本"});
+	form.push({"id":"P3", "gr":"531", "bClass":"3", "description":"营业税金及附加"});
+	form.push({"id":"P4", "gr":"", "bClass":"3", "description":"其中:消费税"});
+	form.push({"id":"P5", "gr":"", "bClass":"3", "description":"营业税"});
+	form.push({"id":"P6", "gr":"", "bClass":"3", "description":"城市维护建设税"});
+	form.push({"id":"P7", "gr":"", "bClass":"3", "description":"资源税"});
+	form.push({"id":"P8", "gr":"", "bClass":"3", "description":"土地增值税"});
+	form.push({"id":"P9", "gr":"", "bClass":"3", "description":"城镇土地使用税、房产税、车船税、印花税"});
+	form.push({"id":"P10", "gr":"", "bClass":"3", "description":"教育费附加、矿产资源补偿费、排污费"});
+	form.push({"id":"P11", "gr":"540", "bClass":"3", "description":"销售费用"});
 	form.push({"id":"P12", "gr":"", "bClass":"3", "description":"其中:商品维修费"});
-	form.push({"id":"P13", "gr":"615~618", "bClass":"3", "description":"广告费和业务宣传费"});
-	form.push({"id":"P14", "gr":"62", "bClass":"3", "description":"管理费用"});
-	form.push({"id":"P15", "gr":"625~628", "bClass":"3", "description":"其中:开办费"});
-	form.push({"id":"P16", "gr":"", "bClass":"3", "description":"业务招待费"});
-	form.push({"id":"P17", "gr":"63", "bClass":"3", "description":"研究费用"});
-	form.push({"id":"P18", "gr":"", "bClass":"3", "description":"财务费用"});
-	form.push({"id":"P19", "gr":"751", "bClass":"3", "description":"其中:利息费用(收入以&ndash;填列)"});
-	form.push({"id":"P20", "gr":"712", "bClass":"3", "description":"加：投资收益(亏损以-填列)"});
+	form.push({"id":"P13", "gr":"", "bClass":"3", "description":"广告费和业务宣传费"});
+	form.push({"id":"P14", "gr":"542", "bClass":"3", "description":"管理费用"});
+	form.push({"id":"P15", "gr":"", "bClass":"3", "description":"其中:开办费"});
+	form.push({"id":"P16", "gr":"540308", "bClass":"3", "description":"业务招待费"});
+	form.push({"id":"P17", "gr":"", "bClass":"3", "description":"研究费用"});
+	form.push({"id":"P18", "gr":"541", "bClass":"3", "description":"财务费用"});
+	form.push({"id":"P19", "gr":"", "bClass":"3", "description":"其中:利息费用(收入以&ndash;填列)"});
+	form.push({"id":"P20", "gr":"510", "bClass":"3", "description":"加：投资收益(亏损以-填列)"});
 	form.push({"id":"P21", "description":"二、营业利润(亏损以-号填列)", "sum":"P1;P2;P3;P4;P5;P6;P7;P8;P9;P10;P11;P12;P13;P14;P15;P16;P17;P18;P19;P20"});
-	form.push({"id":"P22", "gr":"71~74", "bClass":"3", "description":"加:营业外收入"});
-	form.push({"id":"P23", "gr":"748", "bClass":"3", "description":"其中:政府补助"});
-	form.push({"id":"P24", "gr":"75~78", "bClass":"3", "description":"减:营业外支出"});
-	form.push({"id":"P25", "gr":"615~618", "bClass":"3", "description":"其中:坏账损失"});
-	form.push({"id":"P26", "gr":"752", "bClass":"3", "description":"无法收回的长期债券投资损失"});
+	form.push({"id":"P22", "gr":"520", "bClass":"3", "description":"加:营业外收入"});
+	form.push({"id":"P23", "gr":"", "bClass":"3", "description":"其中:政府补助"});
+	form.push({"id":"P24", "gr":"550", "bClass":"3", "description":"减:营业外支出"});
+	form.push({"id":"P25", "gr":"", "bClass":"3", "description":"其中:坏账损失"});
+	form.push({"id":"P26", "gr":"", "bClass":"3", "description":"无法收回的长期债券投资损失"});
 	form.push({"id":"P27", "gr":"", "bClass":"3", "description":"无法收回的长期股权投资损失"});
-	form.push({"id":"P28", "gr":"788", "bClass":"3", "description":"自然灾害等不可抗力因素造成的损失"});
+	form.push({"id":"P28", "gr":"", "bClass":"3", "description":"自然灾害等不可抗力因素造成的损失"});
 	form.push({"id":"P29", "gr":"", "bClass":"3", "description":"税收滞纳金"});
-	form.push({"id":"P30", "description":"三、利润总额(亏损总额以-号填列)", "sum":"P22;P23;P24;P25;P26;P27;P28;P29"});
-	form.push({"id":"P31", "gr":"811", "bClass":"3", "description":"减:所得税费用"});
-	form.push({"id":"P32", "description":"四、净利润(净亏损以-号填列)", "sum":"P21;P30"});
+	form.push({"id":"P30", "description":"三、利润总额(亏损总额以-号填列)", "sum":"P21;P22;-P24"});
+	form.push({"id":"P31", "gr":"560", "bClass":"3", "description":"减:所得税费用"});
+	form.push({"id":"P32", "description":"四、净利润(净亏损以-号填列)", "sum":"P30;-P31"});
 
 }
 
@@ -220,224 +217,224 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P1", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P1", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P1", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P1", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P1", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P1", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P2", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P2", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P2", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P2", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P2", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P2", "currentMonthAmount"), "borders right padding-right", 1);
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P3", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P3", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P3", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P3", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P3", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P3", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P4", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P4", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P4", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P4", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P4", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P4", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P5", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P5", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P5", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P5", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P5", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P5", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P6", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P6", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P6", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P6", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P6", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P6", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P7", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P7", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P7", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P7", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P7", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P7", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P8", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P8", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P8", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P8", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P8", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P8", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P9", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P9", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P9", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P9", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P9", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P9", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P10", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P10", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P10", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P10", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P10", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P10", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P11", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P11", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P11", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P11", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P11", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P11", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P12", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P12", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P12", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P12", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P12", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P12", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P13", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P13", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P13", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P13", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P13", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P13", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P14", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P14", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P14", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P14", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P14", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P14", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P15", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P15", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P15", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P15", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P15", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P15", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P16", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P16", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P16", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P16", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P16", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P16", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P17", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P17", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P17", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P17", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P17", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P17", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P18", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P18", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P18", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P18", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P18", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P18", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P19", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P19", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P19", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P19", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P19", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P19", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P20", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P20", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P20", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P20", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P20", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P20", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P21", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P21", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P21", "amount"), "borders right valueTotal", 1);
-	tableRow.addCell(getValue(form, "P21", "currentMonthAmount"), "borders right valueTotal", 1);
+	tableRow.addCell(getValue(form, "P21", "amount"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, "P21", "currentMonthAmount"), "borders right valueTotal padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P22", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P22", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P22", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P22", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P22", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P22", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P23", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P23", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P23", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P23", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P23", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P23", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P24", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P24", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P24", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P24", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P24", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P24", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P25", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P25", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P25", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P25", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P25", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P25", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P26", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P26", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P26", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P26", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P26", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P26", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P27", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P27", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P27", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P27", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P27", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P27", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P28", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P28", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P28", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P28", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P28", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P28", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P29", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P29", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P29", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P29", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P29", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P29", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P30", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P30", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P30", "amount"), "borders right valueTotal", 1);
-	tableRow.addCell(getValue(form, "P30", "currentMonthAmount"), "borders right valueTotal", 1);
+	tableRow.addCell(getValue(form, "P30", "amount"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, "P30", "currentMonthAmount"), "borders right valueTotal padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P31", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P31", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P31", "amount"), "borders right", 1);
-	tableRow.addCell(getValue(form, "P31", "currentMonthAmount"), "borders right", 1);
+	tableRow.addCell(getValue(form, "P31", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, "P31", "currentMonthAmount"), "borders right padding-right", 1);
 
 
 	tableRow = table.addRow();
 	tableRow.addCell(getValue(form, "P32", "description"), "borders", 1);
 	tableRow.addCell(getValue(form, "P32", "id").replace("P", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "P32", "amount"), "borders right valueTotal", 1);
-	tableRow.addCell(getValue(form, "P32", "currentMonthAmount"), "borders right valueTotal", 1);
+	tableRow.addCell(getValue(form, "P32", "amount"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, "P32", "currentMonthAmount"), "borders right valueTotal padding-right", 1);
 
 	/** END PRINT ... */
 	/** ------------------------------------------------------------------------------------------------------------- */
@@ -458,7 +455,7 @@ function loadBalances() {
 	
 		if (form[i]["bClass"]) {
 
-			if (form[i]["gr"]) {
+			//if (form[i]["gr"]) {
 
 				var bClass = form[i]["bClass"];
 
@@ -485,7 +482,7 @@ function loadBalances() {
 					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.total);
 					form[i]["currentMonthAmount"]  = Banana.SDecimal.invert(currentBal1.total);
 				}
-			}
+			//}
 		}
 	}
 }
@@ -638,15 +635,6 @@ function getPeriodSettings() {
 }
 
 
-// //This function adds a Footer to the report
-// function addFooter(report, param) {
-//    report.getFooter().addClass("footer");
-//    var versionLine = report.getFooter().addText(param.bananaVersion + ", " + param.scriptVersion + ", ", "description");
-//    //versionLine.excludeFromTest();
-//    report.getFooter().addText(param.pageCounterText + " ", "description");
-//    report.getFooter().addFieldPageNr();
-// }
-
 
 //The main purpose of this function is to create styles for the report print
 function createStylesheet() {
@@ -665,6 +653,17 @@ function createStylesheet() {
     stylesheet.addStyle(".border-top", "border-top:thin solid black");
     stylesheet.addStyle(".border-bottom", "border-bottom:thin solid black");
 
+    stylesheet.addStyle(".padding-right", "padding-right:2px");
+
+    stylesheet.addStyle(".col1", "width:%");
+	stylesheet.addStyle(".col2", "width:%");
+	stylesheet.addStyle(".col3", "width:%");
+	stylesheet.addStyle(".col4", "width:%");
+	stylesheet.addStyle(".col5", "width:%");
+	stylesheet.addStyle(".col6", "width:%");
+	stylesheet.addStyle(".col7", "width:%");
+	stylesheet.addStyle(".col8", "width:%");
+
 
 	style = stylesheet.addStyle(".valueTitle");
 	//style.setAttribute("padding-bottom", "5px"); 
@@ -682,8 +681,8 @@ function createStylesheet() {
 	style.setAttribute("border-right", "thin solid black");
 	style.setAttribute("border-bottom", "thin solid black");
 	style.setAttribute("border-top", "thin solid black");
-	style.setAttribute("padding-bottom", "2px");
-	style.setAttribute("padding-top", "5px"); 
+	//style.setAttribute("padding-bottom", "2px");
+	//style.setAttribute("padding-top", "5px"); 
 
 
 	style = stylesheet.addStyle(".valueTotal");
@@ -702,92 +701,3 @@ function createStylesheet() {
 
 	return stylesheet;
 }
-
-
-
-
-
-
-// function daysInMonth(month,year) {
-//     return new Date(year, month, 0).getDate();
-// }
-
-// //The purpose of this function is to verify two sums.
-// //Given two lists of values divided by the character ";" the function creates two totals and compares them.
-// //It is also possible to compare directly single values, instead of a list of values.
-// function checkTotals(valuesList1, valuesList2) {
-// 	//Calculate the first total
-// 	if (valuesList1) {
-// 		var total1 = 0;
-// 		var arr1 = valuesList1.split(";");
-// 		for (var i = 0; i < arr1.length; i++) {
-// 			total1 = Banana.SDecimal.add(total1, getValue(form, arr1[i], "amount"), {'decimals':param.rounding});
-// 		}
-// 	}
-	
-// 	//Calculate the second total
-// 	if (valuesList2) {
-// 		var total2 = 0;
-// 		var arr2 = valuesList2.split(";");
-// 		for (var i = 0; i < arr2.length; i++) {
-// 			total2 = Banana.SDecimal.add(total2, getValue(form, arr2[i], "amount"), {'decimals':param.rounding});
-// 		}
-// 	}
-	
-// 	//Finally, compare the two totals.
-// 	//If there are differences, a message and a dialog box warns the user
-// 	if (Banana.SDecimal.compare(total1, total2) !== 0) {
-		
-// 		//Add an information dialog.
-// 		Banana.Ui.showInformation("Warning!", "Different values: Total " + valuesList1 + " <" + Banana.Converter.toLocaleNumberFormat(total1) + 
-// 		">, Total " + valuesList2 + " <" + Banana.Converter.toLocaleNumberFormat(total2) + ">");
-		
-// 		//Add to the form an object containing a warning message that will be added at the end of the report
-// 		var warningStringMsg = "Warning! Different values: Total " + valuesList1 + " <" + Banana.Converter.toLocaleNumberFormat(total1) + 
-// 							">, Total " + valuesList2 + " <" + Banana.Converter.toLocaleNumberFormat(total2) + ">";
-		
-// 		form.push({"warningMessage" : warningStringMsg});
-// 	}
-// }
-
-
-// //The purpose of this function is to verify if the balance from Banana euquals the report total
-// function checkBalance(banDoc) {
-// 	//First, we get the total from the report, specifying the correct id total 
-// 	var totalFromReport = getValue(form, "7", "amount");
-
-// 	//Second, we get the VAT balance table from Banana using the function Banana.document.vatReport([startDate, endDate]).
-// 	//The two dates are taken directly from the structure. 
-// 	var vatReportTable = banDoc.vatReport(param.startDate, param.endDate);
-	
-// 	//Now we can read the table rows values
-// 	for (var i = 0; i < vatReportTable.rowCount; i++) {
-// 		var tRow = vatReportTable.row(i);
-// 		var group = tRow.value("Group");
-// 		var vatBalance = tRow.value("VatBalance");
-		
-// 		//Since we know that the balance is summed in group named "_tot_", we check if that value equals the total from the report
-// 		if (group === "_tot_") {
-
-// 			//In order to compare correctly the values we have to invert the sign of the result from Banana (if negative), using the Banana.SDecimal.invert() function.
-// 			if (Banana.SDecimal.sign(vatBalance) == -1) {
-// 				vatBalance = Banana.SDecimal.invert(vatBalance);
-// 			}
-
-// 			//Now we can compare the two values using the Banana.SDecimal.compare() function and return a message if they are different.
-// 			if (Banana.SDecimal.compare(totalFromReport, vatBalance) !== 0) {
-
-// 				//Add an information dialog
-// 				Banana.Ui.showInformation("Warning!", "Different values: " + 
-// 				"Total from Banana <" + Banana.Converter.toLocaleNumberFormat(vatBalance) + 
-// 				">, Total from report <" + Banana.Converter.toLocaleNumberFormat(totalFromReport) + ">");
-
-// 				//Add to the form an object containing a warning message that will be added at the end of the report
-// 				var warningStringMsg =	"Warning! Different values: " + "Total from Banana <" + Banana.Converter.toLocaleNumberFormat(vatBalance) + 
-// 										">, Total from report <" + Banana.Converter.toLocaleNumberFormat(totalFromReport) + ">";
-				
-// 				form.push({"warningMessage" : warningStringMsg});
-// 			}
-// 		}
-// 	}
-// }
