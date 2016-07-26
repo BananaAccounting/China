@@ -96,8 +96,16 @@ function exec(string) {
     //Load all the parameters
     loadParam();
     
-    //Open dialog window asking to insert a voucher number (or * for all vouchers)
-    var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"),'');
+    //Get the table transactions and check if there is a row with a voucher number selected
+    var transactions = Banana.document.table('Transactions');
+    var docSelected = transactions.row(Banana.document.cursor.rowNr).value('Doc');
+
+    if (docSelected) {
+        //Open dialog window asking to insert a voucher number (or * for all vouchers)
+        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), docSelected);
+    } else {
+        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), '');
+    }
 
     //Create the Journal table which contains all the data of the accounting
     var journal = Banana.document.journal(Banana.document.ORIGINTYPE_CURRENT, Banana.document.ACCOUNTTYPE_NORMAL);
