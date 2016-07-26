@@ -442,7 +442,7 @@ function printTransactions(table, journal, line, rowsToProcess) {
 
                 tableRow = table.addRow();  
                 tableRow.addCell(tRow.value('Description'), "text-black padding-left border-left-black border-top border-right border-bottom", 1);
-                tableRow.addCell(tRow.value('JAccount'), "text-black padding-left border-left border-top border-right border-bottom", 1);
+                tableRow.addCell(tRow.value('JAccountDescription'), "text-black padding-left border-left border-top border-right border-bottom", 1);
                 tableRow.addCell("", "text-black padding-left border-left border-top border-right-black border-bottom", 1);
                 
                 // Debit
@@ -496,30 +496,30 @@ function printTransactions(table, journal, line, rowsToProcess) {
         tableRow.addCell("", "border-left border-top border-right-black border-bottom", 1);
 
         tableRow.addCell("", "border-top border-left-black border-right-black border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right-black border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right-black border-bottom", 1);
 
         tableRow.addCell("", "border-top border-left-black border-right-black border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right-black border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right-black border-bottom", 1);
 
         tableRow.addCell("", "border-top border-left-black border-right-black border-bottom", 1);
         tableRow.addCell(" ", "text-black alignCenter border-left border-top border-right-black border-bottom", 1);
@@ -619,36 +619,66 @@ function getDigits(num, table, isTotalLine) {
 
         if (arr[arr.length - 4]) {
             a1 = arr[arr.length - 4];
+        } else {
+            a1 = "¥";
         }
             
         if (arr[arr.length - 5]) {
             a2 = arr[arr.length - 5];
+        } else {
+            if (a1 !== "¥") {
+                a2 = "¥";
+            }
         }
         
         ////
         if (arr[arr.length - 6]) {
             a3 = arr[arr.length - 6];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥") {
+                a3 = "¥";
+            }
         }
             
         if (arr[arr.length - 7]) {
             a4 = arr[arr.length - 7];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥") {
+                a4 = "¥";
+            }
         }
             
         if (arr[arr.length - 8]) {
             a5 = arr[arr.length - 8];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥") {
+                a5 = "¥";
+            }
         }
 
         ////
         if (arr[arr.length - 9]) {
             a6 = arr[arr.length - 9];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥") {
+                a6 = "¥";
+            }
         }
             
         if (arr[arr.length - 10]) {
             a7 = arr[arr.length - 10];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥" && a6 !== "¥") {
+                a7 = "¥";
+            }
         }
            
         if (arr[arr.length - 11]) {
             a8 = arr[arr.length - 11];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥" && a6 !== "¥" && a7 !== "¥") {
+                a8 = "¥";
+            }
         }
     }
 
