@@ -439,6 +439,7 @@ function printTransactions(table, journal, line, rowsToProcess) {
 
 
     /* Print transactions rows */
+    var tmpDescription;
     for (j = 0; j < rowsToProcess.length; j++) 
     {
         for (i = 0; i < journal.rowCount; i++)
@@ -447,9 +448,16 @@ function printTransactions(table, journal, line, rowsToProcess) {
             {
                 var tRow = journal.row(i);
                 var amount = Banana.SDecimal.abs(tRow.value('JAmount'));
-
-                tableRow = table.addRow();  
-                tableRow.addCell(tRow.value('Description'), "text-black padding-left border-left-black border-top border-right border-bottom", 1);
+                
+                //We check if the current description is equal to the previous (same transaction)
+                //In this case we print the description only in the first row
+                tableRow = table.addRow();
+                if (tmpDescription !== tRow.value('Description')) {
+                    tmpDescription = tRow.value('Description');
+                    tableRow.addCell(tRow.value('Description'), "text-black padding-left border-left-black border-top border-right border-bottom", 1);
+                } else {
+                    tableRow.addCell("", "text-black padding-left border-left-black border-top border-right border-bottom", 1);
+                }
                 tableRow.addCell(tRow.value('JAccountDescription'), "text-black padding-left border-left border-top border-right border-bottom", 1);
                 tableRow.addCell("", "text-black padding-left border-left border-top border-right-black border-bottom", 1);
                 
