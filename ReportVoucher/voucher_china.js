@@ -96,14 +96,20 @@ function exec(string) {
     //Load all the parameters
     loadParam();
     
-    //Get the table transactions and check if there is a row with a voucher number selected
-    var transactions = Banana.document.table('Transactions');
-    var docSelected = transactions.row(Banana.document.cursor.rowNr).value('Doc');
+    //Get the name of the current selected table
+    var currentTable = Banana.document.cursor.tableName;
 
-    if (docSelected) {
-        //Open dialog window asking to insert a voucher number (or * for all vouchers)
-        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), docSelected);
+    //If the current table is the Transactions table, we take the value of the column "Doc" of the selected row
+    if (currentTable === "Transactions") {
+        var transactions = Banana.document.table('Transactions');
+        var tDoc = transactions.row(Banana.document.cursor.rowNr).value('Doc');
+
+        //Open dialog window asking to insert a voucher number (or * for all vouchers):
+        //If transactions table is selected, we use the value of the selected row as default
+        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), tDoc);
     } else {
+        //Open dialog window asking to insert a voucher number (or * for all vouchers):
+        //If transactions table is not selected, we don't use any default value
         var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), '');
     }
 
