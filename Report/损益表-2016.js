@@ -49,7 +49,9 @@ function loadParam(banDoc, startDate, endDate) {
 		"city":banDoc.info("AccountingDataBase","City"),					//Save the city
 		"grColumn" : "Gr",													//Save the GR column (Gr1 or Gr2)
 		"rounding" : 2,														//Speficy the rounding type		
-		"formatNumber":true 												//Choose if format number or not
+		"formatNumber":true, 												//Choose if format number or not
+		"groupByFormId":true, 												//Use form id to group accounts
+		"groupByGr":false, 													//Use group accounts
 	};
 }
 
@@ -144,7 +146,7 @@ function createProfitReport(banDoc, startDate, endDate) {
 	loadForm();
 	
 	/** 2. EXTRACT THE DATA, CALCULATE AND LOAD THE BALANCES */
-	loadBalances();
+	loadBalancesFromBanana();
 	
 	/** 3. CALCULATE THE TOTALS */
 	calcFormTotals(["amount"]);
@@ -445,44 +447,72 @@ function createProfitReport(banDoc, startDate, endDate) {
 
 
 
+//Function that creates a string that contains all the accounts belonging to the same Gr1
+function getAccountsByGr1(formId) {
+
+	var strAccounts = [];
+	var tAccounts = Banana.document.table("Accounts");
+	var lenAcc = tAccounts.rowCount;
+	var lenForm = form.length;
+
+	for (var i = 0; i < lenAcc; i++) {
+		var tRow = tAccounts.row(i);
+		var tGr1 = tRow.value("Gr1");
+		if (tGr1 == formId) {
+			strAccounts.push(tRow.value("Account"));
+		}
+	}
+	return strAccounts.join("|");;
+}
 
 
 
-
-function loadBalances() {
+function loadBalancesFromBanana() {
 
 	for (var i in form) {
 	
 		if (form[i]["bClass"]) {
 
-			//if (form[i]["gr"]) {
+			var bClass = form[i]["bClass"];
+			var currentBal;
+			var currentBal1;
 
-				var bClass = form[i]["bClass"];
-
+			if (param.groupByFormId) {
+				//Sum the amounts of opening, debit, credit, total and balance for all the transactions belonging to the same Gr1	
+				//strAccounts = "1000|1001|1111"
+				var formId = form[i]["id"];
+				var strAccounts = getAccountsByGr1(formId);
+				currentBal = Banana.document.currentBalance(strAccounts, Banana.document.info("AccountingDataBase","OpeningDate"), param["endDate"]);
+				currentBal1 = Banana.document.currentBalance(strAccounts, param["startDate"], param["endDate"]);
+			}
+			else if (param.groupByGr) {
 				//Sum the amounts of opening, debit, credit, total and balance for all transactions for this accounts
 				// gr = "Gr=1113|111"
-				var currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], Banana.document.info("AccountingDataBase","OpeningDate"), param["endDate"]);
-				var currentBal1 = Banana.document.currentBalance("Gr="+form[i]["gr"], param["startDate"], param["endDate"]);
-				
-				//The "bClass" decides which value to use
-				if (bClass === "0") {
-					form[i]["amount"] = currentBal.balance;
-				}
-				else if (bClass === "1") {
-					form[i]["amount"]  = currentBal.balance;
-				}
-				else if (bClass === "2") {
-					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.balance);
-				}
-				else if (bClass === "3") {
-					form[i]["amount"]  = currentBal.total;
-					form[i]["currentMonthAmount"]  = currentBal1.total;
-				}
-				else if (bClass === "4") {
-					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.total);
-					form[i]["currentMonthAmount"]  = Banana.SDecimal.invert(currentBal1.total);
-				}
-			//}
+				currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], Banana.document.info("AccountingDataBase","OpeningDate"), param["endDate"]);
+				currentBal1 = Banana.document.currentBalance("Gr="+form[i]["gr"], param["startDate"], param["endDate"]);
+			}
+			
+			form[i]["amount"] = "";
+			form[i]["opening"] = "";
+			
+			//The "bClass" decides which value to use
+			if (bClass === "0") {
+				form[i]["amount"] = currentBal.balance;
+			}
+			else if (bClass === "1") {
+				form[i]["amount"]  = currentBal.balance;
+			}
+			else if (bClass === "2") {
+				form[i]["amount"]  = Banana.SDecimal.invert(currentBal.balance);
+			}
+			else if (bClass === "3") {
+				form[i]["amount"]  = currentBal.total;
+				form[i]["currentMonthAmount"]  = currentBal1.total;
+			}
+			else if (bClass === "4") {
+				form[i]["amount"]  = Banana.SDecimal.invert(currentBal.total);
+				form[i]["currentMonthAmount"]  = Banana.SDecimal.invert(currentBal1.total);
+			}
 		}
 	}
 }
