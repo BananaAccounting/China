@@ -48,7 +48,9 @@ function loadParam(banDoc, startDate, endDate) {
 		"pageCounterText":"",												//Save the text for the page counter
 		"grColumn" : "Gr",													//Save the GR column (Gr1 or Gr2)
 		"rounding" : 2,														//Speficy the rounding type		
-		"formatNumber":true 												//Choose if format number or not
+		"formatNumber":true, 												//Choose if format number or not
+		"groupByFormId":false, 												//Use form id to group accounts
+		"groupByGr":true, 													//Use group accounts
 	};
 }
 
@@ -631,10 +633,18 @@ function loadBalances() {
 
 				var bClass = form[i]["bClass"];
 
+				var currentBal;
+				if (param.groupByFormId) {
+				/*  far passare la tabella account  e ritornare una stringa conti "1000|1002" di tutti i conti che 
+					nel Gr1 contengono lid form (B1, B2, ..) */
+					var acccounts = "1001|1002"; 
+					currentBal = Banana.document.currentBalance(accounts, param["startDate"], param["endDate"]);
+				}
+				else if (param.groupByGr) {
 				//Sum the amounts of opening, debit, credit, total and balance for all transactions for this accounts
 				// gr = "Gr=1113|111"
-				var currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], param["startDate"], param["endDate"]);
-				
+					currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], param["startDate"], param["endDate"]);
+				}
 				form[i]["amount"] = "";
 				form[i]["opening"] = "";
 
