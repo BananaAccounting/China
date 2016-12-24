@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.addon.balancereportchina2016
+
+// @id = ch.banana.addon.china.report.balance2016
 // @api = 1.0
-// @pubdate = 2016-04-04
+// @pubdate = 2016-10-16
 // @publisher = Banana.ch SA
-// @description = 资产负债表 2016
+// @description = 资产负债表 (Balance 2016)
 // @task = app.command
 // @doctype = 100.*
 // @docproperties = china
@@ -30,7 +31,8 @@
 //Global variables
 var form = [];
 var param = {};
-
+/* the profit and loss Gr1 in Chinese */
+var GR = {};
 
 
 function loadParam(banDoc, startDate, endDate) {
@@ -48,7 +50,9 @@ function loadParam(banDoc, startDate, endDate) {
 		"pageCounterText":"",												//Save the text for the page counter
 		"grColumn" : "Gr",													//Save the GR column (Gr1 or Gr2)
 		"rounding" : 2,														//Speficy the rounding type		
-		"formatNumber":true 												//Choose if format number or not
+		"formatNumber":true, 												//Choose if format number or not
+		"groupByFormId":true, 												//Use form id to group accounts
+		"groupByGr":false, 													//Use group accounts
 	};
 }
 
@@ -58,63 +62,79 @@ function loadForm() {
 	/*
 		BALANCE
 	*/
-
+	GR = {};
+	for (i = 1; i < 54; i++) {
+		GR[i] = "资产负债表" + i;
+		}
 	//Assets
-	form.push({"id":"B1", "gr":"100", "bClass":"1", "description":"货币资金"});
-	form.push({"id":"B2", "gr":"1101", "bClass":"1", "description":"短期投资"});
-	form.push({"id":"B3", "gr":"1201", "bClass":"1", "description":"应收票据"});
-	form.push({"id":"B4", "gr":"1202", "bClass":"1", "description":"应收账款"});
-	form.push({"id":"B5", "gr":"1203", "bClass":"1", "description":"预付账款"});
-	form.push({"id":"B6", "gr":"1131", "bClass":"1", "description":"应收股利"});
-	form.push({"id":"B7", "gr":"1221", "bClass":"1", "description":"应收利息"});
-	form.push({"id":"B8", "gr":"1231", "bClass":"1", "description":"其他应收款"});
-	form.push({"id":"B9", "gr":"130", "bClass":"1", "description":"存货"});
-	form.push({"id":"B10", "gr":"1302", "bClass":"1", "description":"其中:原材料"});
-	form.push({"id":"B11", "gr":"1301", "bClass":"1", "description":"在产品"});
-	form.push({"id":"B12", "gr":"1303", "bClass":"1", "description":"库存商品"});
-	form.push({"id":"B13", "gr":"1431", "bClass":"1", "description":"周转材料"});
-	form.push({"id":"B14", "gr":"", "bClass":"1", "description":"其他流动资产"});
-	form.push({"id":"B15", "description":"流动资产合计", "sum":"B1;B2;B3;B4;B5;B6;B7;B8;B9;B10;B11;B12;B13;B14"});
-	form.push({"id":"B16", "gr":"140", "bClass":"1", "description":"长期债券投资"});
-	form.push({"id":"B17", "gr":"141", "bClass":"1", "description":"长期股权投资"});
-	form.push({"id":"B18", "gr":"1501", "bClass":"1", "description":"固定资产原价"});
-	form.push({"id":"B19", "gr":"1502", "bClass":"1", "description":"减:累计折旧"});
-	form.push({"id":"B20", "description":"固定资产账面价值", "sum":"B18;-B19"});
-	form.push({"id":"B21", "gr":"1503", "bClass":"1", "description":"在建工程"});
-	form.push({"id":"B22", "gr":"1605", "bClass":"1", "description":"工程物资"});
-	form.push({"id":"B23", "gr":"1504", "bClass":"1", "description":"固定资产清理"});
-	form.push({"id":"B24", "gr":"1511", "bClass":"1", "description":"生物性生物资产"});
-	form.push({"id":"B25", "gr":"160", "bClass":"1", "description":"无形资产"});
-	form.push({"id":"B26", "gr":"", "bClass":"1", "description":"开发支出"});
-	form.push({"id":"B27", "gr":"170", "bClass":"1", "description":"长期待摊费用"});
-	form.push({"id":"B28", "gr":"", "bClass":"1", "description":"其他非流动资产"});
-	form.push({"id":"B29", "description":"非流动资产合计", "sum":"B20;B21;B22;B23;B24;B25;B26;B27;B28"});
-	form.push({"id":"B30", "description":"资产合计", "sum":"B15;B29"});
+	form.push({"id":GR[1], "gr":"100", "bClass":"1", "description":"货币资金"});
+	form.push({"id":GR[2], "gr":"1101", "bClass":"1", "description":"短期投资"});
+	form.push({"id":GR[3], "gr":"1201", "bClass":"1", "description":"应收票据"});
+	form.push({"id":GR[4], "gr":"1202", "bClass":"1", "description":"应收账款"});
+	form.push({"id":GR[5], "gr":"1203", "bClass":"1", "description":"预付账款"});
+	form.push({"id":GR[6], "gr":"1131", "bClass":"1", "description":"应收股利"});
+	form.push({"id":GR[7], "gr":"1221", "bClass":"1", "description":"应收利息"});
+	form.push({"id":GR[8], "gr":"1231", "bClass":"1", "description":"其他应收款"});
+	form.push({"id":GR[9], "gr":"130", "bClass":"1", "description":"存货"});
+	form.push({"id":GR[10], "gr":"1302", "bClass":"1", "description":"其中:原材料"});
+	form.push({"id":GR[11], "gr":"1301", "bClass":"1", "description":"在产品"});
+	form.push({"id":GR[12], "gr":"1303", "bClass":"1", "description":"库存商品"});
+	form.push({"id":GR[13], "gr":"1431", "bClass":"1", "description":"周转材料"});
+	form.push({"id":GR[14], "gr":"", "bClass":"1", "description":"其他流动资产"});
+	sum = GR[1] + ";" + GR[2] + ";" + GR[3] + ";" + GR[4] + ";" + GR[5] + ";" + GR[6] + ";";  
+	sum += GR[7] + ";" + GR[8] + ";" + GR[9] + ";" + GR[10] + ";" + GR[11] + ";" + GR[12] + ";";  
+	sum += GR[13] + ";" + GR[14];  
+	form.push({"id":GR[15], "description":"流动资产合计", "sum": sum });
+	form.push({"id":GR[16], "gr":"140", "bClass":"1", "description":"长期债券投资"});
+	form.push({"id":GR[17], "gr":"141", "bClass":"1", "description":"长期股权投资"});
+	form.push({"id":GR[18], "gr":"1501", "bClass":"1", "description":"固定资产原价"});
+	form.push({"id":GR[19], "gr":"1502", "bClass":"1", "description":"减:累计折旧"});
+	sum = GR[18] + ";-" + GR[19];  
+	form.push({"id":GR[20], "description":"固定资产账面价值", "sum":sum});
+	form.push({"id":GR[21], "gr":"1503", "bClass":"1", "description":"在建工程"});
+	form.push({"id":GR[22], "gr":"1605", "bClass":"1", "description":"工程物资"});
+	form.push({"id":GR[23], "gr":"1504", "bClass":"1", "description":"固定资产清理"});
+	form.push({"id":GR[24], "gr":"1511", "bClass":"1", "description":"生物性生物资产"});
+	form.push({"id":GR[25], "gr":"160", "bClass":"1", "description":"无形资产"});
+	form.push({"id":GR[26], "gr":"", "bClass":"1", "description":"开发支出"});
+	form.push({"id":GR[27], "gr":"170", "bClass":"1", "description":"长期待摊费用"});
+	form.push({"id":GR[28], "gr":"", "bClass":"1", "description":"其他非流动资产"});
+	sum = GR[20] + ";" + GR[21] + ";" + GR[22] + ";" + GR[23] + ";" + GR[24] + ";" + GR[25] + ";";  
+	sum += GR[26] + ";" + GR[27] + ";" + GR[28];  
+	form.push({"id":GR[29], "description":"非流动资产合计", "sum": sum});
+	sum = GR[15] + ";" + GR[29];  
+	form.push({"id":GR[30], "description":"资产合计", "sum":sum});
 
 	// Liabilities
-	form.push({"id":"B31", "gr":"200", "bClass":"2", "description":"短期借款"});
-	form.push({"id":"B32", "gr":"", "bClass":"2", "description":"应付票据"});
-	form.push({"id":"B33", "gr":"210", "bClass":"2", "description":"应付账款"});
-	form.push({"id":"B34", "gr":"211", "bClass":"2", "description":"预收账款"});
-	form.push({"id":"B35", "gr":"220", "bClass":"2", "description":"应付职工薪酬"});
-	form.push({"id":"B36", "gr":"230", "bClass":"2", "description":"应交税费"});
-	form.push({"id":"B37", "gr":"240", "bClass":"2", "description":"应付利息"});
-	form.push({"id":"B38", "gr":"250", "bClass":"2", "description":"应付利润"});
-	form.push({"id":"B39", "gr":"260", "bClass":"2", "description":"其他应付款"});
-	form.push({"id":"B40", "gr":"", "bClass":"2", "description":"其他流动负债"});
-	form.push({"id":"B41", "description":"流动负债合计", "sum":"B31;B32;B33;B34;B35;B36;B37;B38;B39;B40"});
-	form.push({"id":"B42", "gr":"270", "bClass":"2", "description":"长期借款"});
-	form.push({"id":"B43", "gr":"", "bClass":"2", "description":"长期应付款"});
-	form.push({"id":"B44", "gr":"280", "bClass":"2", "description":"递延收益"});
-	form.push({"id":"B45", "gr":"", "bClass":"2", "description":"其他非流动负债"});
-	form.push({"id":"B46", "description":"非流动负债合计", "sum":"B42;B43;B44;B45"});
-	form.push({"id":"B47", "description":"负债合计", "sum":"B41;B46"});
-	form.push({"id":"B48", "gr":"400", "bClass":"2", "description":"实收资本(或股本)"});
-	form.push({"id":"B49", "gr":"401", "bClass":"2", "description":"资本公积"});
-	form.push({"id":"B50", "gr":"410", "bClass":"2", "description":"盈余公积"});
-	form.push({"id":"B51", "gr":"410401", "bClass":"2", "description":"未分配利润"});
-	form.push({"id":"B52", "description":"所有者权益(或股东权益)合计", "sum":"B48;B49;B50;B51"});
-	form.push({"id":"B53", "description":"负债和所有者权益(或股东权益)总计", "sum":"B47;B52"});
+	form.push({"id":GR[31], "gr":"200", "bClass":"2", "description":"短期借款"});
+	form.push({"id":GR[32], "gr":"", "bClass":"2", "description":"应付票据"});
+	form.push({"id":GR[33], "gr":"210", "bClass":"2", "description":"应付账款"});
+	form.push({"id":GR[34], "gr":"211", "bClass":"2", "description":"预收账款"});
+	form.push({"id":GR[35], "gr":"220", "bClass":"2", "description":"应付职工薪酬"});
+	form.push({"id":GR[36], "gr":"230", "bClass":"2", "description":"应交税费"});
+	form.push({"id":GR[37], "gr":"240", "bClass":"2", "description":"应付利息"});
+	form.push({"id":GR[38], "gr":"250", "bClass":"2", "description":"应付利润"});
+	form.push({"id":GR[39], "gr":"260", "bClass":"2", "description":"其他应付款"});
+	form.push({"id":GR[40], "gr":"", "bClass":"2", "description":"其他流动负债"});
+	sum = GR[31] + ";" + GR[32] + ";" + GR[33] + ";" + GR[34] + ";" + GR[35] + ";" + GR[36] + ";";  
+	sum += GR[37] + ";" + GR[38] + ";" + GR[39] + ";" + GR[40];  
+	form.push({"id":GR[41], "description":"流动负债合计", "sum":sum});
+	form.push({"id":GR[42], "gr":"270", "bClass":"2", "description":"长期借款"});
+	form.push({"id":GR[43], "gr":"", "bClass":"2", "description":"长期应付款"});
+	form.push({"id":GR[44], "gr":"280", "bClass":"2", "description":"递延收益"});
+	form.push({"id":GR[45], "gr":"", "bClass":"2", "description":"其他非流动负债"});
+	sum = GR[42] + ";" + GR[43] + ";" + GR[44] + ";" + GR[45];  
+	form.push({"id":GR[46], "description":"非流动负债合计", "sum": sum});
+	sum = GR[41] + ";" + GR[46];  
+	form.push({"id":GR[47], "description":"负债合计", "sum": sum});
+	form.push({"id":GR[48], "gr":"400", "bClass":"2", "description":"实收资本(或股本)"});
+	form.push({"id":GR[49], "gr":"401", "bClass":"2", "description":"资本公积"});
+	form.push({"id":GR[50], "gr":"410", "bClass":"2", "description":"盈余公积"});
+	form.push({"id":GR[51], "gr":"410401", "bClass":"2", "description":"未分配利润"});
+	sum = GR[48] + ";" + GR[49] + ";" + GR[50] + ";" + GR[51];  
+	form.push({"id":GR[52], "description":"所有者权益(或股东权益)合计", "sum": sum});
+	sum = GR[47] + ";" + GR[52];  
+	form.push({"id":GR[53], "description":"负债和所有者权益(或股东权益)总计", "sum": sum});
 
 }
 
@@ -164,7 +184,7 @@ function createBalanceReport(banDoc, startDate, endDate, report) {
 	loadForm();
 	
 	/** 2. EXTRACT THE DATA, CALCULATE AND LOAD THE BALANCES */
-	loadBalances()
+	loadBalancesFromBanana()
 	
 	/** 3. CALCULATE THE TOTALS */
 	calcFormTotals(["amount"]);
@@ -243,376 +263,376 @@ function createBalanceReport(banDoc, startDate, endDate, report) {
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B1", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B1", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B1", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B1", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[1], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[1], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[1], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[1], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B31", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B31", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B31", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B31", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[31], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[31], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[31], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[31], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B2", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B2", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B2", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B2", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[2], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[2], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[2], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[2], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B32", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B32", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B32", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B32", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[32], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[32], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[32], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[32], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B3", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B3", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B3", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B3", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[3], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[3], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[3], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[3], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B33", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B33", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B33", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B33", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[33], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[33], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[33], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[33], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B4", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B4", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B4", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B4", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[4], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[4], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[4], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[4], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B34", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B34", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B34", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B34", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[34], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[34], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[34], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[34], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B5", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B5", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B5", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B5", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[5], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[5], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[5], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[5], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B35", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B35", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B35", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B35", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[35], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[35], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[35], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[35], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B6", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B6", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B6", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B6", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[6], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[6], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[6], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[6], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B36", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B36", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B36", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B36", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[36], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[36], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[36], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[36], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B7", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B7", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B7", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B7", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[7], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[7], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[7], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[7], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B37", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B37", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B37", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B37", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[37], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[37], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[37], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[37], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B8", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B8", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B8", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B8", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[8], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[8], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[8], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[8], "amount"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B38", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B38", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B38", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B38", "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[38], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[38], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[38], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[38], "amount"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B9", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B9", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B9", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B9", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[9], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[9], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[9], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[9], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B39", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B39", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B39", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B39", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[39], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[39], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[39], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[39], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B10", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B10", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B10", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B10", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[10], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[10], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[10], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[10], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B40", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B40", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B40", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B40", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[40], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[40], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[40], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[40], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B11", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B11", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B11", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B11", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[11], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[11], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[11], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[11], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B41", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B41", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B41", "amount"), "borders right  padding-right valueTotal", 1);
-	tableRow.addCell(getValue(form, "B41", "opening"), "borders right  padding-right valueTotal", 1);
+	tableRow.addCell(getValue(form, GR[41], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[41], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[41], "amount"), "borders right  padding-right valueTotal", 1);
+	tableRow.addCell(getValue(form, GR[41], "opening"), "borders right  padding-right valueTotal", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B12", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B12", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B12", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B12", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[12], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[12], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[12], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[12], "opening"), "borders right padding-right", 1);
 	
 	tableRow.addCell("非流动负债:", "borders", 4);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B13", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B13", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B13", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B13", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[13], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[13], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[13], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[13], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B42", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B42", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B42", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B42", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[42], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[42], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[42], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[42], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B14", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B14", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B14", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B14", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[14], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[14], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[14], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[14], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B43", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B43", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B43", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B43", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[43], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[43], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[43], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[43], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B15", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B15", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B15", "amount"), "borders right  padding-right valueTotal", 1);
-	tableRow.addCell(getValue(form, "B15", "opening"), "borders right  padding-right valueTotal", 1);
+	tableRow.addCell(getValue(form, GR[15], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[15], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[15], "amount"), "borders right  padding-right valueTotal", 1);
+	tableRow.addCell(getValue(form, GR[15], "opening"), "borders right  padding-right valueTotal", 1);
 	
-	tableRow.addCell(getValue(form, "B44", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B44", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B44", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B44", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[44], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[44], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[44], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[44], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
 	tableRow.addCell("非流动资产:", "borders", 4);
 	
-	tableRow.addCell(getValue(form, "B45", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B45", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B45", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B45", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[45], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[45], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[45], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[45], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B16", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B16", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B16", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B16", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[16], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[16], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[16], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[16], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B46", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B46", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B46", "amount"), "borders right padding-right valueTotal", 1);
-	tableRow.addCell(getValue(form, "B46", "opening"), "borders right padding-right valueTotal", 1);
+	tableRow.addCell(getValue(form, GR[46], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[46], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[46], "amount"), "borders right padding-right valueTotal", 1);
+	tableRow.addCell(getValue(form, GR[46], "opening"), "borders right padding-right valueTotal", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B17", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B17", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B17", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B17", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[17], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[17], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[17], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[17], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B47", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B47", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B47", "amount"), "borders right  padding-right valueTotal", 1);
-	tableRow.addCell(getValue(form, "B47", "opening"), "borders right  padding-right valueTotal", 1);
+	tableRow.addCell(getValue(form, GR[47], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[47], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[47], "amount"), "borders right  padding-right valueTotal", 1);
+	tableRow.addCell(getValue(form, GR[47], "opening"), "borders right  padding-right valueTotal", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B18", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B18", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B18", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B18", "opening"), "borders right padding-right", 1);
-	
-	tableRow.addCell("", "borders", 4);
-
-
-	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B19", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B19", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B19", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B19", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[18], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[18], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[18], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[18], "opening"), "borders right padding-right", 1);
 	
 	tableRow.addCell("", "borders", 4);
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B20", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B20", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B20", "amount"), "borders right valueTotal padding-right", 1);
-	tableRow.addCell(getValue(form, "B20", "opening"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[19], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[19], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[19], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[19], "opening"), "borders right padding-right", 1);
 	
 	tableRow.addCell("", "borders", 4);
 
 
-
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B21", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B21", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B21", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B21", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[20], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[20], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[20], "amount"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[20], "opening"), "borders right valueTotal padding-right", 1);
 	
 	tableRow.addCell("", "borders", 4);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B22", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B22", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B22", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B22", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[21], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[21], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[21], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[21], "opening"), "borders right padding-right", 1);
 	
 	tableRow.addCell("", "borders", 4);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B23", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B23", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B23", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B23", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[22], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[22], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[22], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[22], "opening"), "borders right padding-right", 1);
 	
 	tableRow.addCell("", "borders", 4);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B24", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B24", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B24", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B24", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[23], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[23], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[23], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[23], "opening"), "borders right padding-right", 1);
+	
+	tableRow.addCell("", "borders", 4);
+
+
+
+	tableRow = table.addRow();
+	tableRow.addCell(getValue(form, GR[24], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[24], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[24], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[24], "opening"), "borders right padding-right", 1);
 	
 	tableRow.addCell("所有者权益(或股东权益):", "borders", 4);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B25", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B25", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B25", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B25", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[25], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[25], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[25], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[25], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B48", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B48", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B48", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B48", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[48], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[48], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[48], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[48], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B26", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B26", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B26", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B26", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[26], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[26], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[26], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[26], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B49", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B49", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B49", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B49", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[49], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[49], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[49], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[49], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B27", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B27", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B27", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B27", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[27], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[27], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[27], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[27], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B50", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B50", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B50", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B50", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[50], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[50], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[50], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[50], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B28", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B28", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B28", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B28", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[28], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[28], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[28], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[28], "opening"), "borders right padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B51", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B51", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B51", "amount"), "borders right padding-right", 1);
-	tableRow.addCell(getValue(form, "B51", "opening"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[51], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[51], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[51], "amount"), "borders right padding-right", 1);
+	tableRow.addCell(getValue(form, GR[51], "opening"), "borders right padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B29", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B29", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B29", "amount"), "borders right valueTotal padding-right", 1);
-	tableRow.addCell(getValue(form, "B29", "opening"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[29], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[29], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[29], "amount"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[29], "opening"), "borders right valueTotal padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B52", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B52", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B52", "amount"), "borders right valueTotal padding-right", 1);
-	tableRow.addCell(getValue(form, "B52", "opening"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[52], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[52], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[52], "amount"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[52], "opening"), "borders right valueTotal padding-right", 1);
 
 
 
 	tableRow = table.addRow();
-	tableRow.addCell(getValue(form, "B30", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B30", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B30", "amount"), "borders right valueTotal padding-right", 1);
-	tableRow.addCell(getValue(form, "B30", "opening"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[30], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[30], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[30], "amount"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[30], "opening"), "borders right valueTotal padding-right", 1);
 	
-	tableRow.addCell(getValue(form, "B53", "description"), "borders padding-left", 1);
-	tableRow.addCell(getValue(form, "B53", "id").replace("B", ""), "borders", 1);
-	tableRow.addCell(getValue(form, "B53", "amount"), "borders right valueTotal padding-right", 1);
-	tableRow.addCell(getValue(form, "B53", "opening"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[53], "description"), "borders padding-left", 1);
+	tableRow.addCell(getValue(form, GR[53], "id").replace("B", ""), "borders", 1);
+	tableRow.addCell(getValue(form, GR[53], "amount"), "borders right valueTotal padding-right", 1);
+	tableRow.addCell(getValue(form, GR[53], "opening"), "borders right valueTotal padding-right", 1);
 
 	return report;
 	/** END PRINT ... */
@@ -620,43 +640,69 @@ function createBalanceReport(banDoc, startDate, endDate, report) {
 }
 
 
+//Function that creates a string that contains all the accounts belonging to the same Gr1
+function getAccountsByGr1(formId) {
 
-function loadBalances() {
+	var strAccounts = [];
+	var tAccounts = Banana.document.table("Accounts");
+	var lenAcc = tAccounts.rowCount;
+	var lenForm = form.length;
+
+	for (var i = 0; i < lenAcc; i++) {
+		var tRow = tAccounts.row(i);
+		var tGr1 = tRow.value("Gr1");
+		if (tGr1 == formId) {
+			strAccounts.push(tRow.value("Account"));
+		}
+	}
+	return strAccounts.join("|");;
+}
+
+
+
+function loadBalancesFromBanana() {
 
 	for (var i in form) {
 	
 		if (form[i]["bClass"]) {
 
-			//if (form[i]["gr"]) {
+			var bClass = form[i]["bClass"];
+			var currentBal;
 
-				var bClass = form[i]["bClass"];
-
+			if (param.groupByFormId) {
+				//Sum the amounts of opening, debit, credit, total and balance for all the transactions belonging to the same Gr1	
+				//strAccounts = "1000|1001|1111"
+				var formId = form[i]["id"];
+				var strAccounts = getAccountsByGr1(formId);
+				currentBal = Banana.document.currentBalance(strAccounts, param["startDate"], param["endDate"]);
+			}
+			else if (param.groupByGr) {
 				//Sum the amounts of opening, debit, credit, total and balance for all transactions for this accounts
-				// gr = "Gr=1113|111"
-				var currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], param["startDate"], param["endDate"]);
-				
-				form[i]["amount"] = "";
-				form[i]["opening"] = "";
+				//gr = "Gr=1113|111"
+				currentBal = Banana.document.currentBalance("Gr="+form[i]["gr"], param["startDate"], param["endDate"]);
+			}
 
-				//The "bClass" decides which value to use
-				if (bClass === "0") {
-					form[i]["amount"] = currentBal.balance;
-				}
-				else if (bClass === "1") {
-					form[i]["amount"]  = currentBal.balance;
-					form[i]["opening"]  = currentBal.opening;
-				}
-				else if (bClass === "2") {
-					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.balance);
-					form[i]["opening"]  = Banana.SDecimal.invert(currentBal.opening);
-				}
-				else if (bClass === "3") {
-					form[i]["amount"]  = currentBal.total;
-				}
-				else if (bClass === "4") {
-					form[i]["amount"]  = Banana.SDecimal.invert(currentBal.total);
-				}
-			//}
+			form[i]["amount"] = "";
+			form[i]["opening"] = "";
+
+			//The "bClass" decides which value to use
+			if (bClass === "0") {
+				form[i]["amount"] = currentBal.balance;
+			}
+			else if (bClass === "1") {
+				form[i]["amount"]  = currentBal.balance;
+				form[i]["opening"]  = currentBal.opening;
+			}
+			else if (bClass === "2") {
+				form[i]["amount"]  = Banana.SDecimal.invert(currentBal.balance);
+				form[i]["opening"]  = Banana.SDecimal.invert(currentBal.opening);
+			}
+			else if (bClass === "3") {
+				form[i]["amount"]  = currentBal.total;
+			}
+			else if (bClass === "4") {
+				form[i]["amount"]  = Banana.SDecimal.invert(currentBal.total);
+			}
 		}
 	}
 }

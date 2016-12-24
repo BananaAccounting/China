@@ -96,8 +96,22 @@ function exec(string) {
     //Load all the parameters
     loadParam();
     
-    //Open dialog window asking to insert a voucher number (or * for all vouchers)
-    var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"),'');
+    //Get the name of the current selected table
+    var currentTable = Banana.document.cursor.tableName;
+
+    //If the current table is the Transactions table, we take the value of the column "Doc" of the selected row
+    if (currentTable === "Transactions") {
+        var transactions = Banana.document.table('Transactions');
+        var tDoc = transactions.row(Banana.document.cursor.rowNr).value('Doc');
+
+        //Open dialog window asking to insert a voucher number (or * for all vouchers):
+        //If transactions table is selected, we use the value of the selected row as default
+        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), tDoc);
+    } else {
+        //Open dialog window asking to insert a voucher number (or * for all vouchers):
+        //If transactions table is not selected, we don't use any default value
+        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), '');
+    }
 
     //Create the Journal table which contains all the data of the accounting
     var journal = Banana.document.journal(Banana.document.ORIGINTYPE_CURRENT, Banana.document.ACCOUNTTYPE_NORMAL);
@@ -431,6 +445,7 @@ function printTransactions(table, journal, line, rowsToProcess) {
 
 
     /* Print transactions rows */
+    var tmpDescription;
     for (j = 0; j < rowsToProcess.length; j++) 
     {
         for (i = 0; i < journal.rowCount; i++)
@@ -439,10 +454,17 @@ function printTransactions(table, journal, line, rowsToProcess) {
             {
                 var tRow = journal.row(i);
                 var amount = Banana.SDecimal.abs(tRow.value('JAmount'));
-
-                tableRow = table.addRow();  
-                tableRow.addCell(tRow.value('Description'), "text-black padding-left border-left-black border-top border-right border-bottom", 1);
-                tableRow.addCell(tRow.value('JAccount'), "text-black padding-left border-left border-top border-right border-bottom", 1);
+                
+                //We check if the current description is equal to the previous (same transaction)
+                //In this case we print the description only in the first row
+                tableRow = table.addRow();
+                if (tmpDescription !== tRow.value('Description')) {
+                    tmpDescription = tRow.value('Description');
+                    tableRow.addCell(tRow.value('Description'), "text-black padding-left border-left-black border-top border-right border-bottom", 1);
+                } else {
+                    tableRow.addCell("", "text-black padding-left border-left-black border-top border-right border-bottom", 1);
+                }
+                tableRow.addCell(tRow.value('JAccountDescription'), "text-black padding-left border-left border-top border-right border-bottom", 1);
                 tableRow.addCell("", "text-black padding-left border-left border-top border-right-black border-bottom", 1);
                 
                 // Debit
@@ -496,30 +518,30 @@ function printTransactions(table, journal, line, rowsToProcess) {
         tableRow.addCell("", "border-left border-top border-right-black border-bottom", 1);
 
         tableRow.addCell("", "border-top border-left-black border-right-black border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right-black border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right-black border-bottom", 1);
 
         tableRow.addCell("", "border-top border-left-black border-right-black border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
-        tableRow.addCell("", "text-black padding-right border-left border-top border-right-black border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left-1px border-top border-right border-bottom", 1);
+        tableRow.addCell("*", "text-black padding-right border-left border-top border-right-black border-bottom", 1);
 
         tableRow.addCell("", "border-top border-left-black border-right-black border-bottom", 1);
         tableRow.addCell(" ", "text-black alignCenter border-left border-top border-right-black border-bottom", 1);
@@ -619,36 +641,66 @@ function getDigits(num, table, isTotalLine) {
 
         if (arr[arr.length - 4]) {
             a1 = arr[arr.length - 4];
+        } else {
+            a1 = "¥";
         }
             
         if (arr[arr.length - 5]) {
             a2 = arr[arr.length - 5];
+        } else {
+            if (a1 !== "¥") {
+                a2 = "¥";
+            }
         }
         
         ////
         if (arr[arr.length - 6]) {
             a3 = arr[arr.length - 6];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥") {
+                a3 = "¥";
+            }
         }
             
         if (arr[arr.length - 7]) {
             a4 = arr[arr.length - 7];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥") {
+                a4 = "¥";
+            }
         }
             
         if (arr[arr.length - 8]) {
             a5 = arr[arr.length - 8];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥") {
+                a5 = "¥";
+            }
         }
 
         ////
         if (arr[arr.length - 9]) {
             a6 = arr[arr.length - 9];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥") {
+                a6 = "¥";
+            }
         }
             
         if (arr[arr.length - 10]) {
             a7 = arr[arr.length - 10];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥" && a6 !== "¥") {
+                a7 = "¥";
+            }
         }
            
         if (arr[arr.length - 11]) {
             a8 = arr[arr.length - 11];
+        } else {
+            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥" && a6 !== "¥" && a7 !== "¥") {
+                a8 = "¥";
+            }
         }
     }
 
