@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
-// @id = ch.banana.addon.china.report.balance2016
+// @id = ch.banana.addon.china.report.balance2017
 // @api = 1.0
-// @pubdate = 2016-10-16
+// @pubdate = 2017-04-24
 // @publisher = Banana.ch SA
-// @description = 资产负债表 (Balance 2016)
+// @description.cn = 资产负债表
+// @description.en = Balance 2017
 // @task = app.command
-// @doctype = 100.*
+// @doctype = 100.*;110.*;130.*
 // @docproperties = china
 // @outputformat = none
 // @inputdataform = none
@@ -37,7 +37,7 @@ var GR = {};
 
 function loadParam(banDoc, startDate, endDate) {
 	param = {
-		"reportName":"China - Balance Report 2016",							//Save the report's name
+		"reportName":"China - Balance Report 2017",							//Save the report's name
 		"startDate":startDate,												//Save the startDate that will be used to specify the accounting period starting date
 		"endDate":endDate, 													//Save the endDate that will be used to specify the accounting period ending date		
 		"taxpayerNumber":banDoc.info("AccountingDataBase","FiscalNumber"),

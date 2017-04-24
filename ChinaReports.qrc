@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+     <file>balance_report_2017.js</file>
+     <file>profit_and_loss_report_2017.js</file>
+     <file>voucher_china.js</file>
+     <file>voucher_china_multicurrency.js</file>
+ </qresource>
+ </RCC>

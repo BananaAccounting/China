@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.addon.记账凭证
+// @id = ch.banana.addon.voucherchina
 // @api = 1.0
-// @pubdate = 2016-05-10
+// @pubdate = 2017-04-24
 // @publisher = Banana.ch SA
-// @description = 记账凭证
+// @description.en = Voucher
 // @description.cn = 记账凭证
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
-// @docproperties = 
+// @docproperties = china
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
