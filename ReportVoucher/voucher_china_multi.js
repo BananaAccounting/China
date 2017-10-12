@@ -17,7 +17,7 @@
 // @pubdate = 2016-04-022
 // @publisher = Banana.ch SA
 // @description = 记账凭证 (multi)
-// @description.cn = 记账凭证 (multi)
+// @description.zh = 记账凭证 (multi)
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
 // @docproperties = 

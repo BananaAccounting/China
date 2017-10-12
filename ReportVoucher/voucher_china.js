@@ -17,7 +17,7 @@
 // @pubdate = 2017-04-24
 // @publisher = Banana.ch SA
 // @description.en = Voucher
-// @description.cn = 记账凭证
+// @description.zh = 记账凭证
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
 // @docproperties = china

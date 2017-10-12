@@ -17,7 +17,7 @@
 // @pubdate = 2017-04-24
 // @publisher = Banana.ch SA
 // @description.en = Voucher multicurrency
-// @description.cn = 簿记凭证多货币
+// @description.zh = 簿记凭证多货币
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
 // @docproperties = china

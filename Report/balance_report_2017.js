@@ -16,7 +16,7 @@
 // @api = 1.0
 // @pubdate = 2017-04-24
 // @publisher = Banana.ch SA
-// @description.cn = 资产负债表
+// @description.zh = 资产负债表
 // @description.en = Balance 2017
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
@@ -48,7 +48,7 @@ function loadParam(banDoc, startDate, endDate) {
 		"zip":banDoc.info("AccountingDataBase","Zip"), 						//Save the zip code
 		"city":banDoc.info("AccountingDataBase","City"),					//Save the city
 		"pageCounterText":"",												//Save the text for the page counter
-		"grColumn" : "Gr",													//Save the GR column (Gr1 or Gr2)
+		"grColumn" : "Gr1",													//Save the GR column (Gr1 or Gr2)
 		"rounding" : 2,														//Speficy the rounding type		
 		"formatNumber":true, 												//Choose if format number or not
 		"groupByFormId":true, 												//Use form id to group accounts

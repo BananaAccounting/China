@@ -16,7 +16,7 @@
 // @api = 1.0
 // @pubdate = 2017-04-24
 // @publisher = Banana.ch SA
-// @description.cn = 损益表
+// @description.zh = 损益表
 // @description.en = Profit and Loss 2017
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
