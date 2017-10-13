@@ -24,7 +24,7 @@
 // @inputdatasource = openfiledialog
 // @timeout = -1
 // @inputfilefilter = Text files (*.txt *.csv);;All files (*.*)
-// @inputencoding=GB18030-0
+// @inputencoding=GBK
 
 
 //Main function
@@ -35,10 +35,11 @@ function exec(inData) {
 
 	//2. we can eventually process the input text
 	inData = preProcessInData(inData);
+//Banana.Ui.showText(JSON.stringify(inData));
 
 	//3. intermediaryData is an array of objects where the property is the banana column name
    var intermediaryData = convertToIntermediaryData(inData, convertionParam);
-
+	//Banana.Ui.showText(JSON.stringify(intermediaryData));
 	//4. translate categories and Description 
 	// can define as much postProcessIntermediaryData function as needed
 	postProcessIntermediaryData(intermediaryData);
@@ -47,14 +48,14 @@ function exec(inData) {
    intermediaryData = sortData(intermediaryData, convertionParam);
 
    //TO DEBUG SHOW THE INTERMEDIARY TEXT
-   Banana.Ui.showText(intermediaryData);
+//Banana.Ui.showText(JSON.stringify(intermediaryData));
    
    //6. convert to banana format
 	//column that start with "_" are not converted
 	var text =  convertToBananaFormat(intermediaryData);	
 	
    //TO DEBUG SHOW THE INTERMEDIARY TEXT
-   Banana.Ui.showText(text);
+   //Banana.Ui.showText(text);
 	
    return text;
 }
@@ -111,7 +112,7 @@ function defineConversionParam() {
 		/* use the Banana.Converter.toInternalNumberFormat to convert to the appropriate number format 
 		*  we already have negative amounts in Betrag and don't need the to fill the column Expenses*/
 		convertedRow["Income"] = Banana.Converter.toInternalNumberFormat(inputRow["贷方"], ".");
-		convertedRow["Expenses"] = inputRow["借方","."];
+		convertedRow["Expenses"] = Banana.Converter.toInternalNumberFormat(inputRow["借方"], ".");
 		//convertedRow["VatCode"] = inputRow["MWST Code"];
 		//convertedRow["ContraAccount"] = inputRow["Kategorie"];
 		//convertedRow["Account"] = inputRow["Art"];

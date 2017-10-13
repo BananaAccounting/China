@@ -37,8 +37,8 @@ function exec(inData) {
 	inData = preProcessInData(inData);
 
 	//3. intermediaryData is an array of objects where the property is the banana column name
-   var intermediaryData = convertToIntermediaryData(inData, convertionParam);
-	Banana.Ui.showText(intermediaryData);
+	var intermediaryData = convertToIntermediaryData(inData, convertionParam);
+	Banana.Ui.showText(JSON.stringify(intermediaryData));
 	//4. translate categories and Description 
 	// can define as much postProcessIntermediaryData function as needed
 	postProcessIntermediaryData(intermediaryData);
@@ -47,7 +47,7 @@ function exec(inData) {
    intermediaryData = sortData(intermediaryData, convertionParam);
 
    //TO DEBUG SHOW THE INTERMEDIARY TEXT
-   Banana.Ui.showText(intermediaryData);
+   Banana.Ui.showText(JSON.stringify(intermediaryData));
    
    //6. convert to banana format
 	//column that start with "_" are not converted
@@ -105,7 +105,8 @@ function defineConversionParam() {
 		/*   Field that start with the underscore "_" will not be exported 
 		*    Create this fields so that you can use-it in the postprocessing function */
 		/* use the Banana.Converter.toInternalDateFormat to convert to the appropriate date format */
-		convertedRow["Date"] = Banana.Converter.toInternalDateFormat(inputRow["交易时间"], "yyyymmdd");
+		var stringDate = String(inputRow["交易时间"]).substring(0,8);
+		convertedRow["Date"] = Banana.Converter.toInternalDateFormat(stringDate, "yyyymmdd");
 		convertedRow["Description"] = inputRow["交易用途"];
 		//convertedRow["_Description2"] = inputRow["Gruppe nach"];
 		/* use the Banana.Converter.toInternalNumberFormat to convert to the appropriate number format 
