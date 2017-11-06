@@ -116,7 +116,7 @@ function defineConversionParam() {
 		//convertedRow["VatCode"] = inputRow["MWST Code"];
 		//convertedRow["ContraAccount"] = inputRow["Kategorie"];
 		//convertedRow["Account"] = inputRow["Art"];
-		convertedRow["ExternalReference"] = inputRow["传票号"];
+		//convertedRow["ExternalReference"] = inputRow["传票号"];
 		
 		/** END */
 
