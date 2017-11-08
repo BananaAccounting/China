@@ -38,7 +38,7 @@ function exec(inData) {
 
 	//3. intermediaryData is an array of objects where the property is the banana column name
 	var intermediaryData = convertToIntermediaryData(inData, convertionParam);
-	Banana.Ui.showText(JSON.stringify(intermediaryData));
+	//Banana.Ui.showText(JSON.stringify(intermediaryData));
 	//4. translate categories and Description 
 	// can define as much postProcessIntermediaryData function as needed
 	postProcessIntermediaryData(intermediaryData);
@@ -47,14 +47,14 @@ function exec(inData) {
    intermediaryData = sortData(intermediaryData, convertionParam);
 
    //TO DEBUG SHOW THE INTERMEDIARY TEXT
-   Banana.Ui.showText(JSON.stringify(intermediaryData));
+   //Banana.Ui.showText(JSON.stringify(intermediaryData));
    
    //6. convert to banana format
 	//column that start with "_" are not converted
 	var text =  convertToBananaFormat(intermediaryData);	
 	
    //TO DEBUG SHOW THE INTERMEDIARY TEXT
-   Banana.Ui.showText(text);
+   //Banana.Ui.showText(text);
 	
    return text;
 }
@@ -84,7 +84,7 @@ function defineConversionParam() {
    /** SPECIFY THE COLUMN TO USE FOR SORTING
    If sortColums is empty the data are not sorted */
    convertionParam.sortColums = ["Date", "ExternalReference"];
-   convertionParam.sortDescending = false;
+   convertionParam.sortDescending = true;
 	/** END */
 
 	/* rowConvert is a function that convert the inputRow (passed as parameter)
