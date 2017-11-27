@@ -89,7 +89,7 @@ ImportExcelCsvPingabankTest.prototype.testImport = function() {
   Test.logger.addKeyValue("key1", "test2");   
   Test.logger.addComment("Test vImportExcelCsvPingabankTest");
   
-  var file = Banana.IO.getLocalFile("testcases\PingAnBank.csv平安银行.csv")
+  var file = Banana.IO.getLocalFile("file:script/testcases/PingAnBank.csv平安银行.csv")
    file.codecName = "GBK";  // Default is UTF-8
    var fileContent = file.read();
    if (file.errorString) {
