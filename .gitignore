@@ -1,3 +1,4 @@
 *.bak
+*diff.txt
 *.autosave
 ~$*
