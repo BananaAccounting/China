@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.0.171128}
 %%info_test_os{Windows 10 (10.0)}
 %%info_test_qt{5.9.3}
-%%info_test_date{2017-12-01}{09:14:42.999}
+%%info_test_date{2017-12-01}{09:17:16.973}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -103,9 +103,9 @@ Date  & Description  & Income  & Expenses  & ExternalReference \\
 
 \end{reportvalue}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.094}
+%%info_test_time_elapsed{00:00:00.109}
 \end{test}
-%%info_test_time_elapsed{00:00:00.094}
+%%info_test_time_elapsed{00:00:00.109}
 \end{testcase}
-%%info_test_time_elapsed{00:00:00.328}
+%%info_test_time_elapsed{00:00:00.312}
 \end{document}

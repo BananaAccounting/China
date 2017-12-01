@@ -99,7 +99,10 @@ function defineConversionParam() {
 	* - Number decimal separator must be "." and there should be no thousand separator */
 	convertionParam.rowConverter = function(inputRow) {
 		var convertedRow = {};
-
+		/* remove tabx. text contains tab within the strings */
+		for (var property in inputRow) {
+			inputRow[property] = inputRow[property].replace('\t','');
+		}
 		/** MODIFY THE FIELDS NAME AND THE CONVERTION HERE 
 		*   The right part is a statements that is then executed for each inputRow
 		

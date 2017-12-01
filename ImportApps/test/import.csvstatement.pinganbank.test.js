@@ -84,9 +84,9 @@ ImportExcelCsvPingabankTest.prototype.testImport = function () {
 	if (file.errorString) {
 		Test.logger.addComment(file.errorString);
 		Test.logger.addComment("Test impossible to import");
-		//return;
+		return;
 	}
-	Banana.console.debug(fileContent);
+	//Banana.console.debug(fileContent);
 	var tabSeparatedText = exec(fileContent);
 	var report = createReportFromTabSeparatedText(tabSeparatedText);
 	Test.logger.addReport("Report converted text", report);
@@ -98,7 +98,7 @@ function createReportFromTabSeparatedText(tabSeparatedText) {
 	var table = report.addTable();
 	var arrData = Banana.Converter.csvToArray(tabSeparatedText, '\t');
 	if (!arrData) {
-		Test.logger.addComment("Error no data");
+		Test.logger.addComment("Error no data in tabSeparatedText");
 		return;
 	}
 	for (var i = 0; i < arrData.length; i++) {
