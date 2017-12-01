@@ -83,7 +83,7 @@ function defineConversionParam() {
 
    /** SPECIFY THE COLUMN TO USE FOR SORTING
    If sortColums is empty the data are not sorted */
-   convertionParam.sortColums = ["Date", "ExternalReference"];
+   convertionParam.sortColums = ["Date"];
    convertionParam.sortDescending = true;
 	/** END */
 
