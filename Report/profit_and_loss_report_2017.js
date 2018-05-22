@@ -14,13 +14,12 @@
 //
 // @id = ch.banana.addon.china.report.profitloss2017
 // @api = 1.0
-// @pubdate = 2017-04-24
+// @pubdate = 2018-05-22
 // @publisher = Banana.ch SA
 // @description.zh = 损益表
 // @description.en = Profit and Loss 2017
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
-// @docproperties = china
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
