@@ -14,13 +14,13 @@
 //
 // @id = ch.banana.addon.voucherchina
 // @api = 1.0
-// @pubdate = 2017-04-24
+// @pubdate = 2018-10-24
 // @publisher = Banana.ch SA
 // @description.en = Voucher
 // @description.zh = 记账凭证
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
-// @docproperties = china
+// @docproperties = 
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
