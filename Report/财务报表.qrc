@@ -2,5 +2,6 @@
  <qresource>
      <file>balance_report.js</file>
      <file>profit_and_loss_report.js</file>
+     <file>financial_reports.manifest.json</file>
  </qresource>
  </RCC>
