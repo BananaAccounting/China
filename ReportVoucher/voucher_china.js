@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.addon.voucherchina
 // @api = 1.0
-// @pubdate = 2018-10-24
+// @pubdate = 2019-02-27
 // @publisher = Banana.ch SA
 // @description.en = Voucher
 // @description.zh = 记账凭证
@@ -95,22 +95,21 @@ function exec(string) {
     
     //Load all the parameters
     loadParam();
-    
-    //Get the name of the current selected table
-    var currentTable = Banana.document.cursor.tableName;
 
-    //If the current table is the Transactions table, we take the value of the column "Doc" of the selected row
-    if (currentTable === "Transactions") {
-        var transactions = Banana.document.table('Transactions');
-        var tDoc = transactions.row(Banana.document.cursor.rowNr).value('Doc');
+    //Settings
+    var userParam = initUserParam();
 
-        //Open dialog window asking to insert a voucher number (or * for all vouchers):
-        //If transactions table is selected, we use the value of the selected row as default
-        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), tDoc);
-    } else {
-        //Open dialog window asking to insert a voucher number (or * for all vouchers):
-        //If transactions table is not selected, we don't use any default value
-        var docNumber = Banana.Ui.getText(getValue(param, "printVoucher", "chinese"), getValue(param, "insertDocument", "chinese"), '');
+    // Retrieve saved param
+    var savedParam = Banana.document.getScriptSettings();
+    if (savedParam && savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+    }
+    // If needed show the settings dialog to the user
+    if (!options || !options.useLastSettings) {
+        userParam = settingsDialog(); // From properties
+    }
+    if (!userParam) {
+        return "@Cancel";
     }
 
     //Create the Journal table which contains all the data of the accounting
@@ -120,13 +119,14 @@ function exec(string) {
     var docList = getDocList();
 
     //The user insert a correct voucher value => prints single voucher
+    var docNumber = userParam.voucher;
     if (docNumber && docNumber !== "*") {
 
         //Check if the docNumber exists in the docList array
         if (docList.indexOf(docNumber) > -1) {
             docList = [];
             docList.push(docNumber);
-            printVoucher(report, docList, journal);
+            printVoucher(report, docList, journal, userParam);
         }
         else { //docNumber doesn't exists
             Banana.Ui.showInformation("", getValue(param, "showInformation", "chinese"));
@@ -135,12 +135,12 @@ function exec(string) {
     }
     //The user insert the "*" => prints all the vouchers
     else if (docNumber === "*") {
-        printVoucher(report, docList, journal);
+        printVoucher(report, docList, journal, userParam);
 
     }
     //User doesn't insert anything then clic "ok", or clic on "cancel" button
     else {
-        return;
+        return "@Cancel";
     }
 
     //Add the styles
@@ -152,7 +152,7 @@ function exec(string) {
 /*
     Function that creates an array of rows and use it to print the voucher report
 */
-function printVoucher(report, listDoc, journal) {
+function printVoucher(report, listDoc, journal, userParam) {
 
     //Array to store all the rows that will be processed
     var rowsToProcess = []; 
@@ -176,7 +176,7 @@ function printVoucher(report, listDoc, journal) {
                 if (rowsToProcess.length == generalParam.numberOfRows)
                 {
                     //Function call to create the voucher for the given rows
-                    createVoucherReport(journal, report, docNumber, rowsToProcess);
+                    createVoucherReport(journal, report, docNumber, rowsToProcess, userParam);
 
                     //Array reset
                     rowsToProcess = [];
@@ -188,7 +188,7 @@ function printVoucher(report, listDoc, journal) {
         if (rowsToProcess.length > 0) 
         {
             //Function call to create the voucher for the given rows
-            createVoucherReport(journal, report, docNumber, rowsToProcess);
+            createVoucherReport(journal, report, docNumber, rowsToProcess, userParam);
 
             //Array reset
             rowsToProcess = [];
@@ -200,7 +200,7 @@ function printVoucher(report, listDoc, journal) {
 /*
     Function that creates the voucher for the given Doc number
 */
-function createVoucherReport(journal, report, docNumber, rowsToProcess) {
+function createVoucherReport(journal, report, docNumber, rowsToProcess, userParam) {
 
     //Each voucher on a new page
     report.addPageBreak();
@@ -307,7 +307,7 @@ function createVoucherReport(journal, report, docNumber, rowsToProcess) {
     printTotal(table, totDebit, totCredit, report);
 
     /* 4. Print the signatures line */
-    printSignatures(tableSignatures, report);
+    printSignatures(tableSignatures, report, userParam);
 }
 
 
@@ -568,32 +568,51 @@ function printTotal(table, totDebit, totCredit, report) {
 
 
 /* Function that prints the signature part of the voucher */
-function printSignatures(table, report) {
-
+function printSignatures(table, report, userParam) {
+    var paragraph;
     tableRow = table.addRow();
     var cellApproved = tableRow.addCell("", "", 1);
-    cellApproved.addParagraph(getValue(param, "approved", "chinese") + ": ", "");
-    cellApproved.addParagraph(getValue(param, "approved", "english"), "");
+    paragraph = cellApproved.addParagraph();
+    paragraph.addText(getValue(param, "approved", "chinese") + ": ", "");
+    paragraph.addText(userParam.approved, "text-black");
+    paragraph = cellApproved.addParagraph();
+    paragraph.addText(getValue(param, "approved", "english"), "");
     
     var cellChecked = tableRow.addCell("", "", 1);
-    cellChecked.addParagraph(getValue(param, "checked", "chinese") + ": ", "");
-    cellChecked.addParagraph(getValue(param, "checked", "english"), "");
+    paragraph = cellChecked.addParagraph();
+    paragraph.addText(getValue(param, "checked", "chinese") + ": ", "");
+    paragraph.addText(userParam.checked, "text-black");
+    paragraph = cellChecked.addParagraph();
+    paragraph.addText(getValue(param, "checked", "english"), "");
 
     var cellEntered = tableRow.addCell("", "", 1);
-    cellEntered.addParagraph(getValue(param, "entered", "chinese") + ": ", "");
-    cellEntered.addParagraph(getValue(param, "entered", "english"), "");
+    paragraph = cellEntered.addParagraph();
+    paragraph.addText(getValue(param, "entered", "chinese") + ": ", "");
+    paragraph.addText(userParam.entered, "text-black");
+    paragraph = cellEntered.addParagraph();
+    paragraph.addText(getValue(param, "entered", "english"), "");
 
     var cellCashier = tableRow.addCell("", "", 1);
-    cellCashier.addParagraph(getValue(param, "cashier", "chinese") + ": ", "");
-    cellCashier.addParagraph(getValue(param, "cashier", "english"), "");
+    paragraph = cellCashier.addParagraph();
+    paragraph.addText(getValue(param, "cashier", "chinese") + ": ", "");
+    paragraph.addText(userParam.cashier, "text-black");
+    paragraph = cellCashier.addParagraph();
+    paragraph.addText(getValue(param, "cashier", "english"), "");
 
     var cellPrepared = tableRow.addCell("", "", 1);
-    cellPrepared.addParagraph(getValue(param, "prepared", "chinese") + ": ", "");
-    cellPrepared.addParagraph(getValue(param, "prepared", "english"), "");
+    paragraph = cellPrepared.addParagraph();
+    paragraph.addText(getValue(param, "prepared", "chinese") + ": ", "");
+    paragraph.addText(userParam.prepared, "text-black");
+    paragraph = cellPrepared.addParagraph();
+    paragraph.addText(getValue(param, "prepared", "english"), "");
 
     var cellReceiver = tableRow.addCell("", "", 1);
-    cellReceiver.addParagraph(getValue(param, "receiver", "chinese") + ": ", "");
-    cellReceiver.addParagraph(getValue(param, "receiver", "english"), "");
+    paragraph = cellReceiver.addParagraph();
+    paragraph.addText(getValue(param, "receiver", "chinese") + ": ", "");
+    paragraph.addText(userParam.receiver, "text-black");
+    paragraph = cellReceiver.addParagraph();
+    paragraph.addText(getValue(param, "receiver", "english"), "");
+
 }
 
 
@@ -906,4 +925,158 @@ function createStyleSheet() {
     return stylesheet;
 }
 
+
+/* Function that converts parameters of the dialog */
+function convertParam(userParam) {
+
+    var convertedParam = {};
+    convertedParam.version = '1.0';
+    convertedParam.data = []; /* array dei parametri dello script */
+
+    //Voucher number
+    var currentParam = {};
+    currentParam.name = 'voucher';
+    currentParam.title = "输入文件编号，或输入'*'号用来打印所有的凭证";
+    currentParam.type = 'string';
+
+    //Get the name of the current selected table
+    //If the current table is the Transactions table, we take the value of the column "Doc" of the selected row
+    var currentTable = Banana.document.cursor.tableName;
+    if (currentTable === "Transactions") {
+        var transactions = Banana.document.table('Transactions');
+        var tDoc = transactions.row(Banana.document.cursor.rowNr).value('Doc');
+        currentParam.value = tDoc;
+    } else {
+        currentParam.value = '';
+    }
+    currentParam.readValue = function() {
+        userParam.voucher = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Approved
+    var currentParam = {};
+    currentParam.name = 'approved';
+    currentParam.title = '核准';
+    currentParam.type = 'string';
+    currentParam.value = userParam.approved ? userParam.approved : '';
+    currentParam.readValue = function() {
+        userParam.approved = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Checked
+    var currentParam = {};
+    currentParam.name = 'checked';
+    currentParam.title = '复核';
+    currentParam.type = 'string';
+    currentParam.value = userParam.checked ? userParam.checked : '';
+    currentParam.readValue = function() {
+        userParam.checked = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Entered
+    var currentParam = {};
+    currentParam.name = 'entered';
+    currentParam.title = '记账';
+    currentParam.type = 'string';
+    currentParam.value = userParam.entered ? userParam.entered : '';
+    currentParam.readValue = function() {
+        userParam.entered = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Cashier
+    var currentParam = {};
+    currentParam.name = 'cashier';
+    currentParam.title = '出纳';
+    currentParam.type = 'string';
+    currentParam.value = userParam.cashier ? userParam.cashier : '';
+    currentParam.readValue = function() {
+        userParam.cashier = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Prepared
+    var currentParam = {};
+    currentParam.name = 'prepared';
+    currentParam.title = '制单';
+    currentParam.type = 'string';
+    currentParam.value = userParam.prepared ? userParam.prepared : '';
+    currentParam.readValue = function() {
+        userParam.prepared = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Receiver
+    var currentParam = {};
+    currentParam.name = 'receiver';
+    currentParam.title = '签收';
+    currentParam.type = 'string';
+    currentParam.value = userParam.receiver ? userParam.receiver : '';
+    currentParam.readValue = function() {
+        userParam.receiver = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    return convertedParam;
+}
+
+
+/* Function that initializes the user parameters */
+function initUserParam() {
+    var userParam = {};
+    userParam.version = '1.0';
+    userParam.voucher = '';
+    userParam.approved = '';
+    userParam.checked = '';
+    userParam.entered = '';
+    userParam.cashier = '';
+    userParam.prepared = '';
+    userParam.receiver = '';
+    return userParam;
+}
+
+
+/* Function that shows the dialog window and let user to modify the parameters */
+function parametersDialog(userParam) {
+
+    if (typeof(Banana.Ui.openPropertyEditor) !== 'undefined') {
+        var dialogTitle = '设置';
+        var convertedParam = convertParam(userParam);
+        var pageAnchor = 'dlgSettings';
+        if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor)) {
+            return null;
+        }
+        
+        for (var i = 0; i < convertedParam.data.length; i++) {
+            // Read values to userParam (through the readValue function)
+            convertedParam.data[i].readValue();
+        }
+    }
+    
+    return userParam;
+}
+
+
+/* Function that shows a dialog window for the period and let user to modify the parameters */
+function settingsDialog() {
+
+    var scriptform = initUserParam();
+    
+    // Retrieve saved param
+    var savedParam = Banana.document.getScriptSettings();
+    if (savedParam && savedParam.length > 0) {
+        scriptform = JSON.parse(savedParam);
+    }
+
+    scriptform = parametersDialog(scriptform); // From propertiess
+    if (scriptform) {
+        var paramToString = JSON.stringify(scriptform);
+        Banana.document.setScriptSettings(paramToString);
+    }
+
+    return scriptform;
+}
 

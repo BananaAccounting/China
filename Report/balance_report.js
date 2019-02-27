@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.china.reportbalancesheet
 // @api = 1.0
-// @pubdate = 2018-12-07
+// @pubdate = 2019-02-27
 // @publisher = Banana.ch SA
 // @description.zh = 资产负债表
 // @description.en = Balance Sheet
@@ -30,6 +30,7 @@ function loadParam(banDoc, startDate, endDate) {
 		"startDate":startDate,
 		"endDate":endDate,
 		"taxpayerNumber":banDoc.info("AccountingDataBase","FiscalNumber"),
+		"vatNumber":banDoc.info("AccountingDataBase","VatNumber"),
 		"company":banDoc.info("AccountingDataBase","Company"),
 		"address":banDoc.info("AccountingDataBase","Address1"),
 		"nation":banDoc.info("AccountingDataBase","Country"),
@@ -90,7 +91,7 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow.addCell("", "", 8);
 	
 	tableRow = table.addRow();
-	tableRow.addCell("纳税人识别号: " + param["taxpayerNumber"], "", 4); //Taxpayer identification number:
+	tableRow.addCell("纳税人识别号: " + param["vatNumber"], "", 4); //VatNumber
 	tableRow.addCell("纳税人名称: " + param["company"], "", 4); //Payer's name
 
 	tableRow = table.addRow();

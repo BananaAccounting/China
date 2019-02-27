@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.china.reportprofitloss
 // @api = 1.0
-// @pubdate = 2018-12-07
+// @pubdate = 2019-02-27
 // @publisher = Banana.ch SA
 // @description.zh = 利润表
 // @description.en = Profit and Loss
@@ -32,6 +32,7 @@ function loadParam(banDoc, startDate, endDate) {
 		"endDate":endDate,
 		"currentDate": date,
 		"taxpayerNumber":banDoc.info("AccountingDataBase","FiscalNumber"),
+		"vatNumber":banDoc.info("AccountingDataBase","VatNumber"),
 		"company":banDoc.info("AccountingDataBase","Company"),
 		"address":banDoc.info("AccountingDataBase","Address1"),
 		"nation":banDoc.info("AccountingDataBase","Country"),
@@ -89,7 +90,7 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow.addCell("", "", 4);
 	
 	tableRow = table.addRow();
-	tableRow.addCell("纳税人识别号: " + param["taxpayerNumber"], "", 2); //Taxpayer identification number:
+	tableRow.addCell("纳税人识别号: " + param["vatNumber"], "", 2); //VatNumber
 	tableRow.addCell("纳税人名称: " + param["company"], "", 2); //Payer's name
 
 	tableRow = table.addRow();

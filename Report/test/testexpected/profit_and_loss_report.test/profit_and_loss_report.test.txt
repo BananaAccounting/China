@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/ivan/Documents/GitHub/China/Report/./test/profit_and_loss_report.test.js}
+%%SCRIPT{/Users/ivan/Documents/GitHub/China/Report/test/profit_and_loss_report.test.js}
 %
 \begin{testcase}{ReportProfitLoss}
 \begin{test}{testBananaApp}
@@ -28,8 +28,8 @@
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
 \multicolumn{4}{l}{纳税人基本信息 }\\
 \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{纳税人识别号:  } & \multicolumn{2}{l}{纳税人名称: 朝阳商贸有限公司 }\\
-\multicolumn{2}{l}{报送日期: 07.12.2018 } & 所属时期起: 01.01.2018  & 所属时期止: 31.12.2018 \\
+\multicolumn{2}{l}{纳税人识别号: 123-456-789 } & \multicolumn{2}{l}{纳税人名称: 朝阳商贸有限公司 }\\
+\multicolumn{2}{l}{报送日期: 27.02.2019 } & 所属时期起: 01.01.2018  & 所属时期止: 31.12.2018 \\
 \multicolumn{4}{l}{}\\
 项   目  & 行次  & 本期金额  & 本年累计金额 \\
 一、营业收入  & 1  & 29.24  & 29.24 \\
