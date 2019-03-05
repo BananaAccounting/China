@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.addon.voucherchina
+// @id = ch.banana.addon.voucherchinas
 // @api = 1.0
-// @pubdate = 2019-02-27
+// @pubdate = 2019-03-05
 // @publisher = Banana.ch SA
 // @description.en = Voucher
 // @description.zh = 记账凭证
@@ -26,19 +26,19 @@
 // @timeout = -1
 
 
+//-----------------------------------------------------------
+//  General parameters that can be changed by the user:
+//    - textColor: the color of text and table borders. Default value is "#32CD32"
+//    - numberOfRows: the number of transactions rows that are printed on each voucher. Default value is 6
+//    - pageSize: the size of the page (e.g. "A5 landscape"). Default value is "A4"
+//-----------------------------------------------------------
+var generalParam = {
+    "textColor" : "#32CD32",
+    "numberOfRows" : 6,
+    "pageSize" : "A4"
+}
 
-
-
-
-
-
-//----------------------------------------
-//  Parameters used to create the report
-//  Each parameter has:
-//      - a unique "id"
-//      - an "english" translation
-//      - a "chinese" translation
-//----------------------------------------
+/* Function that loads the texts parameters */
 var param = [];
 function loadParam() {
     param.push({"id": "showInformation", "english":"Document number not found. Please insert a valid value from the Document column of the Transactions table", "chinese":"未找到文件编号，请您从发生业务表格的文件列中选择一个有效值。"});
@@ -64,39 +64,19 @@ function loadParam() {
     param.push({"id": "cashier", "english":"Cashier", "chinese":"出      纳"});
     param.push({"id": "prepared", "english":"Prepared", "chinese":"制      单"});
     param.push({"id": "receiver", "english":"Receiver", "chinese":"签      收"});
-
 }
 
-
-//-----------------------------------------------------------
-//  General parameters that can be changed by the user:
-//    - The color of text and table
-//    - The number of rows that are printed on each voucher
-//-----------------------------------------------------------
-var generalParam = {
-    "textColor" : "#32CD32",
-    // transactions rows
-    "numberOfRows" : 6,
-    "pageSize" : "A4"
-    //"pageSize" : "A5 landscape"
-}
-
-
-
-
-
-/* 
-    Main function
-*/
+/* Main function */
 function exec(string) {
 
-    //Create the report
-    var report = Banana.Report.newReport(param.transferVoucher);
+    if (!Banana.document) {
+        return "@Cancel";
+    }
     
-    //Load all the parameters
+    // Load all the parameters
     loadParam();
 
-    //Settings
+    // Settings
     var userParam = initUserParam();
 
     // Retrieve saved param
@@ -111,95 +91,85 @@ function exec(string) {
     if (!userParam) {
         return "@Cancel";
     }
-
-    //Create the Journal table which contains all the data of the accounting
-    var journal = Banana.document.journal(Banana.document.ORIGINTYPE_CURRENT, Banana.document.ACCOUNTTYPE_NORMAL);
     
-    //Create a list with all the doc numbers
-    var docList = getDocList();
-
-    //The user insert a correct voucher value => prints single voucher
-    var docNumber = userParam.voucher;
-    if (docNumber && docNumber !== "*") {
-
-        //Check if the docNumber exists in the docList array
-        if (docList.indexOf(docNumber) > -1) {
-            docList = [];
-            docList.push(docNumber);
-            printVoucher(report, docList, journal, userParam);
-        }
-        else { //docNumber doesn't exists
-            Banana.Ui.showInformation("", getValue(param, "showInformation", "chinese"));
-            return;
-        }
-    }
-    //The user insert the "*" => prints all the vouchers
-    else if (docNumber === "*") {
-        printVoucher(report, docList, journal, userParam);
-
-    }
-    //User doesn't insert anything then clic "ok", or clic on "cancel" button
-    else {
-        return "@Cancel";
-    }
+    var report = printVoucher(Banana.document, userParam);
 
     //Add the styles
     var stylesheet = createStyleSheet();
     Banana.Report.preview(report, stylesheet);
 }
 
+/* Function that creates an array of rows and use it to print the voucher report */
+function printVoucher(banDoc, userParam) {
 
-/*
-    Function that creates an array of rows and use it to print the voucher report
-*/
-function printVoucher(report, listDoc, journal, userParam) {
+    //Create the report
+    var report = Banana.Report.newReport(param.transferVoucher);
 
-    //Array to store all the rows that will be processed
-    var rowsToProcess = []; 
+    //Create the Journal table which contains all the data of the accounting
+    var journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NORMAL);
 
-    for (var j = 0; j < listDoc.length; j++)
-    {
-        var docNumber = listDoc[j];
-
-        for (var i = 0; i < journal.rowCount; i++) 
-        {
-            var tRow = journal.row(i);
-
-            //Check if the actual Doc number of the list is equal to the Doc value of the journal's row
-            if (docNumber && tRow.value('Doc') === docNumber) 
-            {
-                //Add the row to the array
-                rowsToProcess.push(i);
-
-                //Check if there are six elements (six rows) into the array.
-                //We want a maximum of six rows per voucher
-                if (rowsToProcess.length == generalParam.numberOfRows)
-                {
-                    //Function call to create the voucher for the given rows
-                    createVoucherReport(journal, report, docNumber, rowsToProcess, userParam);
-
-                    //Array reset
-                    rowsToProcess = [];
-                }
-            }
-        }
+    //Create a list with all the doc numbers of the Transaction table
+    var listDoc = getDocList(banDoc);
     
-        //Check if the array contains something
-        if (rowsToProcess.length > 0) 
-        {
-            //Function call to create the voucher for the given rows
-            createVoucherReport(journal, report, docNumber, rowsToProcess, userParam);
-
-            //Array reset
-            rowsToProcess = [];
+    if (userParam.voucher && userParam.voucher !== "*") {
+        //Check if the userParam.voucher exists in the listDoc array
+        if (listDoc.indexOf(userParam.voucher) > -1) {
+            listDoc = [];
+            listDoc.push(userParam.voucher);
+        }
+        else { //userParam.voucher doesn't exists
+            listDoc = [];
+            Banana.Ui.showInformation("", getValue(param, "showInformation", "chinese"));
+            return "@Cancel";
         }
     }
+    else if (!userParam.voucher) {
+        listDoc = [];
+        return "@Cancel";
+    }
+
+    if (listDoc.length > 0) {
+        //Array to store all the rows that will be processed
+        var rowsToProcess = []; 
+        for (var j = 0; j < listDoc.length; j++) {
+            var docNumber = listDoc[j];
+
+            for (var i = 0; i < journal.rowCount; i++) {
+                var tRow = journal.row(i);
+
+                //Check if the actual Doc number of the list is equal to the Doc value of the journal's row
+                if (docNumber && tRow.value('Doc') === docNumber) {
+                    //Add the row to the array
+                    rowsToProcess.push(i);
+
+                    //Check if there are six elements (six rows) into the array.
+                    //We want a maximum of six rows per voucher
+                    if (rowsToProcess.length == generalParam.numberOfRows) {
+                        
+                        //Function call to create the voucher for the given rows
+                        createVoucherReport(journal, report, docNumber, rowsToProcess, userParam);
+
+                        //Array reset
+                        rowsToProcess = [];
+                    }
+                }
+            }
+        
+            //Check if the array contains something
+            if (rowsToProcess.length > 0) {
+                //Function call to create the voucher for the given rows
+                createVoucherReport(journal, report, docNumber, rowsToProcess, userParam);
+
+                //Array reset
+                rowsToProcess = [];
+            }
+        }
+    }
+
+    return report;
 }
 
-
-/*
-    Function that creates the voucher for the given Doc number
-*/
+/* Function that creates the voucher for the given Doc number */
 function createVoucherReport(journal, report, docNumber, rowsToProcess, userParam) {
 
     //Each voucher on a new page
@@ -298,28 +268,31 @@ function createVoucherReport(journal, report, docNumber, rowsToProcess, userPara
     }
 
     /* 1. Print the date and the voucher number */
-    printInfoVoucher(tableInfo, report, docNumber, date);
+    printInfoVoucher(tableInfo, report, docNumber, date, userParam);
 
     /* 2. Print the all the transactions data */
-    printTransactions(table, journal, line, rowsToProcess);
+    printTransactions(table, journal, line, rowsToProcess, userParam);
 
     /* 3. Print the total line */
-    printTotal(table, totDebit, totCredit, report);
+    printTotal(table, totDebit, totCredit, report, userParam);
 
     /* 4. Print the signatures line */
     printSignatures(tableSignatures, report, userParam);
 }
 
-
 /* Function that prints the date and the voucher number */
-function printInfoVoucher(tableInfo, report, docNumber, date) {
+function printInfoVoucher(tableInfo, report, docNumber, date, userParam) {
 
     //Title
     tableRow = tableInfo.addRow();
     tableRow.addCell(getValue(param, "voucher", "chinese"), "heading1 alignCenter", 11);
 
     tableRow = tableInfo.addRow();
-    tableRow.addCell(getValue(param, "voucher", "english"), "heading2 alignCenter", 11);
+    if (userParam.printenglish) {
+        tableRow.addCell(getValue(param, "voucher", "english"), "heading2 alignCenter", 11);
+    } else {
+        tableRow.addCell("", "", 11);
+    }
 
 
     //Date and Voucher number
@@ -341,39 +314,50 @@ function printInfoVoucher(tableInfo, report, docNumber, date) {
 
     var cell4 = tableRow.addCell("", "alignCenter border-top-double", 1);
     cell4.addParagraph(getValue(param, "year", "chinese"), "");
-    cell4.addParagraph(getValue(param, "year", "english"), "");
+    if (userParam.printenglish) {
+        cell4.addParagraph(getValue(param, "year", "english"), "");
+    }
     
     var cell5 = tableRow.addCell("", "alignCenter border-top-double", 1);
     cell5.addParagraph(month, "text-black");
 
     var cell6 = tableRow.addCell("", "alignCenter border-top-double", 1);
     cell6.addParagraph(getValue(param, "month", "chinese"), "");
-    cell6.addParagraph(getValue(param, "month", "english"), "");
+    if (userParam.printenglish) {
+        cell6.addParagraph(getValue(param, "month", "english"), "");
+    }
 
     var cell7 = tableRow.addCell("", "alignCenter border-top-double", 1);
     cell7.addParagraph(day, "text-black");
 
     var cell8 = tableRow.addCell("", "alignCenter border-top-double", 1);
     cell8.addParagraph(getValue(param, "day", "chinese"), "");
-    cell8.addParagraph(getValue(param, "day", "english"), "");
+    if (userParam.printenglish) {
+        cell8.addParagraph(getValue(param, "day", "english"), "");
+    }
 
     var cell9 = tableRow.addCell("", "", 1);    
     cell9.addParagraph(" ", "");
 
     var cell10 = tableRow.addCell("", "padding-left alignCenter", 1);
     cell10.addParagraph(getValue(param, "voucherNumber", "chinese"), "");
-    cell10.addParagraph(getValue(param, "voucherNumber", "english"), "");
+    if (userParam.printenglish) {
+        cell10.addParagraph(getValue(param, "voucherNumber", "english"), "");
+    }
     
     var cell11 = tableRow.addCell("", "padding-left", 1);
-    cell11.addParagraph(" ", "");
-    cell11.addParagraph(docNumber, "text-black");
+    if (userParam.printenglish) {
+        cell11.addParagraph(" ", "");
+        cell11.addParagraph(docNumber, "text-black");
+    } else {
+        cell11.addParagraph(docNumber, "text-black");
+    }
 
     report.addParagraph(" ", "");
 }
 
-
 /* Function that prints all the transactions data */
-function printTransactions(table, journal, line, rowsToProcess) {
+function printTransactions(table, journal, line, rowsToProcess, userParam) {
 
     /* Table header */
     var strPr = getValue(param, "pr", "chinese");
@@ -392,16 +376,18 @@ function printTransactions(table, journal, line, rowsToProcess) {
     tableRow.addCell("", "border-top-black border-left-black border-right-black", 1);
     tableRow.addCell(res[0], "alignCenter border-left border-top-black border-right-black", 1);
 
-    tableRow = tableHeader.addRow();
-    tableRow.addCell(getValue(param, "description", "english"), "alignCenter border-left-black border-right", 1);
-    tableRow.addCell(getValue(param, "genLedAc", "english"), "alignCenter border-left border-right", 1);
-    tableRow.addCell(getValue(param, "subLedAc", "english"), "alignCenter border-left border-right-black", 1);
-    tableRow.addCell("", "border-left-black border-right-black", 1);
-    tableRow.addCell(getValue(param, "debitAmount", "english"), "alignCenter border-left border-right-black border-bottom", 11);
-    tableRow.addCell("", "border-left-black border-right-black", 1);
-    tableRow.addCell(getValue(param, "creditAmount", "english"), "alignCenter border-left border-right-black border-bottom",11);
-    tableRow.addCell("", "border-left-black border-right-black", 1);
-    tableRow.addCell(res[1], "alignCenter border-left border-right-black", 1);
+    if (userParam.printenglish) {
+        tableRow = tableHeader.addRow();
+        tableRow.addCell(getValue(param, "description", "english"), "alignCenter border-left-black border-right", 1);
+        tableRow.addCell(getValue(param, "genLedAc", "english"), "alignCenter border-left border-right", 1);
+        tableRow.addCell(getValue(param, "subLedAc", "english"), "alignCenter border-left border-right-black", 1);
+        tableRow.addCell("", "border-left-black border-right-black", 1);
+        tableRow.addCell(getValue(param, "debitAmount", "english"), "alignCenter border-left border-right-black border-bottom", 11);
+        tableRow.addCell("", "border-left-black border-right-black", 1);
+        tableRow.addCell(getValue(param, "creditAmount", "english"), "alignCenter border-left border-right-black border-bottom",11);
+        tableRow.addCell("", "border-left-black border-right-black", 1);
+        tableRow.addCell(res[1], "alignCenter border-left border-right-black", 1);
+    }
 
 
     //Row with the digits titles
@@ -441,7 +427,11 @@ function printTransactions(table, journal, line, rowsToProcess) {
 
     tableRow.addCell("", "border-left-black border-right-black border-bottom-black", 1);
 
-    tableRow.addCell(getValue(param, "pr", "english"), "border-left border-right-black border-bottom-black", 1);
+    if (userParam.printenglish) {
+        tableRow.addCell(getValue(param, "pr", "english"), "border-left border-right-black border-bottom-black", 1);
+    } else {
+        tableRow.addCell("", "border-left border-right-black border-bottom-black", 1);
+    }
 
 
     /* Print transactions rows */
@@ -550,22 +540,28 @@ function printTransactions(table, journal, line, rowsToProcess) {
     }
 }
 
-
 /* Function that prints the total line of the voucher */
-function printTotal(table, totDebit, totCredit, report) {
+function printTotal(table, totDebit, totCredit, report, userParam) {
 
     //Attachments
     tableRow = table.addRow();
-    tableRow.addCell(getValue(param, "attachments", "chinese") + "   " + getValue(param, "attachments", "english"), "alignCenter padding-left border-left-black border-top-black border-right border-bottom-black", 1);
+    if (userParam.printenglish) {
+        tableRow.addCell(getValue(param, "attachments", "chinese") + "   " + getValue(param, "attachments", "english"), "alignCenter padding-left border-left-black border-top-black border-right border-bottom-black", 1);
+    } else {
+        tableRow.addCell(getValue(param, "attachments", "chinese"), "alignCenter padding-left border-left-black border-top-black border-right border-bottom-black", 1);
+    }
 
     //Total
-    tableRow.addCell(getValue(param, "total", "chinese") + "   " + getValue(param, "total", "english"), "alignCenter padding-left border-left border-top-black border-right-black border-bottom-black", 2);
+    if (userParam.printenglish) {
+        tableRow.addCell(getValue(param, "total", "chinese") + "   " + getValue(param, "total", "english"), "alignCenter padding-left border-left border-top-black border-right-black border-bottom-black", 2);
+    } else {
+        tableRow.addCell(getValue(param, "total", "chinese"), "alignCenter padding-left border-left border-top-black border-right-black border-bottom-black", 2);
+    }
     getDigits(Banana.Converter.toLocaleNumberFormat(totDebit), tableRow, true);
     getDigits(Banana.Converter.toLocaleNumberFormat(totCredit), tableRow, true);
     tableRow.addCell("", "border-left-black border-top-black border-right-black border-bottom-black", 1);
     tableRow.addCell(" ", "text-black alignCenter border-left border-top-black border-right-black border-bottom-black", 1);
 }
-
 
 /* Function that prints the signature part of the voucher */
 function printSignatures(table, report, userParam) {
@@ -575,46 +571,56 @@ function printSignatures(table, report, userParam) {
     paragraph = cellApproved.addParagraph();
     paragraph.addText(getValue(param, "approved", "chinese") + ": ", "");
     paragraph.addText(userParam.approved, "text-black");
-    paragraph = cellApproved.addParagraph();
-    paragraph.addText(getValue(param, "approved", "english"), "");
+    if (userParam.printenglish) {
+        paragraph = cellApproved.addParagraph();
+        paragraph.addText(getValue(param, "approved", "english"), "");
+    }
     
     var cellChecked = tableRow.addCell("", "", 1);
     paragraph = cellChecked.addParagraph();
     paragraph.addText(getValue(param, "checked", "chinese") + ": ", "");
     paragraph.addText(userParam.checked, "text-black");
-    paragraph = cellChecked.addParagraph();
-    paragraph.addText(getValue(param, "checked", "english"), "");
+    if (userParam.printenglish) {
+        paragraph = cellChecked.addParagraph();
+        paragraph.addText(getValue(param, "checked", "english"), "");
+    }
 
     var cellEntered = tableRow.addCell("", "", 1);
     paragraph = cellEntered.addParagraph();
     paragraph.addText(getValue(param, "entered", "chinese") + ": ", "");
     paragraph.addText(userParam.entered, "text-black");
-    paragraph = cellEntered.addParagraph();
-    paragraph.addText(getValue(param, "entered", "english"), "");
+    if (userParam.printenglish) {
+        paragraph = cellEntered.addParagraph();
+        paragraph.addText(getValue(param, "entered", "english"), "");
+    }
 
     var cellCashier = tableRow.addCell("", "", 1);
     paragraph = cellCashier.addParagraph();
     paragraph.addText(getValue(param, "cashier", "chinese") + ": ", "");
     paragraph.addText(userParam.cashier, "text-black");
-    paragraph = cellCashier.addParagraph();
-    paragraph.addText(getValue(param, "cashier", "english"), "");
+    if (userParam.printenglish) {
+        paragraph = cellCashier.addParagraph();
+        paragraph.addText(getValue(param, "cashier", "english"), "");
+    }
 
     var cellPrepared = tableRow.addCell("", "", 1);
     paragraph = cellPrepared.addParagraph();
     paragraph.addText(getValue(param, "prepared", "chinese") + ": ", "");
     paragraph.addText(userParam.prepared, "text-black");
-    paragraph = cellPrepared.addParagraph();
-    paragraph.addText(getValue(param, "prepared", "english"), "");
+    if (userParam.printenglish) {
+        paragraph = cellPrepared.addParagraph();
+        paragraph.addText(getValue(param, "prepared", "english"), "");
+    }
 
     var cellReceiver = tableRow.addCell("", "", 1);
     paragraph = cellReceiver.addParagraph();
     paragraph.addText(getValue(param, "receiver", "chinese") + ": ", "");
     paragraph.addText(userParam.receiver, "text-black");
-    paragraph = cellReceiver.addParagraph();
-    paragraph.addText(getValue(param, "receiver", "english"), "");
-
+    if (userParam.printenglish) {
+        paragraph = cellReceiver.addParagraph();
+        paragraph.addText(getValue(param, "receiver", "english"), "");
+    }
 }
-
 
 /* Function that takes a number and save all the digits */
 function getDigits(num, table, isTotalLine) {
@@ -753,12 +759,11 @@ function getDigits(num, table, isTotalLine) {
     }
 }
 
-
 /* Function that creates a list with all the values taken from the columna "Doc" of the table "Transactions" */
-function getDocList() {
+function getDocList(banDoc) {
     var str = [];
-    for (var i = 0; i < Banana.document.table('Transactions').rowCount; i++) {
-        var tRow = Banana.document.table('Transactions').row(i);
+    for (var i = 0; i < banDoc.table('Transactions').rowCount; i++) {
+        var tRow = banDoc.table('Transactions').row(i);
         if (tRow.value("Doc")) {
             str.push(tRow.value("Doc"));
         }
@@ -777,7 +782,6 @@ function getDocList() {
     return str;
 }
 
-
 /* Function that returns the whole object */
 function getObject(form, id) {
     for (var i = 0; i < form.length; i++) {
@@ -787,7 +791,6 @@ function getObject(form, id) {
     }
     Banana.document.addMessage("Couldn't find object with id: " + id);
 }
-
 
 /* Function that returns a specific field value from the object */
 function getValue(form, id, field) {
@@ -799,7 +802,6 @@ function getValue(form, id, field) {
     }
     Banana.document.addMessage("Couldn't find object with id:" + id);
 }
-
 
 /* Function that creates all the styles used to print the report */
 function createStyleSheet() {
@@ -925,7 +927,6 @@ function createStyleSheet() {
     return stylesheet;
 }
 
-
 /* Function that converts parameters of the dialog */
 function convertParam(userParam) {
 
@@ -933,10 +934,46 @@ function convertParam(userParam) {
     convertedParam.version = '1.0';
     convertedParam.data = []; /* array dei parametri dello script */
 
+
+    //Text to explain
+    var currentParam = {};
+    currentParam.name = 'explaintext1';
+    currentParam.title = '双击 "数值" 下的空白区域，输入需打印的凭证号码';
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.readValue = function() {
+        userParam.explaintext1 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Text to explain
+    var currentParam = {};
+    currentParam.name = 'explaintext2';
+    currentParam.title = '(输入“*”号可一次性打印所有凭证) 及相关人员名称 。';
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.readValue = function() {
+        userParam.explaintext2 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
+    // parameters
+    var currentParam = {};
+    currentParam.name = 'parameters';
+    currentParam.title = '信息填写';
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.readValue = function() {
+        userParam.parameters = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     //Voucher number
     var currentParam = {};
     currentParam.name = 'voucher';
-    currentParam.title = "输入文件编号，或输入'*'号用来打印所有的凭证";
+    currentParam.parentObject = 'parameters';
+    currentParam.title = "记账凭证号码:";
     currentParam.type = 'string';
 
     //Get the name of the current selected table
@@ -957,7 +994,8 @@ function convertParam(userParam) {
     //Approved
     var currentParam = {};
     currentParam.name = 'approved';
-    currentParam.title = '核准';
+    currentParam.parentObject = 'parameters';
+    currentParam.title = '核准:';
     currentParam.type = 'string';
     currentParam.value = userParam.approved ? userParam.approved : '';
     currentParam.readValue = function() {
@@ -968,7 +1006,8 @@ function convertParam(userParam) {
     //Checked
     var currentParam = {};
     currentParam.name = 'checked';
-    currentParam.title = '复核';
+    currentParam.parentObject = 'parameters';
+    currentParam.title = '复核:';
     currentParam.type = 'string';
     currentParam.value = userParam.checked ? userParam.checked : '';
     currentParam.readValue = function() {
@@ -979,7 +1018,8 @@ function convertParam(userParam) {
     //Entered
     var currentParam = {};
     currentParam.name = 'entered';
-    currentParam.title = '记账';
+    currentParam.parentObject = 'parameters';
+    currentParam.title = '记账:';
     currentParam.type = 'string';
     currentParam.value = userParam.entered ? userParam.entered : '';
     currentParam.readValue = function() {
@@ -990,7 +1030,8 @@ function convertParam(userParam) {
     //Cashier
     var currentParam = {};
     currentParam.name = 'cashier';
-    currentParam.title = '出纳';
+    currentParam.parentObject = 'parameters';
+    currentParam.title = '出纳:';
     currentParam.type = 'string';
     currentParam.value = userParam.cashier ? userParam.cashier : '';
     currentParam.readValue = function() {
@@ -1001,7 +1042,8 @@ function convertParam(userParam) {
     //Prepared
     var currentParam = {};
     currentParam.name = 'prepared';
-    currentParam.title = '制单';
+    currentParam.parentObject = 'parameters';
+    currentParam.title = '制单:';
     currentParam.type = 'string';
     currentParam.value = userParam.prepared ? userParam.prepared : '';
     currentParam.readValue = function() {
@@ -1012,7 +1054,8 @@ function convertParam(userParam) {
     //Receiver
     var currentParam = {};
     currentParam.name = 'receiver';
-    currentParam.title = '签收';
+    currentParam.parentObject = 'parameters';
+    currentParam.title = '签收:';
     currentParam.type = 'string';
     currentParam.value = userParam.receiver ? userParam.receiver : '';
     currentParam.readValue = function() {
@@ -1020,14 +1063,39 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+    // print output
+    var currentParam = {};
+    currentParam.name = 'printoutput';
+    currentParam.title = '凭证打印设置';
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.readValue = function() {
+        userParam.printoutput = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // print english translations
+    var currentParam = {};
+    currentParam.name = 'printenglish';
+    currentParam.parentObject = 'printoutput'
+    currentParam.title = '打印中英文凭证 (如不勾选此项，将默认打印成中文凭证)';
+    currentParam.type = 'bool';
+    currentParam.value = userParam.printenglish ? true : false;
+    currentParam.readValue = function() {
+     userParam.printenglish = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     return convertedParam;
 }
-
 
 /* Function that initializes the user parameters */
 function initUserParam() {
     var userParam = {};
     userParam.version = '1.0';
+    userParam.explaintext1 = '';
+    userParam.explaintext2 = '';
+    userParam.parameters = '';
     userParam.voucher = '';
     userParam.approved = '';
     userParam.checked = '';
@@ -1035,9 +1103,10 @@ function initUserParam() {
     userParam.cashier = '';
     userParam.prepared = '';
     userParam.receiver = '';
+    userParam.printoutput = '';
+    userParam.printenglish = true;
     return userParam;
 }
-
 
 /* Function that shows the dialog window and let user to modify the parameters */
 function parametersDialog(userParam) {
@@ -1059,7 +1128,6 @@ function parametersDialog(userParam) {
     return userParam;
 }
 
-
 /* Function that shows a dialog window for the period and let user to modify the parameters */
 function settingsDialog() {
 
@@ -1079,4 +1147,3 @@ function settingsDialog() {
 
     return scriptform;
 }
-
