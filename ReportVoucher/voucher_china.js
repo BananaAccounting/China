@@ -14,9 +14,8 @@
 //
 // @id = ch.banana.addon.voucherchinas
 // @api = 1.0
-// @pubdate = 2019-03-05
+// @pubdate = 2019-03-27
 // @publisher = Banana.ch SA
-// @description.en = Voucher
 // @description.zh = 记账凭证
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
@@ -938,9 +937,10 @@ function convertParam(userParam) {
     //Text to explain
     var currentParam = {};
     currentParam.name = 'explaintext1';
-    currentParam.title = '双击 "数值" 下的空白区域，输入需打印的凭证号码';
+    currentParam.title = '单击 "数值" 下的空白区域，输入需打印的凭证号码';
     currentParam.type = 'string';
     currentParam.value = '';
+    currentParam.editable = false;
     currentParam.readValue = function() {
         userParam.explaintext1 = this.value;
     }
@@ -952,6 +952,7 @@ function convertParam(userParam) {
     currentParam.title = '(输入“*”号可一次性打印所有凭证) 及相关人员名称 。';
     currentParam.type = 'string';
     currentParam.value = '';
+    currentParam.editable = false;
     currentParam.readValue = function() {
         userParam.explaintext2 = this.value;
     }
@@ -964,6 +965,7 @@ function convertParam(userParam) {
     currentParam.title = '信息填写';
     currentParam.type = 'string';
     currentParam.value = '';
+    currentParam.editable = false;
     currentParam.readValue = function() {
         userParam.parameters = this.value;
     }
@@ -975,7 +977,7 @@ function convertParam(userParam) {
     currentParam.parentObject = 'parameters';
     currentParam.title = "记账凭证号码:";
     currentParam.type = 'string';
-
+    
     //Get the name of the current selected table
     //If the current table is the Transactions table, we take the value of the column "Doc" of the selected row
     var currentTable = Banana.document.cursor.tableName;
@@ -1069,6 +1071,7 @@ function convertParam(userParam) {
     currentParam.title = '凭证打印设置';
     currentParam.type = 'string';
     currentParam.value = '';
+    currentParam.editable = false;
     currentParam.readValue = function() {
         userParam.printoutput = this.value;
     }
