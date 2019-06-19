@@ -46,7 +46,6 @@ function setGeneralParam(userParam) {
     if (userParam.custompagesize) {
         //remove all non-digits
         generalParam.pageSize = userParam.customwidth.replace(/[^0-9]/g,'')+"mm " + userParam.customheight.replace(/[^0-9]/g,'')+"mm";
-        Banana.console.log(generalParam.pageSize);
     }
     else {
         if (userParam.pagesize1 && !userParam.pagesize2 && !userParam.pagesize3 && !userParam.pagesize4) {
