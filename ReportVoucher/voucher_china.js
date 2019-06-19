@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.addon.voucherchinas
 // @api = 1.0
-// @pubdate = 2019-03-27
+// @pubdate = 2019-06-19
 // @publisher = Banana.ch SA
 // @description.zh = 记账凭证
 // @task = app.command
@@ -31,11 +31,38 @@
 //    - numberOfRows: the number of transactions rows that are printed on each voucher. Default value is 6
 //    - pageSize: the size of the page (e.g. "A5 landscape"). Default value is "A4"
 //-----------------------------------------------------------
-var generalParam = {
-    "textColor" : "#32CD32",
-    "numberOfRows" : 6,
-    "pageSize" : "A4"
+var generalParam = {};
+function setGeneralParam(userParam) {
+
+    generalParam.numberOfRows = 6;
+
+    // Color    
+    if (!userParam.color) {
+        userParam.color = "Black";
+    }
+    generalParam.textColor = userParam.color;
+
+    // Page size
+    if (userParam.custompagesize) {
+        //remove all non-digits
+        generalParam.pageSize = userParam.customwidth.replace(/[^0-9]/g,'')+"mm "+userParam.customheight.replace(/[^0-9]/g,'')+"mm";
+    }
+    else {
+        if (userParam.pagesize1 && !userParam.pagesize2 && !userParam.pagesize3 && !userParam.pagesize4) {
+            generalParam.pageSize = "243mm 142mm";
+        }
+        else if (userParam.pagesize2 && !userParam.pagesize1 && !userParam.pagesize3 && ! userParam.pagesize4) {
+            generalParam.pageSize = "210mm 127mm";
+        }
+        else if (userParam.pagesize3 && !userParam.pagesize1 && !userParam.pagesize2 && !userParam.pagesize4) {
+            generalParam.pageSize = "A5 landscape";
+        }
+        else {
+            generalParam.pageSize = "A4";
+        }
+    }
 }
+
 
 /* Function that loads the texts parameters */
 var param = [];
@@ -91,6 +118,9 @@ function exec(string) {
         return "@Cancel";
     }
     
+    // Set General parameters
+    setGeneralParam(userParam);
+
     var report = printVoucher(Banana.document, userParam);
 
     //Add the styles
@@ -815,6 +845,7 @@ function createStyleSheet() {
     pageStyle.setAttribute("margin", "10mm 5mm 10mm 5mm");
     pageStyle.setAttribute("size", generalParam.pageSize);
 
+    
 
     /*
         General styles
@@ -1089,6 +1120,160 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+
+    // Page size
+    var currentParam = {};
+    currentParam.name = 'pagesize';
+    currentParam.title = '页面设置';
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.pagesize = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // 243mm x 142mm
+    var currentParam = {};
+    currentParam.name = 'pagesize1';
+    currentParam.parentObject = 'pagesize'
+    currentParam.title = '宽度:243 毫米; 高度:142 毫米';
+    currentParam.type = 'bool';
+    currentParam.value = userParam.pagesize1 ? true : false;
+    currentParam.readValue = function() {
+     userParam.pagesize1 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // 210mm x 127mm
+    var currentParam = {};
+    currentParam.name = 'pagesize2';
+    currentParam.parentObject = 'pagesize'
+    currentParam.title = '宽度:210 毫米; 高度:127 毫米';
+    currentParam.type = 'bool';
+    currentParam.value = userParam.pagesize2 ? true : false;
+    currentParam.readValue = function() {
+     userParam.pagesize2 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // A5 landscape
+    var currentParam = {};
+    currentParam.name = 'pagesize3';
+    currentParam.parentObject = 'pagesize'
+    currentParam.title = 'A5 横向';
+    currentParam.type = 'bool';
+    currentParam.value = userParam.pagesize3 ? true : false;
+    currentParam.readValue = function() {
+     userParam.pagesize3 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // A4
+    var currentParam = {};
+    currentParam.name = 'pagesize4';
+    currentParam.parentObject = 'pagesize'
+    currentParam.title = 'A4 纵向';
+    currentParam.type = 'bool';
+    currentParam.value = userParam.pagesize4 ? true : false;
+    currentParam.readValue = function() {
+     userParam.pagesize4 = this.value;
+     if (userParam.pagesize1 && (userParam.pagesize2 || userParam.pagesize3 || userParam.pagesize4)) {
+        userParam.pagesize1 = false;
+        userParam.pagesize2 = false;
+        userParam.pagesize3 = false;
+        userParam.pagesize4 = true;
+     }
+     if (userParam.pagesize2 && (userParam.pagesize1 || userParam.pagesize3 || userParam.pagesize4)) {
+        userParam.pagesize1 = false;
+        userParam.pagesize2 = false;
+        userParam.pagesize3 = false;
+        userParam.pagesize4 = true;
+     }
+     if (userParam.pagesize3 && (userParam.pagesize1 || userParam.pagesize2 || userParam.pagesize4)) {
+        userParam.pagesize1 = false;
+        userParam.pagesize2 = false;
+        userParam.pagesize3 = false;
+        userParam.pagesize4 = true;
+     }
+     if (userParam.pagesize4) {
+        userParam.pagesize1 = false;
+        userParam.pagesize2 = false;
+        userParam.pagesize3 = false;
+     }
+     if (!userParam.pagesize1 && !userParam.pagesize2 && !userParam.pagesize3 && !userParam.pagesize4 && !userParam.custompagesize) {
+        userParam.pagesize4 = true;
+     }
+    }
+    convertedParam.data.push(currentParam);
+
+    // Color
+    var currentParam = {};
+    currentParam.name = 'custompagesize';
+    currentParam.parentObject = 'pagesize';
+    currentParam.title = '自定义大小';
+    currentParam.type = 'bool';
+    currentParam.value = userParam.custompagesize ? true : false;
+    currentParam.readValue = function() {
+        userParam.custompagesize = this.value;
+        if (userParam.custompagesize) {
+            userParam.pagesize1 = false;
+            userParam.pagesize2 = false;
+            userParam.pagesize3 = false;
+            userParam.pagesize4 = false;
+        }
+    }
+    convertedParam.data.push(currentParam);
+
+    // custom width size
+    var currentParam = {};
+    currentParam.name = 'customwidth';
+    currentParam.parentObject = 'custompagesize';
+    currentParam.title = '自定义宽度 (毫米)';
+    currentParam.type = 'string';
+    currentParam.value = userParam.customwidth ? userParam.customwidth : '';
+    currentParam.readValue = function() {
+        userParam.customwidth = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // custom height size
+    var currentParam = {};
+    currentParam.name = 'customheight';
+    currentParam.parentObject = 'custompagesize';
+    currentParam.title = '自定义高度 (毫米)';
+    currentParam.type = 'string';
+    currentParam.value = userParam.customheight ? userParam.customheight : '';
+    currentParam.readValue = function() {
+        userParam.customheight = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // Style
+    var currentParam = {};
+    currentParam.name = 'style';
+    currentParam.title = '字体颜色';
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.style = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // Color
+    var currentParam = {};
+    currentParam.name = 'color';
+    currentParam.parentObject = 'style';
+    currentParam.title = '颜色';
+    currentParam.type = 'string';
+    currentParam.value = userParam.color ? userParam.color : 'Black';
+    currentParam.readValue = function() {
+        userParam.color = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
     return convertedParam;
 }
 
@@ -1108,6 +1293,16 @@ function initUserParam() {
     userParam.receiver = '';
     userParam.printoutput = '';
     userParam.printenglish = true;
+    userParam.pagesize1 = false;
+    userParam.pagesize2 = false;
+    userParam.pagesize3 = false;
+    userParam.pagesize4 = true;
+    userParam.custompagesize = false;
+    userParam.customwidth = '';
+    userParam.customheight = '';
+    userParam.pagesize5 = '';
+    userParam.color = 'Black';
+
     return userParam;
 }
 
