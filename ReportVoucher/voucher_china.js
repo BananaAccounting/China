@@ -45,14 +45,15 @@ function setGeneralParam(userParam) {
     // Page size
     if (userParam.custompagesize) {
         //remove all non-digits
-        generalParam.pageSize = userParam.customwidth.replace(/[^0-9]/g,'')+"mm "+userParam.customheight.replace(/[^0-9]/g,'')+"mm";
+        generalParam.pageSize = userParam.customwidth.replace(/[^0-9]/g,'')+"mm " + userParam.customheight.replace(/[^0-9]/g,'')+"mm";
+        Banana.console.log(generalParam.pageSize);
     }
     else {
         if (userParam.pagesize1 && !userParam.pagesize2 && !userParam.pagesize3 && !userParam.pagesize4) {
-            generalParam.pageSize = "243mm 142mm";
+            generalParam.pageSize = "142mm 243mm landscape";
         }
         else if (userParam.pagesize2 && !userParam.pagesize1 && !userParam.pagesize3 && ! userParam.pagesize4) {
-            generalParam.pageSize = "210mm 127mm";
+            generalParam.pageSize = "127mm 210mm landscape";
         }
         else if (userParam.pagesize3 && !userParam.pagesize1 && !userParam.pagesize2 && !userParam.pagesize4) {
             generalParam.pageSize = "A5 landscape";
