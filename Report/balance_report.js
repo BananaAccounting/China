@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.china.reportbalancesheet
 // @api = 1.0
-// @pubdate = 2019-02-27
+// @pubdate = 2019-07-02
 // @publisher = Banana.ch SA
 // @description.zh = 资产负债表
 // @description.en = Balance Sheet
@@ -636,13 +636,28 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	totAmount61 = Banana.SDecimal.add(totAmount61,amount);
 	totOpening61 = Banana.SDecimal.add(totOpening61,opening);
 
+	//
+	tableRow = table.addRow();
+	tableRow.addCell("", "borders", 1);
+	tableRow.addCell("", "borders", 1);
+	tableRow.addCell("", "borders right padding-right", 1);
+	tableRow.addCell("", "borders right padding-right", 1);
+	tableRow.addCell("未分配利润", "borders", 1);
+	tableRow.addCell("", "borders", 1);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("4104", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("4104", param["startDate"], param["endDate"]).opening);
+	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
+	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
+	totAmount61 = Banana.SDecimal.add(totAmount61,amount);
+	totOpening61 = Banana.SDecimal.add(totOpening61,opening);
+
 	// 29 - 60
 	tableRow = table.addRow();
 	tableRow.addCell("其他非流动资产", "borders", 1);
 	tableRow.addCell("29", "borders", 1);
 	tableRow.addCell("", "borders right padding-right", 1);
 	tableRow.addCell("", "borders right padding-right", 1);
-	tableRow.addCell("未分配利润", "borders", 1);
+	tableRow.addCell("本年利润", "borders", 1);
 	tableRow.addCell("60", "borders", 1);
 	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4103", param["startDate"], param["endDate"]).balance);
 	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4103", param["startDate"], param["endDate"]).opening);
