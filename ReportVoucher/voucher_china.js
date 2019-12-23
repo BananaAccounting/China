@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.addon.voucherchinas
 // @api = 1.0
-// @pubdate = 2019-06-19
+// @pubdate = 2019-12-23
 // @publisher = Banana.ch SA
 // @description.zh = 记账凭证
 // @task = app.command
@@ -653,6 +653,15 @@ function printSignatures(table, report, userParam) {
 
 /* Function that takes a number and save all the digits */
 function getDigits(num, table, isTotalLine) {
+    var basicCurrency = Banana.document.info("AccountingDataBase","BasicCurrency");
+    var currencySymbol = "";
+    if (basicCurrency === "USD") {
+        currencySymbol = "$";
+    } else if (basicCurrency === "EUR") {
+        currencySymbol = "€";
+    } else {
+        currencySymbol = "¥";
+    }
 
     //Create all the digits
     var a8 = "";
@@ -696,14 +705,14 @@ function getDigits(num, table, isTotalLine) {
         if (arr[arr.length - 4]) {
             a1 = arr[arr.length - 4];
         } else {
-            a1 = "¥";
+            a1 = currencySymbol;
         }
             
         if (arr[arr.length - 5]) {
             a2 = arr[arr.length - 5];
         } else {
-            if (a1 !== "¥") {
-                a2 = "¥";
+            if (a1 !== currencySymbol) {
+                a2 = currencySymbol;
             }
         }
         
@@ -711,24 +720,24 @@ function getDigits(num, table, isTotalLine) {
         if (arr[arr.length - 6]) {
             a3 = arr[arr.length - 6];
         } else {
-            if (a1 !== "¥" && a2 !== "¥") {
-                a3 = "¥";
+            if (a1 !== currencySymbol && a2 !== currencySymbol) {
+                a3 = currencySymbol;
             }
         }
             
         if (arr[arr.length - 7]) {
             a4 = arr[arr.length - 7];
         } else {
-            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥") {
-                a4 = "¥";
+            if (a1 !== currencySymbol && a2 !== currencySymbol && a3 !== currencySymbol) {
+                a4 = currencySymbol;
             }
         }
             
         if (arr[arr.length - 8]) {
             a5 = arr[arr.length - 8];
         } else {
-            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥") {
-                a5 = "¥";
+            if (a1 !== currencySymbol && a2 !== currencySymbol && a3 !== currencySymbol && a4 !== currencySymbol) {
+                a5 = currencySymbol;
             }
         }
 
@@ -736,24 +745,24 @@ function getDigits(num, table, isTotalLine) {
         if (arr[arr.length - 9]) {
             a6 = arr[arr.length - 9];
         } else {
-            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥") {
-                a6 = "¥";
+            if (a1 !== currencySymbol && a2 !== currencySymbol && a3 !== currencySymbol && a4 !== currencySymbol && a5 !== currencySymbol) {
+                a6 = currencySymbol;
             }
         }
             
         if (arr[arr.length - 10]) {
             a7 = arr[arr.length - 10];
         } else {
-            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥" && a6 !== "¥") {
-                a7 = "¥";
+            if (a1 !== currencySymbol && a2 !== currencySymbol && a3 !== currencySymbol && a4 !== currencySymbol && a5 !== currencySymbol && a6 !== currencySymbol) {
+                a7 = currencySymbol;
             }
         }
            
         if (arr[arr.length - 11]) {
             a8 = arr[arr.length - 11];
         } else {
-            if (a1 !== "¥" && a2 !== "¥" && a3 !== "¥" && a4 !== "¥" && a5 !== "¥" && a6 !== "¥" && a7 !== "¥") {
-                a8 = "¥";
+            if (a1 !== currencySymbol && a2 !== currencySymbol && a3 !== currencySymbol && a4 !== currencySymbol && a5 !== currencySymbol && a6 !== currencySymbol && a7 !== currencySymbol) {
+                a8 = currencySymbol;
             }
         }
     }
