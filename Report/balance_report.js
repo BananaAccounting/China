@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.china.reportbalancesheet
 // @api = 1.0
-// @pubdate = 2018-11-13
+// @pubdate = 2019-07-02
 // @publisher = Banana.ch SA
 // @description.zh = 资产负债表
 // @description.en = Balance Sheet
@@ -30,6 +30,7 @@ function loadParam(banDoc, startDate, endDate) {
 		"startDate":startDate,
 		"endDate":endDate,
 		"taxpayerNumber":banDoc.info("AccountingDataBase","FiscalNumber"),
+		"vatNumber":banDoc.info("AccountingDataBase","VatNumber"),
 		"company":banDoc.info("AccountingDataBase","Company"),
 		"address":banDoc.info("AccountingDataBase","Address1"),
 		"nation":banDoc.info("AccountingDataBase","Country"),
@@ -90,7 +91,7 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow.addCell("", "", 8);
 	
 	tableRow = table.addRow();
-	tableRow.addCell("纳税人识别号: " + param["taxpayerNumber"], "", 4); //Taxpayer identification number:
+	tableRow.addCell("纳税人识别号: " + param["vatNumber"], "", 4); //VatNumber
 	tableRow.addCell("纳税人名称: " + param["company"], "", 4); //Payer's name
 
 	tableRow = table.addRow();
@@ -128,8 +129,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	totOpening12 = Banana.SDecimal.add(totOpening12,opening);
 	tableRow.addCell("短期借款", "borders", 1);
 	tableRow.addCell("32", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2001", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2001", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2001", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2001", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount44 = Banana.SDecimal.add(totAmount44,amount);
@@ -139,16 +140,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("以公允价值计量且其变动计入当期损益的金融资产", "borders", 1);
 	tableRow.addCell("2", "borders", 1);
-	amount = banDoc.currentBalance("1101", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1101", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1101", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1101", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount12 = Banana.SDecimal.add(totAmount12,amount);
 	totOpening12 = Banana.SDecimal.add(totOpening12,opening);
 	tableRow.addCell("以公允价值计量且其变动计入当期损益的金融负债", "borders", 1);
 	tableRow.addCell("33", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2101", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2101", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2101", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2101", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount44 = Banana.SDecimal.add(totAmount44,amount);
@@ -158,8 +159,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("应收票据", "borders", 1);
 	tableRow.addCell("3", "borders", 1);
-	amount = banDoc.currentBalance("1121", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1121", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1121", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1121", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount12 = Banana.SDecimal.add(totAmount12,amount);
@@ -178,8 +179,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("应收账款", "borders", 1);
 	tableRow.addCell("4", "borders", 1);
-	amount = banDoc.currentBalance("1122|1231", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1122|1231", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1122|1231", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1122|1231", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 
@@ -198,16 +199,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("预付款项", "borders", 1);
 	tableRow.addCell("5", "borders", 1);
-	amount = banDoc.currentBalance("1123", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1123", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1123", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1123", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount12 = Banana.SDecimal.add(totAmount12,amount);
 	totOpening12 = Banana.SDecimal.add(totOpening12,opening);
 	tableRow.addCell("预收款项", "borders", 1);
 	tableRow.addCell("36", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2203", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2203", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2203", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2203", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount44 = Banana.SDecimal.add(totAmount44,amount);
@@ -217,8 +218,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("应收利息", "borders", 1);
 	tableRow.addCell("6", "borders", 1);
-	amount = banDoc.currentBalance("1132", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1132", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1132", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1132", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount12 = Banana.SDecimal.add(totAmount12,amount);
@@ -236,8 +237,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("应收股利", "borders", 1);
 	tableRow.addCell("7", "borders", 1);
-	amount = banDoc.currentBalance("1131", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1131", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1131", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1131", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount12 = Banana.SDecimal.add(totAmount12,amount);
@@ -263,8 +264,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	totOpening12 = Banana.SDecimal.add(totOpening12,opening);
 	tableRow.addCell("应付利息", "borders", 1);
 	tableRow.addCell("39", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2231", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2231", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2231", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2231", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount44 = Banana.SDecimal.add(totAmount44,amount);
@@ -274,16 +275,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("存货", "borders", 1);
 	tableRow.addCell("9", "borders", 1);
-	amount = banDoc.currentBalance("1321|1401|1402|1403|1404|1405|1406|1407|1408|1411|1461|1471", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1321|1401|1402|1403|1404|1405|1406|1407|1408|1411|1461|1471", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1321|1401|1402|1403|1404|1405|1406|1407|1408|1411|1461|1471", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1321|1401|1402|1403|1404|1405|1406|1407|1408|1411|1461|1471", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount12 = Banana.SDecimal.add(totAmount12,amount);
 	totOpening12 = Banana.SDecimal.add(totOpening12,opening);
 	tableRow.addCell("应付股利", "borders", 1);
 	tableRow.addCell("40", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2232", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2232", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2232", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2232", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount44 = Banana.SDecimal.add(totAmount44,amount);
@@ -292,8 +293,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("持有待售资产", "borders", 1);
 	tableRow.addCell("", "borders", 1);
-	amount = banDoc.currentBalance("1481|1482", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1481|1482", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1481|1482", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1481|1482", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount12 = Banana.SDecimal.add(totAmount12,amount);
@@ -315,8 +316,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow.addCell("", "borders right padding-right", 1);
 	tableRow.addCell("持有待售负债", "borders", 1);
 	tableRow.addCell("41", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2245", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2245", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2245", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2245", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount44 = Banana.SDecimal.add(totAmount44,amount);
@@ -341,8 +342,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow.addCell(formatValues(totOpening12), "borders right padding-right styleTotal", 1);
 	tableRow.addCell("其他流动负债", "borders", 1);
 	tableRow.addCell("43", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2401", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2401", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2401", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2401", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount44 = Banana.SDecimal.add(totAmount44,amount);
@@ -367,16 +368,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("可供出售金融资产", "borders", 1);
 	tableRow.addCell("13", "borders", 1);
-	amount = banDoc.currentBalance("1503", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1503", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1503", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1503", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
 	totOpening30 = Banana.SDecimal.add(totOpening30,opening);
 	tableRow.addCell("长期借款", "borders", 1);
 	tableRow.addCell("45", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2501", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2501", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2501", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2501", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount52 = Banana.SDecimal.add(totAmount52,amount);
@@ -386,16 +387,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("持有至到期投资", "borders", 1);
 	tableRow.addCell("14", "borders", 1);
-	amount = banDoc.currentBalance("1501|1502", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1501|1502", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1501|1502", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1501|1502", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
 	totOpening30 = Banana.SDecimal.add(totOpening30,opening);
 	tableRow.addCell("应付债券", "borders", 1);
 	tableRow.addCell("46", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2502", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2502", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2502", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2502", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount52 = Banana.SDecimal.add(totAmount52,amount);
@@ -405,16 +406,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("长期应收款", "borders", 1);
 	tableRow.addCell("15", "borders", 1);
-	amount = banDoc.currentBalance("1531|1532", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1531|1532", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1531|1532", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1531|1532", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
 	totOpening30 = Banana.SDecimal.add(totOpening30,opening);
 	tableRow.addCell("长期应付款", "borders", 1);
 	tableRow.addCell("47", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2701|2702", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2701|2702", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2701|2702", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2701|2702", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount52 = Banana.SDecimal.add(totAmount52,amount);
@@ -424,16 +425,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("长期股权投资", "borders", 1);
 	tableRow.addCell("16", "borders", 1);
-	amount = banDoc.currentBalance("1511|1512", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1511|1512", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1511|1512", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1511|1512", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
 	totOpening30 = Banana.SDecimal.add(totOpening30,opening);
 	tableRow.addCell("专项应付款", "borders", 1);
 	tableRow.addCell("48", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2711", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2711", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2711", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2711", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount52 = Banana.SDecimal.add(totAmount52,amount);
@@ -443,8 +444,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("投资性房地产", "borders", 1);
 	tableRow.addCell("17", "borders", 1);
-	amount = banDoc.currentBalance("1521", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1521", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1521", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1521", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
@@ -462,16 +463,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("固定资产", "borders", 1);
 	tableRow.addCell("18", "borders", 1);
-	amount = banDoc.currentBalance("1601|1602|1603", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1601|1602|1603", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1601|1602|1603", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1601|1602|1603", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
 	totOpening30 = Banana.SDecimal.add(totOpening30,opening);
 	tableRow.addCell("递延所得税负债", "borders", 1);
 	tableRow.addCell("50", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("2901", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("2901", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2901", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=2901", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount52 = Banana.SDecimal.add(totAmount52,amount);
@@ -481,8 +482,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("工程物资", "borders", 1);
 	tableRow.addCell("19", "borders", 1);
-	amount = banDoc.currentBalance("1605", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1605", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1605", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1605", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
@@ -497,8 +498,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("在建工程", "borders", 1);
 	tableRow.addCell("20", "borders", 1);
-	amount = banDoc.currentBalance("1604", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1604", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1604", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1604", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
@@ -513,8 +514,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("固定资产清理", "borders", 1);
 	tableRow.addCell("21", "borders", 1);
-	amount = banDoc.currentBalance("1606", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1606", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1606", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1606", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
@@ -545,8 +546,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow.addCell("", "borders right padding-right", 1);
 	tableRow.addCell("实收资本（或股本）", "borders", 1);
 	tableRow.addCell("54", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("4001", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("4001", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4001", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4001", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount61 = Banana.SDecimal.add(totAmount61,amount);
@@ -556,16 +557,16 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("无形资产", "borders", 1);
 	tableRow.addCell("24", "borders", 1);
-	amount = banDoc.currentBalance("1701|1702|1703", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1701|1702|1703", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1701|1702|1703", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1701|1702|1703", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
 	totOpening30 = Banana.SDecimal.add(totOpening30,opening);
 	tableRow.addCell("资本公积", "borders", 1);
 	tableRow.addCell("55", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("4002", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("4002", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4002", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4002", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount61 = Banana.SDecimal.add(totAmount61,amount);
@@ -579,8 +580,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow.addCell("", "borders right padding-right", 1);
 	tableRow.addCell("减：库存股", "borders", 1);
 	tableRow.addCell("56", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("4201", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("4201", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4201", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4201", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount61 = Banana.SDecimal.add(totAmount61,amount);
@@ -590,8 +591,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("商誉", "borders", 1);
 	tableRow.addCell("26", "borders", 1);
-	amount = banDoc.currentBalance("1711", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1711", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1711", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1711", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
@@ -605,8 +606,8 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("长期待摊费用", "borders", 1);
 	tableRow.addCell("27", "borders", 1);
-	amount = banDoc.currentBalance("1801", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1801", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1801", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1801", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
@@ -620,16 +621,31 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("递延所得税资产", "borders", 1);
 	tableRow.addCell("28", "borders", 1);
-	amount = banDoc.currentBalance("1811", param["startDate"], param["endDate"]).balance;
-	opening = banDoc.currentBalance("1811", param["startDate"], param["endDate"]).opening;
+	amount = banDoc.currentBalance("Gr=1811", param["startDate"], param["endDate"]).balance;
+	opening = banDoc.currentBalance("Gr=1811", param["startDate"], param["endDate"]).opening;
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount30 = Banana.SDecimal.add(totAmount30,amount);
 	totOpening30 = Banana.SDecimal.add(totOpening30,opening);
 	tableRow.addCell("盈余公积", "borders", 1);
 	tableRow.addCell("59", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("4101", param["startDate"], param["endDate"]).balance);
-	opening = Banana.SDecimal.invert(banDoc.currentBalance("4101", param["startDate"], param["endDate"]).opening);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4101", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4101", param["startDate"], param["endDate"]).opening);
+	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
+	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
+	totAmount61 = Banana.SDecimal.add(totAmount61,amount);
+	totOpening61 = Banana.SDecimal.add(totOpening61,opening);
+
+	//
+	tableRow = table.addRow();
+	tableRow.addCell("", "borders", 1);
+	tableRow.addCell("", "borders", 1);
+	tableRow.addCell("", "borders right padding-right", 1);
+	tableRow.addCell("", "borders right padding-right", 1);
+	tableRow.addCell("未分配利润", "borders", 1);
+	tableRow.addCell("", "borders", 1);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("4104", param["startDate"], param["endDate"]).balance);
+	opening = Banana.SDecimal.invert(banDoc.currentBalance("4104", param["startDate"], param["endDate"]).opening);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(opening), "borders right padding-right", 1);
 	totAmount61 = Banana.SDecimal.add(totAmount61,amount);
@@ -641,7 +657,7 @@ function createBalanceReport(banDoc, startDate, endDate) {
 	tableRow.addCell("29", "borders", 1);
 	tableRow.addCell("", "borders right padding-right", 1);
 	tableRow.addCell("", "borders right padding-right", 1);
-	tableRow.addCell("未分配利润", "borders", 1);
+	tableRow.addCell("本年利润", "borders", 1);
 	tableRow.addCell("60", "borders", 1);
 	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4103", param["startDate"], param["endDate"]).balance);
 	opening = Banana.SDecimal.invert(banDoc.currentBalance("Gr=4103", param["startDate"], param["endDate"]).opening);

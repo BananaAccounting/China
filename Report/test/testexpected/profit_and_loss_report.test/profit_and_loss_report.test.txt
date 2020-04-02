@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/ivan/Documents/GitHub/China/Report/./test/profit_and_loss_report.test.js}
+%%SCRIPT{/Users/ivan/Documents/GitHub/China/Report/test/profit_and_loss_report.test.js}
 %
 \begin{testcase}{ReportProfitLoss}
 \begin{test}{testBananaApp}
@@ -28,11 +28,11 @@
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
 \multicolumn{4}{l}{纳税人基本信息 }\\
 \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{纳税人识别号:  } & \multicolumn{2}{l}{纳税人名称: 朝阳商贸有限公司 }\\
-\multicolumn{2}{l}{报送日期: 13.11.2018 } & 所属时期起: 01.01.2018  & 所属时期止: 31.12.2018 \\
+\multicolumn{2}{l}{纳税人识别号: 123-456-789 } & \multicolumn{2}{l}{纳税人名称: 朝阳商贸有限公司 }\\
+\multicolumn{2}{l}{报送日期: 27.02.2019 } & 所属时期起: 01.01.2018  & 所属时期止: 31.12.2018 \\
 \multicolumn{4}{l}{}\\
 项   目  & 行次  & 本期金额  & 本年累计金额 \\
-一、营业收入  & 1  & 27.57  & 27.57 \\
+一、营业收入  & 1  & 29.24  & 29.24 \\
 减：营业成本  & 2  & 7.06  & 7.06 \\
 税金及附加  & 3  & 2.00  & 2.00 \\
 销售费用  & 4  & 12.12  & 12.12 \\
@@ -44,14 +44,14 @@
 其中：对联营企业和合营企业的投资收益  & 10  &  & \\
 资产处置收益（损失以“-”号填列）  & 11  &  & \\
 其他收益  & 12  &  & \\
-二、营业利润（亏损以“-”号填列）  & 13  & -14.79  & -14.79 \\
+二、营业利润（亏损以“-”号填列）  & 13  & -13.12  & -13.12 \\
 加：营业外收入  & 14  & 11.12  & 11.12 \\
 其中：非流动资产处置利得  & 15  &  & \\
 减：营业外支出  & 16  & 12.12  & 12.12 \\
 其中：非流动资产处置损失  & 17  &  & \\
-三、利润总额（亏损总额以“-”号填列）  & 18  & -15.79  & -15.79 \\
+三、利润总额（亏损总额以“-”号填列）  & 18  & -14.12  & -14.12 \\
 减：所得税费用  & 19  & 6.06  & 6.06 \\
-四、净利润（净亏损以“-”号填列）  & 20  & -21.85  & -21.85 \\
+四、净利润（净亏损以“-”号填列）  & 20  & -20.18  & -20.18 \\
 \end{longtable}
 \end{reportvalue}
 \keyvalue{Result}{Passed}

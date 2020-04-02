@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.china.reportprofitloss.test
 // @api = 1.0
-// @pubdate = 2018-11-06
+// @pubdate = 2018-12-07
 // @publisher = Banana.ch SA
 // @description.en = Profit and Loss
 // @task = app.command
@@ -56,7 +56,7 @@ ReportProfitLoss.prototype.cleanup = function() {
 ReportProfitLoss.prototype.testBananaApp = function() {
 
   //Open the banana document
-  var banDoc = Banana.application.openDocument("file:script/../test/testcases/template2.ac2");
+  var banDoc = Banana.application.openDocument("file:script/../test/testcases/template3.ac2");
   Test.assert(banDoc);
   
   this.report_test(banDoc, "2018-01-01", "2018-12-31", "Whole year report");

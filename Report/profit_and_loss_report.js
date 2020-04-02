@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.china.reportprofitloss
 // @api = 1.0
-// @pubdate = 2018-11-13
+// @pubdate = 2019-02-27
 // @publisher = Banana.ch SA
 // @description.zh = 利润表
 // @description.en = Profit and Loss
@@ -32,6 +32,7 @@ function loadParam(banDoc, startDate, endDate) {
 		"endDate":endDate,
 		"currentDate": date,
 		"taxpayerNumber":banDoc.info("AccountingDataBase","FiscalNumber"),
+		"vatNumber":banDoc.info("AccountingDataBase","VatNumber"),
 		"company":banDoc.info("AccountingDataBase","Company"),
 		"address":banDoc.info("AccountingDataBase","Address1"),
 		"nation":banDoc.info("AccountingDataBase","Country"),
@@ -89,7 +90,7 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow.addCell("", "", 4);
 	
 	tableRow = table.addRow();
-	tableRow.addCell("纳税人识别号: " + param["taxpayerNumber"], "", 2); //Taxpayer identification number:
+	tableRow.addCell("纳税人识别号: " + param["vatNumber"], "", 2); //VatNumber
 	tableRow.addCell("纳税人名称: " + param["company"], "", 2); //Payer's name
 
 	tableRow = table.addRow();
@@ -111,8 +112,8 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("一、营业收入", "borders", 1);
 	tableRow.addCell("1", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("6001|6041|6051", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total);
-	monthamount = Banana.SDecimal.invert(banDoc.currentBalance("6001|6041|6051", param["startDate"], param["endDate"]).total);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=6001|6041|6051", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total);
+	monthamount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=6001|6041|6051", param["startDate"], param["endDate"]).total);
 	tableRow.addCell(formatValues(monthamount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	totAmount13 = Banana.SDecimal.add(totAmount13,amount);
@@ -122,8 +123,8 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("减：营业成本", "borders", 1);
 	tableRow.addCell("2", "borders", 1);
-	amount = banDoc.currentBalance("6401|6402", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total;
-	monthamount = banDoc.currentBalance("6401|6402", param["startDate"], param["endDate"]).total;
+	amount = banDoc.currentBalance("Gr=6401|6402", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total;
+	monthamount = banDoc.currentBalance("Gr=6401|6402", param["startDate"], param["endDate"]).total;
 	tableRow.addCell(formatValues(monthamount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	totAmount13 = Banana.SDecimal.subtract(totAmount13,amount);
@@ -133,8 +134,8 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("税金及附加", "borders", 1);
 	tableRow.addCell("3", "borders", 1);
-	amount = banDoc.currentBalance("6403", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total;
-	monthamount = banDoc.currentBalance("6403", param["startDate"], param["endDate"]).total;
+	amount = banDoc.currentBalance("Gr=6403", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total;
+	monthamount = banDoc.currentBalance("Gr=6403", param["startDate"], param["endDate"]).total;
 	tableRow.addCell(formatValues(monthamount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	totAmount13 = Banana.SDecimal.subtract(totAmount13,amount);
@@ -188,8 +189,8 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("加：公允价值变动收益（损失以“-”号填列）", "borders", 1);
 	tableRow.addCell("8", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("6101", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total);
-	monthamount = Banana.SDecimal.invert(banDoc.currentBalance("6101", param["startDate"], param["endDate"]).total);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=6101", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total);
+	monthamount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=6101", param["startDate"], param["endDate"]).total);
 	tableRow.addCell(formatValues(monthamount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	totAmount13 = Banana.SDecimal.add(totAmount13,amount);
@@ -199,8 +200,8 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("投资收益（损失以“-”号填列）", "borders", 1);
 	tableRow.addCell("9", "borders", 1);
-	amount = Banana.SDecimal.invert(banDoc.currentBalance("6111", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total);
-	monthamount = Banana.SDecimal.invert(banDoc.currentBalance("6111", param["startDate"], param["endDate"]).total);
+	amount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=6111", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total);
+	monthamount = Banana.SDecimal.invert(banDoc.currentBalance("Gr=6111", param["startDate"], param["endDate"]).total);
 	tableRow.addCell(formatValues(monthamount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	totAmount13 = Banana.SDecimal.add(totAmount13,amount);
@@ -285,8 +286,8 @@ function createProfitReport(banDoc, startDate, endDate) {
 	tableRow = table.addRow();
 	tableRow.addCell("减：所得税费用", "borders", 1);
 	tableRow.addCell("19", "borders", 1);
-	amount = banDoc.currentBalance("6801", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total;
-	monthamount = banDoc.currentBalance("6801", param["startDate"], param["endDate"]).total;
+	amount = banDoc.currentBalance("Gr=6801", banDoc.info("AccountingDataBase","OpeningDate"), param["endDate"]).total;
+	monthamount = banDoc.currentBalance("Gr=6801", param["startDate"], param["endDate"]).total;
 	tableRow.addCell(formatValues(monthamount), "borders right padding-right", 1);
 	tableRow.addCell(formatValues(amount), "borders right padding-right", 1);
 	totAmount20 = Banana.SDecimal.subtract(totAmount20,amount);
