@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.addon.voucherchinas
+// @id = ch.banana.addon.voucherchinas.cambodian
 // @api = 1.0
 // @pubdate = 2020-09-14
 // @publisher = Banana.ch SA
-// @description.zh = 记账凭证（中英文）
+// @description.zh = 记账凭证（中柬文）
 // @task = app.command
 // @doctype = 100.*;110.*;130.*
 // @docproperties = 
@@ -70,26 +70,26 @@ function loadParam() {
     param.push({"id": "showInformation", "english":"Document number not found. Please insert a valid value from the Document column of the Transactions table", "chinese":"未找到文件编号，请您从发生业务表格的文件列中选择一个有效值。"});
     param.push({"id": "printVoucher", "english":"Print Voucher", "chinese":"打印凭证"});
     param.push({"id": "insertDocument", "english":"Insert a document number (or insert * to print all the vouchers)", "chinese":"输入文件编号，或输入'*'号用来打印所有的凭证。"});
-    param.push({"id": "voucher", "english":"VOUCHER", "chinese":"记   账   凭   证"});
-    param.push({"id": "date", "english":"Date", "chinese":"日期"});
-    param.push({"id": "year", "english":"Y", "chinese":"年"});
-    param.push({"id": "month", "english":"M", "chinese":"月"});
-    param.push({"id": "day", "english":"D", "chinese":"日"});
-    param.push({"id": "voucherNumber", "english":"Voucher NO.", "chinese":"第   号"});
-    param.push({"id": "description", "english":"Description", "chinese":"摘要"});
-    param.push({"id": "genLedAc", "english":"GEN. LED. A / C", "chinese":"总账科目"});
-    param.push({"id": "subLedAc", "english":"SUB. LED. A / C", "chinese":"明细科目"});
-    param.push({"id": "debitAmount", "english":"Debit AMT.", "chinese":"借方金额"});
-    param.push({"id": "creditAmount", "english":"Credit AMT.", "chinese":"贷方金额"});
-    param.push({"id": "pr", "english":"P.R.", "chinese":"记账"});
-    param.push({"id": "attachments", "english":"Attachments", "chinese":"附单据     张"});
-    param.push({"id": "total", "english":"Total", "chinese":"合计"});
-    param.push({"id": "approved", "english":"Approved", "chinese":"核      准"});
-    param.push({"id": "checked", "english":"Checked", "chinese":"复      核"});
-    param.push({"id": "entered", "english":"Entered", "chinese":"记      账"});
-    param.push({"id": "cashier", "english":"Cashier", "chinese":"出      纳"});
-    param.push({"id": "prepared", "english":"Prepared", "chinese":"制      单"});
-    param.push({"id": "receiver", "english":"Receiver", "chinese":"签      收"});
+    param.push({"id": "voucher", "english":"កំណត់ត្រាបញ្ជីទូទាត់", "chinese":"记   账   凭   证"});
+    param.push({"id": "date", "english":"កាលបរិច្ឆេទ", "chinese":"日期"});
+    param.push({"id": "year", "english":"ឆ្នាំ", "chinese":"年"});
+    param.push({"id": "month", "english":"ខែ", "chinese":"月"});
+    param.push({"id": "day", "english":"ថ្ងៃទី", "chinese":"日"});
+    param.push({"id": "voucherNumber", "english":"លេរៀង", "chinese":"第   号"});
+    param.push({"id": "description", "english":"បរិយាយ", "chinese":"摘要"});
+    param.push({"id": "genLedAc", "english":"តារាងគណនី", "chinese":"总账科目"});
+    param.push({"id": "subLedAc", "english":"គណនីលំអិត", "chinese":"明细科目"});
+    param.push({"id": "debitAmount", "english":"ឥណពន្ធ", "chinese":"借方金额"});
+    param.push({"id": "creditAmount", "english":"ឥណទាន", "chinese":"贷方金额"});
+    param.push({"id": "pr", "english":"សៀវភៅបញ្ជី", "chinese":"记账"});
+    param.push({"id": "attachments", "english":"ឧបសម្ព័ន្ធ សន្លឹក", "chinese":"附单据     张"});
+    param.push({"id": "total", "english":"ចំនួនសរុប", "chinese":"合计"});
+    param.push({"id": "approved", "english":"អ្នកអនុម័ត", "chinese":"核      准"});
+    param.push({"id": "checked", "english":"អ្នកត្រួតពិនិត្យ", "chinese":"复      核"});
+    param.push({"id": "entered", "english":"អ្នករៀបបញ្ជី", "chinese":"记      账"});
+    param.push({"id": "cashier", "english":"បេឡាករ", "chinese":"出      纳"});
+    param.push({"id": "prepared", "english":"អ្នកចុះបញ្ជី", "chinese":"制      单"});
+    param.push({"id": "receiver", "english":"អ្នកទទួល", "chinese":"签      收"});
 }
 
 /* Main function */
@@ -332,6 +332,9 @@ function printInfoVoucher(tableInfo, report, docNumber, date, userParam) {
 
     var cell2 = tableRow.addCell("", "alignRight border-top-double", 1);
     cell2.addParagraph(getValue(param, "date", "chinese") + ": ");
+    if (userParam.printenglish) {
+        cell2.addParagraph(getValue(param, "date", "english") + ": ");
+    }
 
     var d = Banana.Converter.toDate(date);
     var year = d.getFullYear();
@@ -1121,7 +1124,7 @@ function convertParam(userParam) {
     var currentParam = {};
     currentParam.name = 'printenglish';
     currentParam.parentObject = 'printoutput'
-    currentParam.title = '打印中英文凭证 (如不勾选此项，将默认打印成中文凭证)';
+    currentParam.title = '用中文和高棉语打印凭单（如果您不选中此选项，则默认情况下将打印为中文凭单）';
     currentParam.type = 'bool';
     currentParam.value = userParam.printenglish ? true : false;
     currentParam.readValue = function() {
