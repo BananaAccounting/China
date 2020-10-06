@@ -1,4 +1,4 @@
-// Copyright [2015] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.addon.voucherchinas.cambodian
 // @api = 1.0
-// @pubdate = 2020-09-14
+// @pubdate = 2020-10-06
 // @publisher = Banana.ch SA
 // @description.zh = 记账凭证（中柬文）
 // @task = app.command
@@ -77,8 +77,9 @@ function loadParam() {
     param.push({"id": "day", "english":"ថ្ងៃទី", "chinese":"日"});
     param.push({"id": "voucherNumber", "english":"លេរៀង", "chinese":"第   号"});
     param.push({"id": "description", "english":"បរិយាយ", "chinese":"摘要"});
-    param.push({"id": "genLedAc", "english":"តារាងគណនី", "chinese":"总账科目"});
-    param.push({"id": "subLedAc", "english":"គណនីលំអិត", "chinese":"明细科目"});
+    param.push({"id": "genLedAc", "english":"គណន", "chinese":"科目"});
+    //param.push({"id": "genLedAc", "english":"តារាងគណនី", "chinese":"总账科目"});
+    //param.push({"id": "subLedAc", "english":"គណនីលំអិត", "chinese":"明细科目"});
     param.push({"id": "debitAmount", "english":"ឥណពន្ធ", "chinese":"借方金额"});
     param.push({"id": "creditAmount", "english":"ឥណទាន", "chinese":"贷方金额"});
     param.push({"id": "pr", "english":"សៀវភៅបញ្ជី", "chinese":"记账"});
@@ -231,7 +232,7 @@ function createVoucherReport(journal, report, docNumber, rowsToProcess, userPara
     var table = report.addTable("table");
     var c1 = table.addColumn("c1");
     var c2 = table.addColumn("c2");
-    var c3 = table.addColumn("c3");
+    //var c3 = table.addColumn("c3");
     var cs1 = table.addColumn("cs1");
     var c4 = table.addColumn("c4");
     var c5 = table.addColumn("c5");
@@ -400,7 +401,7 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
 
     tableRow.addCell(getValue(param, "description", "chinese"), "alignCenter border-left-black border-top-black border-right", 1);
     tableRow.addCell(getValue(param, "genLedAc", "chinese"), "alignCenter border-left border-top-black border-right", 1);
-    tableRow.addCell(getValue(param, "subLedAc", "chinese"), "alignCenter border-left border-top-black border-right-black", 1);
+    //tableRow.addCell(getValue(param, "subLedAc", "chinese"), "alignCenter border-left border-top-black border-right-black", 1);
     tableRow.addCell("", "border-top-black border-left-black border-right-black", 1);
     tableRow.addCell(getValue(param, "debitAmount", "chinese"), "alignCenter border-left border-top-black border-right-black", 11);
     tableRow.addCell("", "border-top-black border-left-black border-right-black", 1);
@@ -412,7 +413,7 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
         tableRow = tableHeader.addRow();
         tableRow.addCell(getValue(param, "description", "english"), "alignCenter border-left-black border-right", 1);
         tableRow.addCell(getValue(param, "genLedAc", "english"), "alignCenter border-left border-right", 1);
-        tableRow.addCell(getValue(param, "subLedAc", "english"), "alignCenter border-left border-right-black", 1);
+        //tableRow.addCell(getValue(param, "subLedAc", "english"), "alignCenter border-left border-right-black", 1);
         tableRow.addCell("", "border-left-black border-right-black", 1);
         tableRow.addCell(getValue(param, "debitAmount", "english"), "alignCenter border-left border-right-black border-bottom", 11);
         tableRow.addCell("", "border-left-black border-right-black", 1);
@@ -427,7 +428,7 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
 
     tableRow.addCell("", "border-left-black border-right border-bottom-black", 1);
     tableRow.addCell("", "border-left border-right border-bottom-black", 1);
-    tableRow.addCell("", "border-left border-right-black border-bottom-black", 1);
+    //tableRow.addCell("", "border-left border-right-black border-bottom-black", 1);
 
     tableRow.addCell("", "border-left-black border-right-black border-bottom-black", 1);
 
@@ -487,7 +488,7 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
                     tableRow.addCell("", "text-black padding-left border-left-black border-top border-right border-bottom", 1);
                 }
                 tableRow.addCell(tRow.value('JAccountDescription'), "text-black padding-left border-left border-top border-right border-bottom", 1);
-                tableRow.addCell("", "text-black padding-left border-left border-top border-right-black border-bottom", 1);
+                //tableRow.addCell("", "text-black padding-left border-left border-top border-right-black border-bottom", 1);
                 
                 // Debit
                 if (Banana.SDecimal.sign(tRow.value('JAmount')) > 0 ) {
@@ -537,7 +538,7 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
         tableRow = table.addRow();
         tableRow.addCell("", "border-left-black border-top border-right border-bottom", 1);
         tableRow.addCell("", "border-left border-top border-right border-bottom", 1);
-        tableRow.addCell("", "border-left border-top border-right-black border-bottom", 1);
+        //tableRow.addCell("", "border-left border-top border-right-black border-bottom", 1);
 
         tableRow.addCell("", "border-top border-left-black border-right-black border-bottom", 1);
         tableRow.addCell("*", "text-black padding-right border-left border-top border-right border-bottom", 1);
@@ -585,9 +586,9 @@ function printTotal(table, totDebit, totCredit, report, userParam) {
 
     //Total
     if (userParam.printenglish) {
-        tableRow.addCell(getValue(param, "total", "chinese") + "   " + getValue(param, "total", "english"), "alignCenter padding-left border-left border-top-black border-right-black border-bottom-black", 2);
+        tableRow.addCell(getValue(param, "total", "chinese") + "   " + getValue(param, "total", "english"), "alignCenter padding-left border-left border-top-black border-right-black border-bottom-black", 1);
     } else {
-        tableRow.addCell(getValue(param, "total", "chinese"), "alignCenter padding-left border-left border-top-black border-right-black border-bottom-black", 2);
+        tableRow.addCell(getValue(param, "total", "chinese"), "alignCenter padding-left border-left border-top-black border-right-black border-bottom-black", 1);
     }
     getDigits(Banana.Converter.toLocaleNumberFormat(totDebit), tableRow, true);
     getDigits(Banana.Converter.toLocaleNumberFormat(totCredit), tableRow, true);
@@ -663,8 +664,13 @@ function getDigits(num, table, isTotalLine) {
     } else if (basicCurrency === "EUR") {
         currencySymbol = "€";
     } else {
-        currencySymbol = "¥";
+        currencySymbol = "";
     }
+    // else if (basicCurrency === "KHR") {
+    //     currencySymbol = "៛";
+    // } else {
+    //     currencySymbol = "¥";
+    // }
 
     //Create all the digits
     var a8 = "";
@@ -920,9 +926,9 @@ function createStyleSheet() {
     stylesheet.addStyle("table.table td", "padding-bottom: 4px; padding-top: 6px");
 
     //Columns for the transactions table
-    stylesheet.addStyle(".c1", "width:40%");
-    stylesheet.addStyle(".c2", "width:12%");
-    stylesheet.addStyle(".c3", "width:12%");
+    stylesheet.addStyle(".c1", "width:25.4%");
+    stylesheet.addStyle(".c2", "width:25.4%");
+    //stylesheet.addStyle(".c3", "width:12%");
     stylesheet.addStyle(".cs1", "width:0.4%");
     stylesheet.addStyle(".c4", "width:1.5%");
     stylesheet.addStyle(".c5", "width:1.5%");
