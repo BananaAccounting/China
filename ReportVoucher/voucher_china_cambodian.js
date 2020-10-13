@@ -424,13 +424,13 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
                 
                 // Debit
                 if (Banana.SDecimal.sign(tRow.value('JAmount')) > 0 ) {
-                    tableRow.addCell(amount, "text-black padding-left padding-right alignRight", 1);
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "text-black padding-left padding-right alignRight", 1);
                     tableRow.addCell("", "", 1);
                 }
                 // Credit
                 else {
                     tableRow.addCell("", "", 1);
-                    tableRow.addCell(amount, "text-black padding-left padding-right alignRight", 1);
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "text-black padding-left padding-right alignRight", 1);
                 }
 
                 line++;
@@ -474,8 +474,8 @@ function printTotal(table, totDebit, totCredit, report, userParam) {
         totCredit = "0.00";
     }
 
-    tableRow.addCell(totDebit, "text-black padding-left padding-right alignRight",1);
-    tableRow.addCell(totCredit, "text-black padding-left padding-right alignRight",1);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(totDebit), "text-black padding-left padding-right alignRight",1);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(totCredit), "text-black padding-left padding-right alignRight",1);
 }
 
 /* Function that prints the signature part of the voucher */
