@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.addon.voucherchinas.cambodian
 // @api = 1.0
-// @pubdate = 2020-10-13
+// @pubdate = 2020-10-14
 // @publisher = Banana.ch SA
 // @description.zh = 柬埔寨会计凭证 (中文-柬埔寨文)
 // @task = app.command
@@ -35,7 +35,14 @@ var generalParam = {};
 function setGeneralParam(userParam) {
 
     generalParam.numberOfRows = 5;
-    generalParam.rowHeight = "7mm";
+    generalParam.rowHeight = "13mm";
+    generalParam.rowHeightTotal = "9mm";
+    generalParam.column1 = "64mm";
+    generalParam.column2 = "60mm";
+    generalParam.column3 = "35mm";
+    generalParam.column4 = "35mm";
+    generalParam.fontSize = "8px";
+    generalParam.fontSizeTable = "8px";
 
     // Color    
     if (!userParam.color) {
@@ -58,7 +65,7 @@ function setGeneralParam(userParam) {
     }
     else {
         if (userParam.pagesize0 && !userParam.pagesize1 && !userParam.pagesize2 && !userParam.pagesize3 && !userParam.pagesize4) {
-            generalParam.pageSize = "84mm 200mm landscape";
+            generalParam.pageSize = "140mm 240mm";//"84mm 200mm landscape";
         }
         else if (userParam.pagesize1 && !userParam.pagesize0 && !userParam.pagesize2 && !userParam.pagesize3 && !userParam.pagesize4) {
             generalParam.pageSize = "142mm 243mm landscape";
@@ -376,25 +383,25 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
     var tableHeader = table.getHeader();
     tableRow = tableHeader.addRow();
 
-    var cellDescription = tableRow.addCell("","alignCenter",1);
+    var cellDescription = tableRow.addCell("","alignCenter heightTrans",1);
     cellDescription.addParagraph(getValue(param, "description", "chinese"),"");
     if (userParam.printcambodia) {
         cellDescription.addParagraph(getValue(param, "description", "cambodia"),"");
     }
 
-    var cellGenLedAc = tableRow.addCell("","alignCenter",1);
+    var cellGenLedAc = tableRow.addCell("","alignCenter heightTrans",1);
     cellGenLedAc.addParagraph(getValue(param, "genLedAc", "chinese"),"");
     if (userParam.printcambodia) {
         cellGenLedAc.addParagraph(getValue(param, "genLedAc", "cambodia"),"");
     }
 
-    var cellDebitAmount = tableRow.addCell("","alignCenter",1);
+    var cellDebitAmount = tableRow.addCell("","alignCenter heightTrans",1);
     cellDebitAmount.addParagraph(getValue(param, "debitAmount", "chinese"),"");
     if (userParam.printcambodia) {
         cellDebitAmount.addParagraph(getValue(param, "debitAmount", "cambodia"),"");
     }
 
-    var cellCreditAmount = tableRow.addCell("","alignCenter",1);
+    var cellCreditAmount = tableRow.addCell("","alignCenter heightTrans",1);
     cellCreditAmount.addParagraph(getValue(param, "creditAmount", "chinese"),"");
     if (userParam.printcambodia) {
         cellCreditAmount.addParagraph(getValue(param, "creditAmount", "cambodia"),"");
@@ -416,21 +423,21 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
                 tableRow = table.addRow();
                 if (tmpDescription !== tRow.value('Description')) {
                     tmpDescription = tRow.value('Description');
-                    tableRow.addCell(tRow.value('Description'), "text-black padding-left", 1);
+                    tableRow.addCell(tRow.value('Description'), "text-black padding-left heightTrans", 1);
                 } else {
-                    tableRow.addCell("", "", 1);
+                    tableRow.addCell("", "heightTrans", 1);
                 }
-                tableRow.addCell(tRow.value('JAccountDescription'), "text-black padding-left", 1);
+                tableRow.addCell(tRow.value('JAccountDescription'), "text-black padding-left heightTrans", 1);
                 
                 // Debit
                 if (Banana.SDecimal.sign(tRow.value('JAmount')) > 0 ) {
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "text-black padding-left padding-right alignRight", 1);
-                    tableRow.addCell("", "", 1);
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "text-black padding-left padding-right alignRight heightTrans", 1);
+                    tableRow.addCell("", "heightTrans", 1);
                 }
                 // Credit
                 else {
-                    tableRow.addCell("", "", 1);
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "text-black padding-left padding-right alignRight", 1);
+                    tableRow.addCell("", "heightTrans", 1);
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "text-black padding-left padding-right alignRight heightTrans", 1);
                 }
 
                 line++;
@@ -441,10 +448,10 @@ function printTransactions(table, journal, line, rowsToProcess, userParam) {
     //Add empty lines if current lines are not enough
     while (line < generalParam.numberOfRows) {
         tableRow = table.addRow();
-        tableRow.addCell("", "", 1);
-        tableRow.addCell("", "", 1);
-        tableRow.addCell("", "", 1);
-        tableRow.addCell("", "", 1);
+        tableRow.addCell("", "heightTrans", 1);
+        tableRow.addCell("", "heightTrans", 1);
+        tableRow.addCell("", "heightTrans", 1);
+        tableRow.addCell("", "heightTrans", 1);
         line++;
     }
 }
@@ -455,16 +462,16 @@ function printTotal(table, totDebit, totCredit, report, userParam) {
     //Attachments
     tableRow = table.addRow();
     if (userParam.printcambodia) {
-        tableRow.addCell(getValue(param, "attachments", "chinese") + "   " + getValue(param, "attachments", "cambodia"), "alignCenter padding-left", 1);
+        tableRow.addCell(getValue(param, "attachments", "chinese") + "   " + getValue(param, "attachments", "cambodia"), "alignCenter padding-left heightTotal", 1);
     } else {
-        tableRow.addCell(getValue(param, "attachments", "chinese"), "alignCenter padding-left", 1);
+        tableRow.addCell(getValue(param, "attachments", "chinese"), "alignCenter padding-left heightTotal", 1);
     }
 
     //Total
     if (userParam.printcambodia) {
-        tableRow.addCell(getValue(param, "total", "chinese") + "   " + getValue(param, "total", "cambodia"), "alignCenter padding-left", 1);
+        tableRow.addCell(getValue(param, "total", "chinese") + "   " + getValue(param, "total", "cambodia"), "alignCenter padding-left heightTotal", 1);
     } else {
-        tableRow.addCell(getValue(param, "total", "chinese"), "alignCenter padding-left", 1);
+        tableRow.addCell(getValue(param, "total", "chinese"), "alignCenter padding-left heightTotal", 1);
     }
 
     if (totDebit === "" || totDebit === "undefined" || !totDebit) {
@@ -474,14 +481,14 @@ function printTotal(table, totDebit, totCredit, report, userParam) {
         totCredit = "0.00";
     }
 
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(totDebit), "text-black padding-left padding-right alignRight",1);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(totCredit), "text-black padding-left padding-right alignRight",1);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(totDebit), "text-black padding-left padding-right alignRight heightTotal",1);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(totCredit), "text-black padding-left padding-right alignRight heightTotal",1);
 }
 
 /* Function that prints the signature part of the voucher */
-function printSignatures(table, report, userParam) {
+function printSignatures(tableSignatures, report, userParam) {
     var paragraph;
-    tableRow = table.addRow();
+    tableRow = tableSignatures.addRow();
     var cellApproved = tableRow.addCell("", "", 1);
     paragraph = cellApproved.addParagraph();
     paragraph.addText(getValue(param, "approved", "chinese") + ": ", "");
@@ -599,7 +606,7 @@ function createStyleSheet() {
     /*
         General styles
     */
-    stylesheet.addStyle("body", "font-family : Times New Roman; font-size:10pt; color:" + generalParam.textColor);
+    stylesheet.addStyle("body", "font-family : Times New Roman; color:" + generalParam.textColor);
     stylesheet.addStyle(".text-black", "color:black");
     stylesheet.addStyle(".border-top-double", "border-top: 0.8px double black");
 
@@ -607,9 +614,9 @@ function createStyleSheet() {
     stylesheet.addStyle(".padding-right", "padding-right:5px");
     stylesheet.addStyle(".underLine", "border-top:thin double black");
 
-    stylesheet.addStyle(".heading1", "font-size:7px;font-weight:bold");
-    stylesheet.addStyle(".heading2", "font-size:7px");
-    stylesheet.addStyle(".heading3", "font-size:7px");
+    stylesheet.addStyle(".heading1", "font-size:"+generalParam.fontSize+";font-weight:bold");
+    stylesheet.addStyle(".heading2", "font-size:"+generalParam.fontSize+";");
+    stylesheet.addStyle(".heading3", "font-size:"+generalParam.fontSize+";");
     stylesheet.addStyle(".bold", "font-weight:bold");
     stylesheet.addStyle(".alignRight", "text-align:right");
     stylesheet.addStyle(".alignCenter", "text-align:center");
@@ -620,7 +627,7 @@ function createStyleSheet() {
     */
     style = stylesheet.addStyle("table_info");
     style.setAttribute("width", "100%");
-    style.setAttribute("font-size", "8px");
+    style.setAttribute("font-size", generalParam.fontSize);
     stylesheet.addStyle("table.table_info td", "padding-bottom:2px;");
 
     //Columns for the info table
@@ -641,15 +648,17 @@ function createStyleSheet() {
     */
     style = stylesheet.addStyle("table");
     style.setAttribute("width", "100%");
-    style.setAttribute("font-size", "7px");
+    style.setAttribute("font-size", generalParam.fontSizeTable);
     stylesheet.addStyle("table.table td", "border:thin solid " + generalParam.textColor+";");
-    stylesheet.addStyle("table.table tr", "height: " + generalParam.rowHeight+";");
+    // stylesheet.addStyle("table.table tr", "height: " + generalParam.rowHeight+";");
+    stylesheet.addStyle(".heightTrans", "height: " + generalParam.rowHeight+";");
+    stylesheet.addStyle(".heightTotal", "height: " + generalParam.rowHeightTotal+";");
 
     //Columns for the transactions table
-    stylesheet.addStyle(".c1", "width:35%");
-    stylesheet.addStyle(".c2", "width:35%");
-    stylesheet.addStyle(".c3", "width:15%");
-    stylesheet.addStyle(".c4", "width:15%");
+    stylesheet.addStyle(".c1", "width:"+generalParam.column1);
+    stylesheet.addStyle(".c2", "width:"+generalParam.column2);
+    stylesheet.addStyle(".c3", "width:"+generalParam.column3);
+    stylesheet.addStyle(".c4", "width:"+generalParam.column4);
 
 
     /*
@@ -657,7 +666,7 @@ function createStyleSheet() {
     */
     style = stylesheet.addStyle("table_signatures");
     style.setAttribute("width", "100%");
-    style.setAttribute("font-size", "7px");
+    style.setAttribute("font-size", generalParam.fontSize);
     stylesheet.addStyle("table.table_signatures td", "");
 
     //Column for the signatures table
@@ -847,11 +856,11 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    // 200mm x 84mm
+    // 240mm x 140mm
     var currentParam = {};
     currentParam.name = 'pagesize0';
     currentParam.parentObject = 'pagesize'
-    currentParam.title = '宽度:200 毫米; 高度:84 毫米';
+    currentParam.title = '宽度:240 毫米; 高度:140 毫米';
     currentParam.type = 'bool';
     currentParam.value = userParam.pagesize0 ? true : false;
     currentParam.readValue = function() {
