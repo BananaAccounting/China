@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.addon.voucherchinas.cambodian
 // @api = 1.0
-// @pubdate = 2020-10-14
+// @pubdate = 2020-10-20
 // @publisher = Banana.ch SA
 // @description.zh = 柬埔寨会计凭证 (中文-柬埔寨文)
 // @task = app.command
@@ -598,7 +598,7 @@ function createStyleSheet() {
     var pageStyle = stylesheet.addStyle("@page");
 
     //Set the margins
-    pageStyle.setAttribute("margin", "3mm 5mm 3mm 5mm");
+    pageStyle.setAttribute("margin", "10mm 5mm 10mm 5mm");
     pageStyle.setAttribute("size", generalParam.pageSize);
 
     
